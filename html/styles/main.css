@@ -4,3 +4,13 @@
 	align-items: center;
 	justify-content: left;
 }
+
+html,
+body {
+  height: 100%;
+}
+
+.homepage {
+	background-color: #333;
+	height: 100%;
+}
