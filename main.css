@@ -1,0 +1,7 @@
+/* CSS for our happiness map web app */
+
+html,
+body {
+  height: 100%;
+  background-color: #333;
+}
