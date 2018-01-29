@@ -1,0 +1,6 @@
+.flex {
+	display: flex;
+	padding: 1em;
+	align-items: center;
+	justify-content: left;
+}
