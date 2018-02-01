@@ -1,32 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Campus Map</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../styles/bootstrap4.min.css">
-  <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
-  <script type="application/javascript" src="../lib/popper.min.js"></script>
-  <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
-  <link href="../styles/main.css" rel="stylesheet">
-</head>
-<body>
-
-<div class="container-fluid d-flex h-100 p-3 mx-auto flex-column">
-  <nav class="navbar navbar-dark">
-    <a class="navbar-brand" href="#">My Stats</a>
-    <div class="navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="homepage.html">Homepage</a>
-        <a class="nav-item nav-link" href="post.html">Message Board</a>
-        <a class="nav-item nav-link" href="vote.html">Vote</a>
-        <a class="nav-item nav-link" href="stats.html">My Stats</a>
-        <a class="nav-item nav-link" href="#">About</a>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../styles/bootstrap4.min.css">
+    <link href="../styles/main.css" rel="stylesheet">
+    <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="../lib/popper.min.js"></script>
+    <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
+    <title>Stats</title>
+  </head>
+  <body>
+    <script>
+      $(function(){
+        $("#myNav").load("../nav.html");
+      });
+    </script>
+    <div class="homepage">
+      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <div id="myNav"></div>
+        <main role="main" class="inner cover text-center" id="home-cover">
+          <h1 class="cover-heading">My Stats</h1>
+        </main>
       </div>
     </div>
-  </nav>
-</div>
-
-
-</body>
+  </body>
 </html>

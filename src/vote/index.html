@@ -1,28 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Vote</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../styles/bootstrap4.min.css">
-  <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
-  <script type="application/javascript" src="../lib/popper.min.js"></script>
-  <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
-  <link href="../styles/main.css" rel="stylesheet">
-</head>
-<body>
-
-<div class="container">
-	<div class="flex">
-		<h1 style="margin: 0">Vote</h1>
-		<div class="btn-group" style="padding: 1em">
-			<a href="index.html" class="btn btn-info btn-sm">Homepage</a>
-			<a href="post.html" class="btn btn-info btn-sm">Message Board</a>
-			<a href="map.html" class="btn btn-info btn-sm">Campus Map</a>
-		</div>
-  </div>
-	<p>This is the voting page, where users will click on their location, and choose their happiness level</p>
-</div>
-
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../styles/bootstrap4.min.css">
+    <link href="../styles/main.css" rel="stylesheet">
+    <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="../lib/popper.min.js"></script>
+    <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
+    <title>Vote</title>
+  </head>
+  <body>
+    <script>
+      $(function(){
+        $("#myNav").load("../nav.html");
+      });
+    </script>
+    <div class="homepage">
+      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <div id="myNav"></div>
+        <main role="main" class="inner cover text-center" id="home-cover">
+          <h1 class="cover-heading">Vote</h1>
+        </main>
+      </div>
+    </div>
+  </body>
 </html>

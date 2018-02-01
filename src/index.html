@@ -12,27 +12,14 @@
     <title>Happiness Map</title>
   </head>
   <body>
+    <script>
+      $(function(){
+        $("#myNav").load("nav.html");
+      });
+    </script>
     <div class="homepage">
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <nav class="navbar navbar-toggleable-md navbar-dark">
-          <button class="navbar-toggler navbar-toggler"
-                  type="button" data-toggle="collapse"
-                  data-target="#navbar"
-                  aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                  aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand" href="#">The Happiness Map App</a>
-          <div class="collapse navbar-collapse" id="navbar">
-            <div class="navbar-nav">
-              <a class="nav-item nav-link" href="map">Campus Map</a>
-              <a class="nav-item nav-link" href="board">Message Board</a>
-              <a class="nav-item nav-link" href="vote">Vote</a>
-              <a class="nav-item nav-link" href="stats">My Stats</a>
-              <a class="nav-item nav-link" href="">About</a>
-            </div>
-          </div>
-        </nav>
+        <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Cover</h1>
         </main>
