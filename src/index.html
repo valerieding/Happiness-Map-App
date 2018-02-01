@@ -5,17 +5,17 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="styles/bootstrap4.min.css">
+    <link href="styles/main.css" rel="stylesheet">
     <script type="application/javascript" src="lib/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="lib/popper.min.js"></script>
     <script type="application/javascript" src="lib/bootstrap4.min.js"></script>
-    <link href="styles/main.css" rel="stylesheet">
     <title>Happiness Map</title>
   </head>
   <body>
     <div class="homepage">
-      <div class="container-fluid d-flex h-100 p-3 mx-auto flex-column">
+      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <nav class="navbar navbar-toggleable-md navbar-dark">
-          <button class="navbar-toggler navbar-toggler-right"
+          <button class="navbar-toggler navbar-toggler"
                   type="button" data-toggle="collapse"
                   data-target="#navbar"
                   aria-controls="navbarNavAltMarkup" aria-expanded="false"
@@ -33,8 +33,9 @@
             </div>
           </div>
         </nav>
-        <div id="page-content">
-        </div>
+        <main role="main" class="inner cover text-center" id="home-cover">
+          <h1 class="cover-heading">Cover</h1>
+        </main>
       </div>
     </div>
   </body>
