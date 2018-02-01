@@ -10,4 +10,4 @@ and run
 "python -m SimpleHTTPServer"
 then open a browser and go to "localhost:8000"
 
-##Progress Updates and Notes
+## Progress Updates and Notes
