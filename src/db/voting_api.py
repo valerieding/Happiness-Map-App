@@ -6,7 +6,7 @@ class VotingAPI:
 
     """Time limit in seconds between two votes by the same person."""
     VOTE_TIMEOUT = 600  # Ten minutes
-    VOTE_ID_MAX = 2 ** 2048
+    VOTE_ID_MAX = 2 ** 32
 
     # TODO: figure out how to filter out racing votes from the same user.
 
@@ -19,7 +19,7 @@ class VotingAPI:
         the last `VOTE_TIMEOUT` seconds, that vote is then changed to have this happiness level.
         """
         vote_id = randint(0, VotingAPI.VOTE_ID_MAX)
-        while len(self.database.execute("SELECT id FROM votes WHERE id = ? LIMIT 1", (vote_id))) != 0:
+        while len(self.database.execute("SELECT id FROM votes WHERE id = ? LIMIT 1", (vote_id,))) != 0:
             vote_id = randint(0, VotingAPI.VOTE_ID_MAX)
 
         self.database.execute("""INSERT INTO votes values  (?, ?, ?, ?, ?, ?, ?, ?)""",
@@ -43,6 +43,8 @@ class VotingAPI:
         """
         Returns the average happiness value registered inside `building_label` between the `start_time` and the`end_time`.
         """
-        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ?, ? AND logical_loc = ?",
+        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ? AND logical_loc = ?",
                                      (start_time, end_time, building_label))[0][0]
+
+
 
