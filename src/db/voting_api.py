@@ -22,11 +22,14 @@ class VotingAPI:
         vote_id = randint(0, VotingAPI.VOTE_ID_MAX)
         while len(self.database.execute("SELECT id FROM votes WHERE id = ? LIMIT 1", (vote_id,))) != 0:
             vote_id = randint(0, VotingAPI.VOTE_ID_MAX)
-
-        self.database.execute("""INSERT INTO votes values  (?, ?, ?, ?, ?, ?, ?, ?)""",
-                              (vote_id, uid, time.time(), happiness_level, location.latitude,
-                               location.longitude, location.logical_location, location.address))
-        self.database.commit()
+        try:
+            self.database.execute("""INSERT INTO votes values  (?, ?, ?, ?, ?, ?, ?, ?)""",
+                                  (vote_id, uid, time.time(), happiness_level, location.latitude,
+                                   location.longitude, location.logical_location, location.address))
+            self.database.commit()
+            return True
+        except:
+            return False
 
     def get_heat_map(self):
         """Fetches the data for the generation of the heat map on the client side."""
