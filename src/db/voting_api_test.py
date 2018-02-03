@@ -12,7 +12,6 @@ class VotingApiTest(unittest.TestCase):
 
     def setUp(self):
         self.file = NamedTemporaryFile()
-        print(self.file.name)
         self.db = DatabaseManager(self.file.name)
         self.votingApi = VotingAPI(self.db)
 

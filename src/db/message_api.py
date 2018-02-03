@@ -32,9 +32,9 @@ class MessageAPI:
         vote = self.database.execute("SELECT * FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
         vote_id = vote[0][0]
         happiness_level = vote[0][3]
-        self.database.execute("""INSERT INTO post values  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        self.database.execute("""INSERT INTO posts values  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                               (post_id, vote_id, None, uid, message, happiness_level, 0, 0, time.time(),
-                               location.latitude, location.longitude, location.logical_location, location.address))
+                               location.latitude, location.longitude, location.logical_location))
         self.database.commit()
 
     def upvote(self, uid, post_id):
