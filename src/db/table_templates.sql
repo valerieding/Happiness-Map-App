@@ -19,9 +19,10 @@ CREATE TABLE IF NOT EXISTS posts (
     parentID    integer,
     uid         integer     NOT NULL,
     message     varchar     NOT NULL,
+    score       INTEGER     NOT NULL,
     upvotes     integer     NOT NULL check(upvotes >= 0),
     downvotes   integer     NOT NULL check(downvotes >= 0),
-    timestamp   float     NOT NULL,
+    timestamp   float       NOT NULL,
     latitude    real        check(latitude between -90 and 90),
     longitude   real        check(longitude between -180 and 180),
     logical_loc varchar    --TODO: restrict this to simple formats?

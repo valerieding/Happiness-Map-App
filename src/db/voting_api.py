@@ -1,6 +1,7 @@
 from random import randint
 import time
 
+
 class VotingAPI:
     """Handles database requests relating to happiness votes. """
 
@@ -11,7 +12,7 @@ class VotingAPI:
     # TODO: figure out how to filter out racing votes from the same user.
 
     def __init__(self, database):
-        self.database = database;
+        self.database = database
 
     def add_vote(self, uid, location, happiness_level):
         """
@@ -32,12 +33,10 @@ class VotingAPI:
         # TODO: figure out return type
         pass
 
-
     def get_campus_average(self, start_time, end_time):
         """Returns the average happiness value registered on campus between the `start_time` and the `end_time`."""
-        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ?, ?",
+        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ?",
                                      (start_time, end_time))[0][0]
-
 
     def get_building_average(self, building_label, start_time, end_time):
         """

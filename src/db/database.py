@@ -26,10 +26,12 @@ class DatabaseManager:
 
 if __name__ == '__main__':
     db = DatabaseManager(DATABASE_FILE)
-    db.execute("INSERT INTO posts (id, voteID, uid, message, upvotes, downvotes, timestamp) values (1, 2, 3, 'hi', 0, 0, 124376)")
+  #  db.execute("INSERT INTO posts (id, voteID, uid, message, upvotes, downvotes, timestamp) values (1, 2, 3, 'hi', 0, 0, 124376)")
     db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
     db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
     db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
-    # db.execute("INSERT INTO votes (id, uid, timestamp, score) VALUES (123, 56, 784445, 3)")
-    print(db.execute("SELECT * FROM post_votes"))
+   # db.execute("INSERT INTO votes (id, voteID, uid, message, upvotes, downvotes, timestamp) values (1, 2, 3, 'hi', 0, 0, 124376)")
+    #db.execute("INSERT INTO votes (id, uid, timestamp, score) VALUES (123, 56, 784445, 3)")
+    print(db.execute("SELECT * FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (56,)))[0][3]
+    # print(db.execute("SELECT * FROM posts")[0])
     db.commit()
