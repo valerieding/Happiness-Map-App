@@ -13,8 +13,8 @@ class DatabaseManager:
         self.cursor = self.connection.cursor()
         self.cursor.executescript(open(DatabaseManager.TABLE_TEMPLATE_FILE, 'r').read())
 
-    def execute(self, command):
-        self.cursor.execute(command)
+    def execute(self, command, *args):
+        self.cursor.execute(command, *args)
         return self.cursor.fetchall()
 
     def commit(self):
