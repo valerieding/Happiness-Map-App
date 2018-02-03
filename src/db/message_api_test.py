@@ -61,8 +61,11 @@ class MessageAPITest(unittest.TestCase):
         self.assertTrue(self.messageApi.add_post(1, self.loc1, "This is USER 1 at location 1, SECOND post"))
         print(self.messageApi.get_recent_posts(self.loc1, 0, time.time()))
         post_id12 = (self.db.execute("SELECT * FROM posts WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (1,)))[0][0]
+        # Remove post
         self.assertTrue(self.messageApi.remove_post(post_id12))
         print(self.messageApi.get_recent_posts(self.loc1, 0, time.time()))
+        # Trying to remove post that is no longer in the database
+        self.assertFalse(self.messageApi.remove_post(post_id12))
 
 
 if __name__ == '__main__':

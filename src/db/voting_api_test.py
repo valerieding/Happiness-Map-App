@@ -35,7 +35,7 @@ class VotingApiTest(unittest.TestCase):
         # Check that average values did not get updated
         self.assertEqual(self.votingApi.get_building_average("Location1", 0, time.time()), 3.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.0)
-        # Adding three votes to Location 2: 2, 5, 5
+        # Adding three votes to Location 2: 2, 5, 5, check that building/campus averages get updated properly
         self.assertTrue(self.votingApi.add_vote(1, self.loc2, 2))
         self.assertEqual(self.votingApi.get_building_average("Location2", 0, time.time()), 2.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 2.75)

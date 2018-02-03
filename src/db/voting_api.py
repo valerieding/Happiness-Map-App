@@ -47,6 +47,3 @@ class VotingAPI:
         """
         return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ? AND logical_loc = ?",
                                      (start_time, end_time, building_label))[0][0]
-
-
-
