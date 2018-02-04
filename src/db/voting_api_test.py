@@ -45,6 +45,7 @@ class VotingApiTest(unittest.TestCase):
         self.assertTrue(self.votingApi.add_vote(1, self.loc2, 5))
         self.assertEqual(self.votingApi.get_building_average("Location2", 0, time.time()), 4.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.5)
+        self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.5)
 
 
 if __name__ == '__main__':
