@@ -1,17 +1,24 @@
 import sqlite3
+from threading import Lock
 
 DATABASE_FILE = "happiness_map.db"
 
 
 class DatabaseManager:
-    """"""
+    """
+    Provides a thin wrapper around a simple SQLite database to streamline database queries and manage locks for
+    multi-threaded use cases.
+    """
 
     TABLE_TEMPLATE_FILE = "table_templates.sql"
 
     def __init__(self, database_file):
         self.connection = sqlite3.connect(database_file)
         self.cursor = self.connection.cursor()
-        self.cursor.executescript(open(DatabaseManager.TABLE_TEMPLATE_FILE, 'r').read())
+        self.master_lock = Lock()
+        self.locks = {}
+        with open(DatabaseManager.TABLE_TEMPLATE_FILE, 'r') as table_template:
+            self.cursor.executescript(table_template.read())
 
     def execute(self, command, *args):
         self.cursor.execute(command, *args)
@@ -20,18 +27,20 @@ class DatabaseManager:
     def commit(self):
         self.connection.commit()
 
+    def acquire_lock(self, key):
+        """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""
+        self.master_lock.acquire()
+        try:
+            if key not in self.locks:
+                self.locks[key] = Lock()
+            self.locks[key].acquire()
+        finally:
+            self.master_lock.release()
+
+    def release_lock(self, key):
+        """Manages an array of locks. When this method is called, the lock corresponding to `key` is released."""
+        self.locks[key].release()
+
     def __del__(self):
         self.cursor.close()
         self.connection.close()
-
-if __name__ == '__main__':
-    db = DatabaseManager(DATABASE_FILE)
-  #  db.execute("INSERT INTO posts (id, voteID, uid, message, upvotes, downvotes, timestamp) values (1, 2, 3, 'hi', 0, 0, 124376)")
-    db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
-    db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
-    db.execute("INSERT INTO post_votes (postID, uid, isUpvote) values (1, 100, 1)")
-   # db.execute("INSERT INTO votes (id, voteID, uid, message, upvotes, downvotes, timestamp) values (1, 2, 3, 'hi', 0, 0, 124376)")
-    #db.execute("INSERT INTO votes (id, uid, timestamp, score) VALUES (123, 56, 784445, 3)")
-    print(db.execute("SELECT * FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (56,)))[0][3]
-    # print(db.execute("SELECT * FROM posts")[0])
-    db.commit()

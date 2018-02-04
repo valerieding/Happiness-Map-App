@@ -1,6 +1,5 @@
 import unittest
 import time
-from tempfile import NamedTemporaryFile
 from database import DatabaseManager
 from voting_api import VotingAPI
 from location import Location
@@ -11,12 +10,7 @@ class VotingApiTest(unittest.TestCase):
     loc2 = Location(2, 4, "Location2", "Address2")
 
     def setUp(self):
-        self.file = NamedTemporaryFile()
-        self.db = DatabaseManager(self.file.name)
-        self.votingApi = VotingAPI(self.db)
-
-    def tearDown(self):
-        self.file.close()
+        self.votingApi = VotingAPI(DatabaseManager(":memory:"))
 
     def test_add_vote(self):
         # Adding three votes to Location 1: 3, 1, 5

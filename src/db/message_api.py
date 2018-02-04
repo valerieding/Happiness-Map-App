@@ -1,5 +1,8 @@
-from random import randint
+import logging
 import time
+
+from random import randint
+from sqlite3 import IntegrityError
 
 
 class MessageAPI:
@@ -8,7 +11,8 @@ class MessageAPI:
     POST_ID_MAX = 2 ** 32
 
     def __init__(self, database):
-        self.database = database;
+        self.database = database
+        self.logger = logging.getLogger('MessageAPI')
 
     def get_recent_posts(self, location, start_time, end_time):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
@@ -21,24 +25,22 @@ class MessageAPI:
         # TODO: define what "around" means: right now, just returns all posts sorted by net upvote count
         return self.database.execute("SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC")
 
-    def get_posts(self, filter):
+    def get_posts(self, predicate):
         # TODO: figure out what this should do. Is filter a generic predicate on Posts?
         pass
 
     def add_post(self, uid, location, message):
         """Adds a `message` by `uid` posted at `location`. """
-        # Generate a random, unused post_ID
+        # Generate a random, unused post_ID. TODO: move this functionality to a database atomic integer.
         post_id = randint(0, MessageAPI.POST_ID_MAX)
         while len(self.database.execute("SELECT id FROM posts WHERE id = ? LIMIT 1", (post_id,))) != 0:
             post_id = randint(0, MessageAPI.POST_ID_MAX)
 
         # Try to find most recent vote_id that corresponds to the given uid
-        try:
-            vote = self.database.execute("SELECT * FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
-            vote_id = vote[0][0]
-            happiness_level = vote[0][3]
-        except IndexError:
+        vote = self.database.execute("SELECT id,score FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
+        if len(vote) == 0:
             return False
+        vote_id, happiness_level = vote[0]
 
         try:
             self.database.execute("""INSERT INTO posts values  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
@@ -46,12 +48,14 @@ class MessageAPI:
                                    location.latitude, location.longitude, location.logical_location))
             self.database.commit()
             return True
-        except:
+        except IntegrityError as e:
+            self.logger.exception(e)
             return False
 
     def upvote(self, uid, post_id):
         """Adds an upvote to `post_id` by `uid`. """
         # Check if this user has already upvoted this post
+        # TODO: this needs a lock
         if len(self.database.execute("SELECT uid FROM post_votes WHERE uid = ? AND postID = ? AND isUpvote = ?",
                                      (uid, post_id, True))) != 0:
             return False
@@ -61,12 +65,14 @@ class MessageAPI:
             self.database.execute("UPDATE posts SET upvotes = ? WHERE id = ?", (num_upvotes + 1, post_id))
             self.database.commit()
             return True
-        except:
+        except IntegrityError as e:
+            self.logger.exception(e)
             return False
 
     def downvote(self, uid, post_id):
         """Adds a downvote to `post_id` by `uid`. """
         # Check if this user has already downvoted this post
+        # TODO: this needs a lock
         if len(self.database.execute("SELECT uid FROM post_votes WHERE uid = ? AND postID = ? AND isUpvote = ?",
                                      (uid, post_id, False))) != 0:
             return False
@@ -76,17 +82,19 @@ class MessageAPI:
             self.database.execute("UPDATE posts SET downvotes = ? WHERE id = ?", (num_downvotes + 1, post_id))
             self.database.commit()
             return True
-        except:
+        except IntegrityError as e:
+            self.logger.exception(e)
             return False
 
     def remove_post(self, post_id):
         """Removes the post with `post_id`. Should only be accessible to admins. """
         # If post with the given post_id doesn't exist, return False
-        if (self.database.execute("SELECT COUNT(1) FROM posts WHERE id = ?", (post_id,)))[0][0] == 0:
+        if self.database.execute("SELECT COUNT(1) FROM posts WHERE id = ?", (post_id,))[0][0] == 0:
             return False
         try:
             self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
             self.database.commit()
             return True
-        except:
+        except IntegrityError as e:
+            self.logger.exception(e)
             return False
