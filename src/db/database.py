@@ -12,7 +12,7 @@ class DatabaseManager:
     TABLE_TEMPLATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "table_templates.sql")
 
     def __init__(self, database_file):
-        self.connection = sqlite3.connect(database_file)
+        self.connection = sqlite3.connect(database_file, check_same_thread=False)
         self.cursor = self.connection.cursor()
         self.master_lock = Lock()
         self.locks = {}
