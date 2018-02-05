@@ -29,7 +29,7 @@ class DatabaseManagerTest(unittest.TestCase):
 
         # Now create new instance and see that the element persisted
         db = DatabaseManager(filename)
-        self.assertListEqual(db.execute("SELECT * FROM votes"), [(1, 2, 3, 4, None, None, None, None)])
+        self.assertCountEqual(db.execute("SELECT * FROM votes"), [(1, 2, 3, 4, None, None, None, None)])
 
     def test_bad_update(self):
         db = DatabaseManager(":memory:")

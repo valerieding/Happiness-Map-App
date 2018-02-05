@@ -1,7 +1,6 @@
+import os
 import sqlite3
 from threading import Lock
-
-DATABASE_FILE = "happiness_map.db"
 
 
 class DatabaseManager:
@@ -10,7 +9,7 @@ class DatabaseManager:
     multi-threaded use cases.
     """
 
-    TABLE_TEMPLATE_FILE = "table_templates.sql"
+    TABLE_TEMPLATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "table_templates.sql")
 
     def __init__(self, database_file):
         self.connection = sqlite3.connect(database_file)

@@ -23,7 +23,8 @@ class MessageAPI:
     def get_trending_posts(self, location):
         """Retrieves the trending messages posted around `location`. """
         # TODO: define what "around" means: right now, just returns all posts sorted by net upvote count
-        return self.database.execute("SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC")
+        return self.database.execute(
+            "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC")
 
     def get_posts(self, predicate):
         # TODO: figure out what this should do. Is filter a generic predicate on Posts?
