@@ -29,4 +29,5 @@ def serve_nav():
 @app.route('/styles/<filename>', defaults={'root': 'styles'})
 @app.route('/scripts/<filename>', defaults={'root': 'scripts'})
 def serve_static_files(root, filename):
-    return app.send_static_file(os.path.join(root, filename))
+    return app.send_static_file(root + '/' + filename)
+    # return app.send_static_file(os.path.join(root, filename))

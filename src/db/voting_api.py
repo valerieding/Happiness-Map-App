@@ -20,7 +20,7 @@ class VotingAPI:
 
     def issue_user_id(self):
         """Issues a new user ID. """
-        pass
+        return randint(0, 2 ** 32)
 
     def add_vote(self, uid, location, happiness_level):
         """

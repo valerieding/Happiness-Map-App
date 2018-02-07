@@ -7,6 +7,5 @@ class Location:
         self.address = address
 
     @staticmethod
-    def from_request(request):
-        return Location(request.get('latitude'), request.get('longitude'), request.get('logical_location', None),
-                        request.get('address', None))
+    def from_request(form):
+        return Location(form.latitude.data, form.longitude.data, form.logical_location.data, form.address.data)
