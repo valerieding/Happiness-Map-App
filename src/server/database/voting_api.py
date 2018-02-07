@@ -18,10 +18,6 @@ class VotingAPI:
         self.database = database
         self.logger = logging.getLogger('VotingAPI')
 
-    def issue_user_id(self):
-        """Issues a new user ID. """
-        return randint(0, 2 ** 32)
-
     def add_vote(self, uid, location, happiness_level):
         """
         Adds a happiness vote of `happiness_level` at `location` from `uid` to the database. If `uid` has already voted

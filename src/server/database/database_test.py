@@ -1,12 +1,11 @@
 import unittest
-
-from database import DatabaseManager
 from sqlite3 import IntegrityError
 from tempfile import NamedTemporaryFile
 
+from server import DatabaseManager
+
 
 class DatabaseManagerTest(unittest.TestCase):
-
     EXPECTED_TABLE_NAMES = ['votes', 'posts', 'post_votes']
 
     def test_create(self):

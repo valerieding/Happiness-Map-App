@@ -1,6 +1,6 @@
 from wtforms import Form, validators, StringField, IntegerField
 
-from server.common_forms import LocationForm, PostIDForm, TimeIntervalForm
+from server.util.forms import LocationForm, PostIDForm, TimeIntervalForm
 
 
 class GetRecentPostsForm(Form, LocationForm, TimeIntervalForm):

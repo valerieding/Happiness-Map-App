@@ -1,6 +1,7 @@
-import os
 import sqlite3
 from threading import Lock
+
+from src import TABLE_TEMPLATE_FILE
 
 
 class DatabaseManager:
@@ -9,14 +10,12 @@ class DatabaseManager:
     multi-threaded use cases.
     """
 
-    TABLE_TEMPLATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "table_templates.sql")
-
     def __init__(self, database_file):
         self.connection = sqlite3.connect(database_file, check_same_thread=False)
         self.cursor = self.connection.cursor()
         self.master_lock = Lock()
         self.locks = {}
-        with open(DatabaseManager.TABLE_TEMPLATE_FILE, 'r') as table_template:
+        with open(TABLE_TEMPLATE_FILE, 'r') as table_template:
             self.cursor.executescript(table_template.read())
 
     def execute(self, command, *args):
