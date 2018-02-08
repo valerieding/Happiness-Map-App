@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>UChicago Campus Map</title>
+		<style type="text/css">
+			.campus {
+				background-image: url(img/campus.png);
+				background-repeat: no-repeat;
+			}
+
+			.mansuetto {
+				fill: yellow;
+			}
+			#region-name {
+				position: fixed;
+				top: 5%;
+				text-align: center;
+				width: 100%;
+				font-size: 30px;
+				font-family: sans-serif;
+				color: #61210F;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map" class="campus">
+			<!-- Raphaël JS Map Here -->
+		</div>
+		<div id="region-name"></div>
+		<script src="raphael-min.js"></script>
+		<script src="map.js"></script>
+	</body>
+</html>
