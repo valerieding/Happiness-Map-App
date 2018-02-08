@@ -20,7 +20,7 @@ var dic = {
 };
 
 function getInfo(n) {
-	return "<h3>" + n.name + "</h3><h4>" + n.val + "<h4>";
+	return "<h5>" + n.name + "</h5><h6>" + n.val + "</h6>";
 };
 
 var mansueto = rsr.ellipse(411.775, 284.582, 30.927, 16.541);
