@@ -1,7 +1,7 @@
 import sqlite3
 from threading import Lock
 
-from src import TABLE_TEMPLATE_FILE
+from constants import TABLE_TEMPLATE_FILE
 
 
 class DatabaseManager:

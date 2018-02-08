@@ -8,18 +8,18 @@ from server.util.location import Location
 from server.util.user import get_user_id, set_user_id
 from server.voting.forms import *
 
-voting_requests = Blueprint('queries', __name__)
+voting_requests = Blueprint('voting_requests', __name__)
 
 votingAPI = VotingAPI(DATABASE_MANAGER)
-logger = logging.getLogger('queries')
+logger = logging.getLogger('voting_requests')
 
 
-@voting_requests.route('/query/issue_user_id', methods=['POST'])
+@voting_requests.route('/request/issue_user_id', methods=['POST'])
 def issue_user_id():
     return set_user_id()
 
 
-@voting_requests.route('/query/add_vote', methods=['POST'])
+@voting_requests.route('/request/add_vote', methods=['POST'])
 def add_vote():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -31,7 +31,7 @@ def add_vote():
     return 'Invalid Request!\n'
 
 
-@voting_requests.route('/query/get_campus_average')
+@voting_requests.route('/request/get_campus_average')
 def get_campus_average():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -43,7 +43,7 @@ def get_campus_average():
     return 'Invalid Request!\n'
 
 
-@voting_requests.route('/query/get_building_average')
+@voting_requests.route('/request/get_building_average')
 def get_building_average():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))

@@ -1,7 +1,8 @@
+
 from argparse import ArgumentParser
 
 from server.run import run_server
-from src import LOG_FILE
+from constants import LOG_FILE
 
 if __name__ == '__main__':
     parser = ArgumentParser()

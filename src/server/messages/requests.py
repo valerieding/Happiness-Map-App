@@ -11,10 +11,10 @@ from server import DATABASE_MANAGER
 message_requests = Blueprint('message_requests', __name__)
 
 messageAPI = MessageAPI(DATABASE_MANAGER)
-logger = logging.getLogger('messages_request')
+logger = logging.getLogger('messages_requests')
 
 
-@message_requests.route('/query/get_recent_posts')
+@message_requests.route('/request/get_recent_posts')
 def get_recent_posts():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -26,7 +26,7 @@ def get_recent_posts():
     return 'Invalid Request!\n'
 
 
-@message_requests.route('/query/get_trending_posts')
+@message_requests.route('/request/get_trending_posts')
 def get_trending_posts():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -38,7 +38,7 @@ def get_trending_posts():
     return 'Invalid Request!\n'
 
 
-@message_requests.route('/query/get_posts')
+@message_requests.route('/request/get_posts')
 def get_posts():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -50,7 +50,7 @@ def get_posts():
     return 'Invalid Request!\n'
 
 
-@message_requests.route('/query/add_post')
+@message_requests.route('/request/add_post')
 def add_post():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -62,7 +62,7 @@ def add_post():
     return 'Invalid Request!\n'
 
 
-@message_requests.route('/query/upvote')
+@message_requests.route('/request/upvote')
 def upvote():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -74,7 +74,7 @@ def upvote():
     return 'Invalid Request!\n'
 
 
-@message_requests.route('/query/downvote')
+@message_requests.route('/request/downvote')
 def downvote():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))
@@ -86,7 +86,7 @@ def downvote():
     return 'Invalid Request!\n'
 
 
-# @app.route('/query/remove_post') TODO: activate this with some sort of admin verification
+# @app.route('/request/remove_post') TODO: activate this with some sort of admin verification
 def remove_post():
     user_id = get_user_id()
     logger.info("uid: {}, form = {}".format(user_id, request.form))

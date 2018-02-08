@@ -1,8 +1,6 @@
-import os
-
 from flask import Blueprint
 
-from src import WEBSITE_ROOT_FOLDER
+from constants import WEBSITE_ROOT_FOLDER
 
 static_server = Blueprint('static', __name__, static_folder=WEBSITE_ROOT_FOLDER)
 

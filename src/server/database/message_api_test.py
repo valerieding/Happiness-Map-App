@@ -1,10 +1,10 @@
-import unittest
 import time
+import unittest
 
-from database import DatabaseManager
-from voting_api import VotingAPI
-from message_api import MessageAPI
-from location import Location
+from server import DatabaseManager
+from server.database.message_api import MessageAPI
+from server.database.voting_api import VotingAPI
+from server.util.location import Location
 
 
 class MessageAPITest(unittest.TestCase):
@@ -96,4 +96,4 @@ class MessageAPITest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-        unittest.main()
+    unittest.main()
