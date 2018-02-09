@@ -28,12 +28,6 @@ def get_trending_posts():
         messageAPI.get_trending_posts(Location.from_request(form)))
 
 
-@message_requests.route('/request/get_posts', methods=['POST'])
-def get_posts():
-    form = GetPostsForm(request.form)
-    return validate_request(form, logger) or jsonify(messageAPI.get_posts(None))  # TODO: implement this
-
-
 @message_requests.route('/request/add_post', methods=['POST'])
 def add_post():
     form = AddPostForm(request.form)
@@ -55,8 +49,10 @@ def downvote():
         messageAPI.downvote(get_user_id(), form.post_id.data))
 
 
-# @message_requests.route('/request/remove_post', methods=['POST'])
+# TODO: activate this and have some sort of admin verification
+'''
+@message_requests.route('/request/remove_post', methods=['POST'])
 def remove_post():
-    # TODO: activate this and have some sort of admin verification
     form = RemovePostForm(request.form)
     return validate_request(form, logger) or jsonify(messageAPI.remove_post(form.post_id.data))
+'''

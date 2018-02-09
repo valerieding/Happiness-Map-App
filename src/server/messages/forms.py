@@ -11,11 +11,6 @@ class GetTrendingPostsForm(Form, LocationForm):
     """Validates the get_trending_posts request form. """
 
 
-class GetPostsForm(Form):
-    """Validates the get_posts request form. """
-    # TODO: implement
-
-
 class AddPostForm(Form, LocationForm):
     """Validates the add_posts request form. """
     reply_to = IntegerField('reply_to')

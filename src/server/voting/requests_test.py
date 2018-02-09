@@ -10,9 +10,10 @@ app.testing = True
 
 # Replace the database with an in-memory one to eliminate the risk of corruption during testing.
 mock.patch('server.voting.requests.votingAPI.database', new=DatabaseManager(':memory:')).start()
+mock.patch('server.voting.requests.logger').start()
 
-SUCCESS_RESPONSE = b'"Success"\n'
-FAILURE_RESPONSE = b'"Invalid request"\n'
+SUCCESS_RESPONSE = (json.dumps('Success') + '\n').encode('ascii')
+FAILURE_RESPONSE = (json.dumps('Invalid request') + '\n').encode('ascii')
 
 
 class VotingRequestsTest(TestCase):

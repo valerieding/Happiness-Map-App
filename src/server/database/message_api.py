@@ -36,10 +36,6 @@ class MessageAPI:
         return Message.from_tuple_array(self.database.execute(
             "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
 
-    def get_posts(self, predicate):
-        # TODO: figure out what this should do. Is filter a generic predicate on Posts?
-        pass
-
     def add_post(self, uid, location, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
 
