@@ -4,8 +4,7 @@ from flask import Blueprint, request, jsonify
 
 from server import DATABASE_MANAGER
 from server.database.voting_api import VotingAPI
-from server.util.location import Location
-from server.util.serve_request import validate_request
+from server.util import Location, validate_request
 from server.util.user import get_user_id, set_user_id
 from server.voting.forms import *
 
@@ -23,10 +22,11 @@ def issue_user_id():
 @voting_requests.route('/request/add_vote', methods=['POST'])
 def add_vote():
     form = AddVoteForm(request.form)
-    error_response = validate_request(form, logger)
+    error_response = validate_request(form, logger, requires_valid_user_id=True)
     if error_response is None:
-        votingAPI.add_vote(get_user_id(), Location.from_request(form), form.happiness_level.data)
-        return jsonify('Success')
+        if votingAPI.add_vote(get_user_id(), Location.from_request(form), form.happiness_level.data):
+            return jsonify('Success')
+        return jsonify('Invalid request')
     return error_response
 
 

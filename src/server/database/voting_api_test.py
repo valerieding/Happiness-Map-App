@@ -3,7 +3,7 @@ import unittest
 
 from server import DatabaseManager
 from server.database.voting_api import VotingAPI
-from server.util.location import Location
+from server.util import Location
 
 
 class VotingApiTest(unittest.TestCase):

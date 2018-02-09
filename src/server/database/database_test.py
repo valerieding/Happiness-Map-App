@@ -73,6 +73,8 @@ class DatabaseManagerTest(unittest.TestCase):
         has_miscounted = False
         for _ in range(100):
             has_miscounted |= self.count_under_lock(10000, "key1", "key2") != 20000
+            if has_miscounted:
+                break
         self.assertTrue(has_miscounted)
 
 

@@ -4,7 +4,7 @@ import unittest
 from server import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
-from server.util.location import Location
+from server.util import Location
 
 
 class MessageAPITest(unittest.TestCase):

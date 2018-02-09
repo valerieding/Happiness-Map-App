@@ -4,6 +4,8 @@ import time
 from random import randint
 from sqlite3 import IntegrityError
 
+from server.util import Message
+
 
 class MessageAPI:
     """Handles database requests relating to message posts. """
@@ -25,14 +27,14 @@ class MessageAPI:
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
         # TODO: define what "around" means: right now, just returns all posts, sorted by timestamp, ignores location
         # TODO: this needs to be a class in order to jsonify it nicely
-        return self.database.execute("SELECT * FROM posts WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC",
-                                     (start_time, end_time))
+        return Message.from_tuple_array(self.database.execute(
+            "SELECT * FROM posts WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC", (start_time, end_time)))
 
     def get_trending_posts(self, location):
         """Retrieves the trending messages posted around `location`. """
         # TODO: define what "around" means: right now, just returns all posts sorted by net upvote count
-        return self.database.execute(
-            "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC")
+        return Message.from_tuple_array(self.database.execute(
+            "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
 
     def get_posts(self, predicate):
         # TODO: figure out what this should do. Is filter a generic predicate on Posts?
