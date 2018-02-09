@@ -1,4 +1,3 @@
-
 from argparse import ArgumentParser
 
 from server.run import run_server

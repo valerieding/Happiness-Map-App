@@ -1,10 +1,11 @@
 import logging
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 
 from server import DATABASE_MANAGER
 from server.database.voting_api import VotingAPI
 from server.util.location import Location
+from server.util.serve_request import validate_request
 from server.util.user import get_user_id, set_user_id
 from server.voting.forms import *
 
@@ -21,35 +22,23 @@ def issue_user_id():
 
 @voting_requests.route('/request/add_vote', methods=['POST'])
 def add_vote():
-    user_id = get_user_id()
-    logger.info("uid: {}, form = {}".format(user_id, request.form))
-
     form = AddVoteForm(request.form)
-    if form.validate() and votingAPI.add_vote(user_id, Location.from_request(form), form.happiness_level.data):
-        return 'Success\n'
-    logger.warning("uid: {}, form = {}: FAILURE (cause = {})".format(user_id, request.form, form.errors))
-    return 'Invalid Request!\n'
+    error_response = validate_request(form, logger)
+    if error_response is None:
+        votingAPI.add_vote(get_user_id(), Location.from_request(form), form.happiness_level.data)
+        return jsonify('Success')
+    return error_response
 
 
-@voting_requests.route('/request/get_campus_average')
+@voting_requests.route('/request/get_campus_average', methods=['POST'])
 def get_campus_average():
-    user_id = get_user_id()
-    logger.info("uid: {}, form = {}".format(user_id, request.form))
-
     form = GetCampusAverageForm(request.form)
-    if form.validate():
-        return str(votingAPI.get_campus_average(form.start_time.data, form.end_time.data))
-    logger.warning("uid: {}, form = {}: FAILURE (cause = {})".format(user_id, request.form, form.errors))
-    return 'Invalid Request!\n'
+    return validate_request(form, logger) or jsonify(
+        votingAPI.get_campus_average(form.start_time.data, form.end_time.data))
 
 
-@voting_requests.route('/request/get_building_average')
+@voting_requests.route('/request/get_building_average', methods=['POST'])
 def get_building_average():
-    user_id = get_user_id()
-    logger.info("uid: {}, form = {}".format(user_id, request.form))
-
     form = GetBuildingAverageForm(request.form)
-    if form.validate():
-        return str(votingAPI.get_building_average(form.logical_location.data, form.start_time.data, form.end_time.data))
-    logger.warning("uid: {}, form = {}: FAILURE (cause = {})".format(user_id, request.form, form.errors))
-    return 'Invalid Request!\n'
+    return validate_request(form, logger) or jsonify(
+        votingAPI.get_building_average(form.logical_location.data, form.start_time.data, form.end_time.data))

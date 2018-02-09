@@ -8,7 +8,7 @@ from server.voting.requests import voting_requests
 
 
 def run_server(host, port, log_file, debug):
-    logging.basicConfig(format='[%(asctime)s] %(filename)10s:%(funcName)s:%(lineno)s: %(message)s', filename=log_file,
+    logging.basicConfig(format='[%(asctime)s] %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', filename=log_file,
                         level=logging.DEBUG if debug else logging.INFO)
 
     app = flask.Flask(__name__)
