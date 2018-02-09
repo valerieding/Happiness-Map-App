@@ -73,6 +73,10 @@ class HeatMapPoint:
     def toJSON(self):
         return json.dumps(self.__dict__)
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+
 
 def validate_request(form, logger, requires_valid_user_id = False):
     """Validates a `form`, logs events in `logger` and returns an error message or None if the form is valid. """

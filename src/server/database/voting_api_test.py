@@ -3,7 +3,7 @@ import unittest
 
 from server import DatabaseManager
 from server.database.voting_api import VotingAPI
-from server.util import Location
+from server.util import Location, HeatMapPoint
 from unittest import mock
 
 
@@ -16,26 +16,36 @@ class VotingAPITest(unittest.TestCase):
         self.votingApi.logger = mock.Mock()
 
     def test_add_vote(self):
+        # Heat map is empty
+        self.assertEqual(self.votingApi.get_heat_map(0, time.time()), [])
         # Adding three votes to Location 1: 3, 1, 5
         self.assertTrue(self.votingApi.add_vote(1, self.loc1, 3))
         self.assertEqual(self.votingApi.get_building_average("Location1", 0, time.time()), 3.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.0)
+        self.assertEqual(self.votingApi.get_heat_map(0, time.time()), [HeatMapPoint("Location1", 3.0)])
+        # Second vote
         self.assertTrue(self.votingApi.add_vote(1, self.loc1, 1))
         self.assertEqual(self.votingApi.get_building_average("Location1", 0, time.time()), 2.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 2.0)
+        self.assertEqual(self.votingApi.get_heat_map(0, time.time()), [HeatMapPoint("Location1", 2.0)])
+        # Third vote
         self.assertTrue(self.votingApi.add_vote(1, self.loc1, 5))
         self.assertEqual(self.votingApi.get_building_average("Location1", 0, time.time()), 3.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.0)
+        self.assertEqual(self.votingApi.get_heat_map(0, time.time()), [HeatMapPoint("Location1", 3.0)])
         # Try adding one vote with negative happiness value, one vote with too high happiness value
         self.assertFalse(self.votingApi.add_vote(1, self.loc1, -2))
         self.assertFalse(self.votingApi.add_vote(1, self.loc1, 9))
         # Check that average values did not get updated
         self.assertEqual(self.votingApi.get_building_average("Location1", 0, time.time()), 3.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.0)
+        self.assertEqual(self.votingApi.get_heat_map(0, time.time()), [HeatMapPoint("Location1", 4.0)])
         # Adding three votes to Location 2: 2, 5, 5, check that building/campus averages get updated properly
         self.assertTrue(self.votingApi.add_vote(1, self.loc2, 2))
         self.assertEqual(self.votingApi.get_building_average("Location2", 0, time.time()), 2.0)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 2.75)
+        # self.assertEqual(self.votingApi.get_heat_map(0, time.time()),
+        #                  [HeatMapPoint("Location1", 4.0), HeatMapPoint("Location2", 2.0)])
         self.assertTrue(self.votingApi.add_vote(1, self.loc2, 5))
         self.assertEqual(self.votingApi.get_building_average("Location2", 0, time.time()), 3.5)
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.2)
