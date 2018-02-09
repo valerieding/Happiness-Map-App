@@ -8,10 +8,8 @@ from server.messages.requests import messageAPI
 app = get_flask_app()
 app.testing = True
 
-# Replace the database with an in-memory one to eliminate the risk of corruption during testing.
-mock.patch('server.messages.requests.messageAPI.database', new=DatabaseManager(':memory:')).start()
-mock.patch('server.messages.requests.logger').start()
-
+# Replace the database with an in-memory one to eliminate the risk of database corruption during testing.
+messageAPI.database = DatabaseManager(':memory:')
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = (json.dumps(DUMMY_RESPONSE, indent=2) + '\n').encode('ascii')
@@ -83,7 +81,7 @@ class MessageRequestsTest(TestCase):
         response = self.client.post('/request/upvote')
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
-        
+
     @mock.patch.object(messageAPI, 'downvote', return_value=DUMMY_RESPONSE)
     def test_downvote_valid(self, mocked):
         self.client.post('/request/issue_user_id')

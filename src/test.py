@@ -4,6 +4,7 @@ import os
 from unittest import TextTestRunner, TestLoader
 
 import coverage
+import logging
 
 ROOT_FOLDER = os.path.dirname(__file__)
 SERVER_FOLDER = os.path.join(ROOT_FOLDER, 'server')
@@ -12,6 +13,9 @@ COVERAGE_REPORT = os.path.join(ROOT_FOLDER, 'coverage_report')
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--coverage', action='store_true')
+
+    # Disable logging to reduce spam during testing.
+    logging.disable(logging.CRITICAL)
 
     if parser.parse_args().coverage:
         cov = coverage.Coverage(branch=True, source=[SERVER_FOLDER], concurrency=['multiprocessing'],

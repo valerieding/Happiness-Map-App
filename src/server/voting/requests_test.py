@@ -8,9 +8,8 @@ from server.voting.requests import votingAPI
 app = get_flask_app()
 app.testing = True
 
-# Replace the database with an in-memory one to eliminate the risk of corruption during testing.
-mock.patch('server.voting.requests.votingAPI.database', new=DatabaseManager(':memory:')).start()
-mock.patch('server.voting.requests.logger').start()
+# Replace the database with an in-memory one to eliminate the risk of corruption during testing. Also silence logging
+votingAPI.database = DatabaseManager(':memory:')
 
 SUCCESS_RESPONSE = (json.dumps('Success') + '\n').encode('ascii')
 FAILURE_RESPONSE = (json.dumps('Invalid request') + '\n').encode('ascii')
@@ -89,6 +88,7 @@ class VotingRequestsTest(TestCase):
         response = self.client.post('/request/get_heatmap', data={'end_time': -1})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
+
 
 if __name__ == '__main__':
     main()
