@@ -1,13 +1,9 @@
 # Happiness-Map-App
 ## Instructions to run on localhost
-if you have python3, navigate to inside src/ directory on your computer
-and run
-"python3 -m http.server"
-then open a browser and go to "localhost:8000"
 
-alternatively if you have an older version of python, navigate to inside src/ directory on your computer
-and run
-"python -m SimpleHTTPServer"
-then open a browser and go to "localhost:8000"
+1. Install python3, if you don't already have it installed
+2. Install flask, wtforms, and coverage (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage). 
+3. Navigate to the src directory, and run: python3 main.py --debug
+4. Open a browser and navigate to "localhost:8000"
 
 ## Progress Updates and Notes
