@@ -6,7 +6,7 @@ from server.database.voting_api import VotingAPI
 from server.util import Location
 
 
-class VotingApiTest(unittest.TestCase):
+class VotingAPITest(unittest.TestCase):
     loc1 = Location(1, 2, "Location1", "Address1")
     loc2 = Location(2, 4, "Location2", "Address2")
 

@@ -56,7 +56,7 @@ class VotingRequestsTest(TestCase):
 
     @mock.patch.object(votingAPI, 'get_campus_average', return_value=3.0)
     def test_get_campus_average_valid(self, mocked):
-        response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'stop_time': 100})
+        response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'end_time': 100})
         self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
         self.assertTrue(mocked.called)
 
@@ -74,10 +74,21 @@ class VotingRequestsTest(TestCase):
 
     @mock.patch.object(votingAPI, 'get_building_average')
     def test_get_building_average_invalid(self, mocked):
-        response = self.client.post('/request/get_building_average', data={'stop_time': '45'})
+        response = self.client.post('/request/get_building_average', data={'end_time': '45'})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
 
+    @mock.patch.object(votingAPI, 'get_heat_map', return_value=[])
+    def test_get_heat_map_valid(self, mocked):
+        response = self.client.post('/request/get_heatmap', data={'start_time': 45})
+        self.assertEqual(json.loads(response.data.decode('ascii')), [])
+        self.assertTrue(mocked.called)
+
+    @mock.patch.object(votingAPI, 'get_heat_map', return_value=[])
+    def test_get_heat_map_invalid(self, mocked):
+        response = self.client.post('/request/get_heatmap', data={'end_time': -1})
+        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertFalse(mocked.called)
 
 if __name__ == '__main__':
     main()

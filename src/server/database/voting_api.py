@@ -4,6 +4,8 @@ import time
 from random import randint
 from sqlite3 import IntegrityError
 
+from server.util import HeatMapPoint
+
 
 class VotingAPI:
     """Handles database requests relating to happiness votes. """
@@ -36,10 +38,16 @@ class VotingAPI:
             self.logger.exception(e)
             return False
 
-    def get_heat_map(self):
+    def get_heat_map(self, start_time, end_time):
         """Fetches the data for the generation of the heat map on the client side."""
-        # TODO: figure out return type
-        pass
+        try:
+            return HeatMapPoint.from_tuple_array(self.database.execute(
+                """SELECT logical_loc, avg(score) FROM votes
+                   WHERE logical_loc NOT NULL AND timestamp BETWEEN ? AND ?
+                   GROUP BY logical_loc""", (start_time, end_time)))
+        except IntegrityError as e:
+            self.logger.exception(e)
+            return []
 
     def get_campus_average(self, start_time, end_time):
         """Returns the average happiness value registered on campus between the `start_time` and the `end_time`."""

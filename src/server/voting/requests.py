@@ -42,3 +42,9 @@ def get_building_average():
     form = GetBuildingAverageForm(request.form)
     return validate_request(form, logger) or jsonify(
         votingAPI.get_building_average(form.logical_location.data, form.start_time.data, form.end_time.data))
+
+
+@voting_requests.route('/request/get_heatmap', methods=['POST'])
+def get_heat_map():
+    form = GetHeatMapForm(request.form)
+    return validate_request(form, logger) or jsonify(votingAPI.get_heat_map(form.start_time.data, form.end_time.data))

@@ -7,9 +7,8 @@ class AddVoteForm(Form, LocationForm, HappinessForm):
     """Validates the add_vote request form. """
 
 
-class GetHeatMapForm(Form):
+class GetHeatMapForm(Form, TimeIntervalForm):
     """Validates the get_heatmap request form. """
-    # TODO: implement this
 
 
 class GetCampusAverageForm(Form, TimeIntervalForm):
