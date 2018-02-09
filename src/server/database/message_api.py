@@ -91,15 +91,8 @@ class MessageAPI:
             self.logger.exception(e)
             return False
 
-    def remove_post(self, post_id):
-        """Removes the post with `post_id`. Should only be accessible to admins. """
-        # If post with the given post_id doesn't exist, return False
-        if self.database.execute("SELECT COUNT(1) FROM posts WHERE id = ?", (post_id,))[0][0] == 0:
-            return False
-        try:
-            self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
-            self.database.commit()
-            return True
-        except IntegrityError as e:
-            self.logger.exception(e)
-            return False
+    # def remove_post(self, post_id):
+    #     """Removes the post with `post_id`. Should only be accessible to admins. """
+    #         self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+    #         self.database.commit()
+    #

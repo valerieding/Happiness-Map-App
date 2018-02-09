@@ -4,6 +4,7 @@ import unittest
 from server import DatabaseManager
 from server.database.voting_api import VotingAPI
 from server.util import Location
+from unittest import mock
 
 
 class VotingAPITest(unittest.TestCase):
@@ -12,6 +13,7 @@ class VotingAPITest(unittest.TestCase):
 
     def setUp(self):
         self.votingApi = VotingAPI(DatabaseManager(":memory:"))
+        self.votingApi.logger = mock.Mock()
 
     def test_add_vote(self):
         # Adding three votes to Location 1: 3, 1, 5

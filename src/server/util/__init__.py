@@ -24,11 +24,14 @@ class Location:
     def toJSON(self):
         return json.dumps(self.__dict__)
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
 class Message:
 
-    def __init__(self, post_id, parent_id, user_id, message, happiness_level, timestamp, location):
+    def __init__(self, post_id, vote_id, parent_id, user_id, message, happiness_level, timestamp, location):
         self.post_id = post_id
+        self.vote_id = vote_id
         self.parent_id = parent_id
         self.user_id = user_id
         self.message = message
@@ -36,9 +39,11 @@ class Message:
         self.timestamp = timestamp
         self.location = location
 
+
     @staticmethod
     def from_tuple(args):
-        return Message(args[0], args[2], args[3], args[4], args[5], args[8], Location.from_tuple(args[9:]))
+        return Message(post_id=args[0], vote_id=args[1], parent_id=args[2], user_id=args[3], message=args[4],
+                       happiness_level=args[5], timestamp=args[8], location=Location.from_tuple(args[9:]))
 
     @staticmethod
     def from_tuple_array(array):
@@ -46,6 +51,9 @@ class Message:
 
     def toJSON(self):
         return json.dumps(self.__dict__)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
 
 class HeatMapPoint:
