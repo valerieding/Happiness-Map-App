@@ -38,7 +38,7 @@ def get_posts():
 def add_post():
     form = AddPostForm(request.form)
     return validate_request(form, logger, requires_valid_user_id=True) or jsonify(
-        messageAPI.add_post(get_user_id(), Location.from_request(form), form.reply_to.data))
+        messageAPI.add_post(get_user_id(), Location.from_request(form), form.message.data, form.reply_to.data))
 
 
 @message_requests.route('/request/upvote', methods=['POST'])
@@ -55,7 +55,8 @@ def downvote():
         messageAPI.downvote(get_user_id(), form.post_id.data))
 
 
-# @app.route('/request/remove_post', methods=['POST']) TODO: activate this with some sort of admin verification
+# @message_requests.route('/request/remove_post', methods=['POST'])
 def remove_post():
+    # TODO: activate this and have some sort of admin verification
     form = RemovePostForm(request.form)
     return validate_request(form, logger) or jsonify(messageAPI.remove_post(form.post_id.data))

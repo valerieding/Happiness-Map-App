@@ -7,12 +7,15 @@ from server.static import static_server
 from server.voting.requests import voting_requests
 
 
-def run_server(host, port, log_file, debug):
-    logging.basicConfig(format='[%(asctime)s] %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', filename=log_file,
-                        level=logging.DEBUG if debug else logging.INFO)
-
+def get_flask_app():
     app = flask.Flask(__name__)
     app.register_blueprint(static_server)
     app.register_blueprint(message_requests)
     app.register_blueprint(voting_requests)
-    app.run(host=host, port=port, debug=debug)
+    return app
+
+
+def run_server(host, port, log_file, debug):
+    logging.basicConfig(format='[%(asctime)s] %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', filename=log_file,
+                        level=logging.DEBUG if debug else logging.INFO)
+    get_flask_app().run(host=host, port=port, debug=debug)

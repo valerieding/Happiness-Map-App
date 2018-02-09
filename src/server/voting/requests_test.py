@@ -1,13 +1,11 @@
 import json
 from unittest import mock, TestCase, main
 
-from flask import Flask
+from server import DatabaseManager
+from server.run import get_flask_app
+from server.voting.requests import votingAPI
 
-from server import DatabaseManager, util
-from server.voting.requests import voting_requests, votingAPI
-
-app = Flask(__name__)
-app.register_blueprint(voting_requests)
+app = get_flask_app()
 app.testing = True
 
 # Replace the database with an in-memory one to eliminate the risk of corruption during testing.
@@ -18,7 +16,6 @@ FAILURE_RESPONSE = b'"Invalid request"\n'
 
 
 class VotingRequestsTest(TestCase):
-
     def setUp(self):
         self.client = app.test_client()
 
@@ -59,7 +56,7 @@ class VotingRequestsTest(TestCase):
     @mock.patch.object(votingAPI, 'get_campus_average', return_value=3.0)
     def test_get_campus_average_valid(self, mocked):
         response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'stop_time': 100})
-        self.assertEqual(json.loads(response.data), 3.0)
+        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
         self.assertTrue(mocked.called)
 
     @mock.patch.object(votingAPI, 'get_campus_average')
@@ -71,7 +68,7 @@ class VotingRequestsTest(TestCase):
     @mock.patch.object(votingAPI, 'get_building_average', return_value=3.0)
     def test_get_building_average_valid(self, mocked):
         response = self.client.post('/request/get_building_average', data={'start_time': 45, 'logical_location': 'ABC'})
-        self.assertEqual(json.loads(response.data), 3.0)
+        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
         self.assertTrue(mocked.called)
 
     @mock.patch.object(votingAPI, 'get_building_average')

@@ -6,6 +6,7 @@ from unittest import TextTestRunner, TestLoader
 import coverage
 
 ROOT_FOLDER = os.path.dirname(__file__)
+SERVER_FOLDER = os.path.join(ROOT_FOLDER, 'server')
 COVERAGE_REPORT = os.path.join(ROOT_FOLDER, 'coverage_report')
 
 if __name__ == '__main__':
@@ -13,8 +14,8 @@ if __name__ == '__main__':
     parser.add_argument('--coverage', action='store_true')
 
     if parser.parse_args().coverage:
-        cov = coverage.Coverage(branch=True, source=[os.path.join(ROOT_FOLDER, 'server')],
-                                omit='*test.py', concurrency=['multiprocessing'])
+        cov = coverage.Coverage(branch=True, source=[SERVER_FOLDER], concurrency=['multiprocessing'],
+                                omit=['*test.py', '*server/run.py'])
         cov.start()
 
         # Send test results to a StringIO to silence it as much as possible. It is not relevant while doing coverage.

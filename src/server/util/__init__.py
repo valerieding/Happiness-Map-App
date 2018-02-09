@@ -1,3 +1,5 @@
+import json
+
 from flask import request, jsonify
 
 from server.util.user import get_user_id
@@ -19,6 +21,9 @@ class Location:
     def from_tuple(args):
         return Location(*args)
 
+    def toJSON(self):
+        return json.dumps(self.__dict__)
+
 
 class Message:
 
@@ -38,6 +43,9 @@ class Message:
     @staticmethod
     def from_tuple_array(array):
         return [Message.from_tuple(element) for element in array]
+
+    def toJSON(self):
+        return json.dumps(self.__dict__)
 
 
 def validate_request(form, logger, requires_valid_user_id = False):
