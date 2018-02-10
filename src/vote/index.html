@@ -6,6 +6,7 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../styles/bootstrap4.min.css">
     <link href="../styles/main.css" rel="stylesheet">
+    <link href="vote.css" rel="stylesheet">
     <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="../lib/popper.min.js"></script>
     <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
@@ -23,7 +24,47 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Vote</h1>
         </main>
-      </div>
+        <form role="form" method="get" id="vote">
+          <div class="ui">
+            <h5> On a scale of 1 (least happy) to 5 (most happy), how happy are you? </h5>
+              <div class="radio-label-vertical-wrapper">
+                  <label class="radio-label-vertical">
+                    <input type="radio" name="happiness_level" value="1">1
+                  </label>
+                  <label class="radio-label-vertical">
+                    <input type="radio" name="happiness_level" value="2">2
+                  </label>
+                 <label class="radio-label-vertical">
+                    <input type="radio" name="happiness_level" value="3">3
+                  </label>
+                  <label class="radio-label-vertical">
+                    <input type="radio" name="happiness_level" value="4">4
+                  </label>
+                  <label class="radio-label-vertical">
+                    <input type="radio" name="happiness_level" value="5">5
+                  </label>
+                  <br><br><br><br>
+          <h5> Where are you?</h5>
+            <select form=vote>
+              <option name="location" value="Location 1">Location 1</option>
+              <option name="location" value="Location 2">Location 2</option>
+              <option name="location" value="Location 3">Location 3</option>
+              <option name="location" value="Location 4">Location 4</option>
+              <option name="location" value="Location 5">Location 5</option>
+            </select>
+        </div>
+        <div>
+          <input type="submit" value="Submit" class="button" onclick="myFunction()">
+        </div>
+        <div>
+          <p class="ui" id="echo"></p>
+        </div>
+        <script>
+          function echoInput() {
+            document.getElementById("echo").innerHTML = "ok"; 
+          }
+        </script>
+    </form>
     </div>
   </body>
 </html>
