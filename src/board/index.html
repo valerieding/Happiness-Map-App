@@ -17,23 +17,37 @@
         $("#myNav").load("../nav.html");
       });
     </script>
-    <div class="homepage">
-      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <div id="myNav"></div>
-        <main role="main" class="inner cover text-center" id="home-cover">
-          <h1 class="cover-heading">Message Board</h1>
-        </main>
-      </div>
-    </div>
-  </body>
-</html>
-
-
-<!-- <script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function(){
         var messageArray = ["Hi", "Hello", "whats up!!", "wow", "bye"];
         $.each(messageArray, function(index, value){
             $("#result").append(value + '<br>');
         });
     });
-</script> -->
+    </script>
+    <div class="homepage">
+      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <div id="myNav"></div>
+        <main role="main" class="inner cover text-center" id="home-cover">
+          <h1 class="cover-heading">Message Board</h1>
+        </main>
+        <button type="button" class="btn btn-primary">Make New Post</button>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="..." alt="">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">Posts</h5>
+              <h5 class="card-title">6/10</h5>
+            </div>
+            <div id="result"></div>
+            <p class="card-text">This is where posts go.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+</html>
+
