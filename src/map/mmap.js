@@ -56,6 +56,11 @@ regions.push(maxp);
 
 document.getElementById('region-name').innerHTML = 'Try hovering over a building!';
 
+populateDB();
+getBuildingScore('regenstein');
+getBuildingScore('mansueto');
+//getCampusScore();
+
 for (var i = 0; i < regions.length; i++){
 
 	regions[i].mouseover(function(e){
