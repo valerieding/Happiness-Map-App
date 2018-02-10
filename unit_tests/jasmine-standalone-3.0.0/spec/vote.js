@@ -64,7 +64,7 @@ describe("Vote", function() {
 		expect(getLocAvg(reg)).toBeEqual(1.04);
 			// building average updates
 		expect(addvote(testvote3)).toEqual(false);
-			// happiness level must be between 1 and 5
+			// happiness level must be between 1 and 5 
 		expect(getLocAvg(reg)).toBeEqual(1.04);
 			// unchanged from testvote1
 	});
