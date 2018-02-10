@@ -40,14 +40,10 @@ class VotingAPI:
 
     def get_heat_map(self, start_time, end_time):
         """Fetches the data for the generation of the heat map on the client side."""
-        try:
-            return HeatMapPoint.from_tuple_array(self.database.execute(
-                """SELECT logical_loc, avg(score) FROM votes
-                   WHERE logical_loc NOT NULL AND timestamp BETWEEN ? AND ?
-                   GROUP BY logical_loc""", (start_time, end_time)))
-        except IntegrityError as e:
-            self.logger.exception(e)
-            return []
+        return HeatMapPoint.from_tuple_array(self.database.execute(
+            """SELECT logical_loc, avg(score) FROM votes
+               WHERE logical_loc NOT NULL AND timestamp BETWEEN ? AND ?
+               GROUP BY logical_loc""", (start_time, end_time)))
 
     def get_campus_average(self, start_time, end_time):
         """Returns the average happiness value registered on campus between the `start_time` and the `end_time`."""
