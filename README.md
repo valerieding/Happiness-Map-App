@@ -20,6 +20,9 @@ Running unit tests for heat map:
 4. You can see the individual tests at Happiness-Map-App/unit_tests/jasmine-standalone-3.0.0/spec/MapSpec.js
 5. You can see the skeleton code for these functions at Happiness-Map-App/src/map/map.js
 
+Running tests for message board:
+same as above. in jasmine/spec/board.js
+
 Running unit tests for happiness voting:
 Unit tests for happiness voting also use jasmine.
 Follow steps 1-3 from 'Runnign unit tests for heat map'
