@@ -8,10 +8,16 @@ from server.voting.requests import voting_requests
 
 
 def get_flask_app():
+    class DictBasedJSONEncoder(flask.json.JSONEncoder):
+        """Defaults to the dict representation of classes for convenience. """
+        def default(self, o):
+            return o.__dict__
+
     app = flask.Flask(__name__)
     app.register_blueprint(static_server)
     app.register_blueprint(message_requests)
     app.register_blueprint(voting_requests)
+    app.json_encoder = DictBasedJSONEncoder
     return app
 
 

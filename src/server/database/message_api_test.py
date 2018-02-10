@@ -5,7 +5,7 @@ from server import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.util import Location, Message
-from unittest import mock
+
 
 class MessageAPITest(unittest.TestCase):
     loc1 = Location(1, 2, "Location1")
@@ -16,11 +16,7 @@ class MessageAPITest(unittest.TestCase):
         self.db = DatabaseManager(":memory:")
         self.votingApi = VotingAPI(self.db)
         self.messageApi = MessageAPI(self.db)
-        self.messageApi.logger = mock.Mock()
 
-    #
-    # def assertSequenceEqualMine(self, it1, it2):
-    #     return self.message_equals(list(it1), list(it2))
     def test_post_failure(self):
         self.assertFalse(self.messageApi.add_post(4, self.loc1, "this is user 4, this post should fail"))
         self.assertTrue(self.votingApi.add_vote(2, self.loc2, 5))
@@ -33,6 +29,9 @@ class MessageAPITest(unittest.TestCase):
             message.timestamp = 0
             return message
 
+        def filter_messages(message_list):
+            return [filter_message(message) for message in message_list]
+
         self.assertTrue(self.votingApi.add_vote(1, self.loc1, 3))
         self.assertTrue(self.votingApi.add_vote(2, self.loc2, 5))
         self.assertTrue(self.votingApi.add_vote(3, self.loc3, 1))
@@ -44,18 +43,19 @@ class MessageAPITest(unittest.TestCase):
         self.assertTrue(self.messageApi.add_post(3, self.loc3, "This is USER 3 at location 3, adding my first post"))
         post_id3 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (3,))[0][0]
         self.assertSequenceEqual(
-            list(map(filter_message, (self.messageApi.get_recent_posts(self.loc1, 0, time.time())))),
-            [Message(0, 0, None, 3, 'This is USER 3 at location 3, adding my first post', 1, 0, self.loc3),
-            Message(0, 0, None, 2, 'This is USER 2 at location 2, adding my first post', 5, 0, self.loc2),
-            Message(0, 0, None, 1, 'This is USER 1 at location 1, adding my first post', 3, 0, self.loc1)
-        ])
+            filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
+                Message(0, 0, None, 3, 'This is USER 3 at location 3, adding my first post', 1, 0, self.loc3),
+                Message(0, 0, None, 2, 'This is USER 2 at location 2, adding my first post', 5, 0, self.loc2),
+                Message(0, 0, None, 1, 'This is USER 1 at location 1, adding my first post', 3, 0, self.loc1)
+            ])
         # TODO: test that this is ordered by upvotes/downvotes properly
         self.assertSequenceEqual(
-            list(map(filter_message, (self.messageApi.get_trending_posts(self.loc1)))),
-            [Message(0, 0, None, 3, 'This is USER 3 at location 3, adding my first post', 1, 0, self.loc3),
-             Message(0, 0, None, 2, 'This is USER 2 at location 2, adding my first post', 5, 0, self.loc2),
-             Message(0, 0, None, 1, 'This is USER 1 at location 1, adding my first post', 3, 0, self.loc1)
-             ])
+            filter_messages(self.messageApi.get_trending_posts(self.loc1)),
+            [
+                Message(0, 0, None, 3, 'This is USER 3 at location 3, adding my first post', 1, 0, self.loc3),
+                Message(0, 0, None, 2, 'This is USER 2 at location 2, adding my first post', 5, 0, self.loc2),
+                Message(0, 0, None, 1, 'This is USER 1 at location 1, adding my first post', 3, 0, self.loc1)
+            ])
 
         # User 1 upvotes user 2's and user 3's posts:
         self.assertTrue(self.messageApi.upvote(1, post_id2))

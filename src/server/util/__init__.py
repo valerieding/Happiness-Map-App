@@ -1,12 +1,9 @@
-import json
-
 from flask import request, jsonify
 
 from server.util.user import get_user_id
 
 
 class Location:
-
     def __init__(self, latitude, longitude, logical_location=None, address=None):
         self.latitude = latitude
         self.longitude = longitude
@@ -21,14 +18,11 @@ class Location:
     def from_tuple(args):
         return Location(*args)
 
-    def toJSON(self):
-        return json.dumps(self.__dict__)
-
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
-class Message:
 
+class Message:
     def __init__(self, post_id, vote_id, parent_id, user_id, message, happiness_level, timestamp, location):
         self.post_id = post_id
         self.vote_id = vote_id
@@ -39,7 +33,6 @@ class Message:
         self.timestamp = timestamp
         self.location = location
 
-
     @staticmethod
     def from_tuple(args):
         return Message(post_id=args[0], vote_id=args[1], parent_id=args[2], user_id=args[3], message=args[4],
@@ -49,15 +42,11 @@ class Message:
     def from_tuple_array(array):
         return [Message.from_tuple(element) for element in array]
 
-    def toJSON(self):
-        return json.dumps(self.__dict__)
-
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
 
 class HeatMapPoint:
-
     def __init__(self, logical_location, happiness_level):
         self.logical_location = logical_location
         self.happiness_level = happiness_level
@@ -70,11 +59,8 @@ class HeatMapPoint:
     def from_tuple_array(array):
         return [HeatMapPoint.from_tuple(element) for element in array]
 
-    def toJSON(self):
-        return json.dumps(self.__dict__)
 
-
-def validate_request(form, logger, requires_valid_user_id = False):
+def validate_request(form, logger, requires_valid_user_id=False):
     """Validates a `form`, logs events in `logger` and returns an error message or None if the form is valid. """
 
     uid = get_user_id()
