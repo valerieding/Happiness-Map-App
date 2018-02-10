@@ -6,4 +6,9 @@
 3. Navigate to the src directory, and run: python3 main.py --debug
 4. Open a browser and navigate to "localhost:8000"
 
-## Progress Updates and Notes
+## 3.a Unit Testing:
+
+Running unit tests for backend:
+1. Navigate to the src directory
+2. Run "python3 test.py --coverage"
+3. The terminal should print out the test coverage. Now, there should be a coverage_report directory in the src folder, with an .html folder for the coverage report. You can open the coverage report in browser.
