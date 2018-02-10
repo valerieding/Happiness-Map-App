@@ -12,3 +12,13 @@ Running unit tests for backend:
 1. Navigate to the src directory
 2. Run "python3 test.py --coverage"
 3. The terminal should print out the test coverage. Now, there should be a coverage_report directory in the src folder, with an .html folder for the coverage report. You can open the coverage report in browser.
+
+Running unit tests for heat map:
+1. Navigate to the directory Happiness-Map-App/unit_tests/jasmine-standalone-3.0.0
+2. Inside this directory run python3 -m http.server 
+3. In your browser navigate to localhost:8000/SpecRunner.html to see the Jasmine Unit testing page
+4. You can see the individual tests at Happiness-Map-App/unit_tests/jasmine-standalone-3.0.0/spec/MapSpec.js
+5. You can see the skeleton code for these functions at Happiness-Map-App/src/map/map.js
+
+
+
