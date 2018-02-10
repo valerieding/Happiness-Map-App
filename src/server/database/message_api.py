@@ -91,8 +91,10 @@ class MessageAPI:
             self.logger.exception(e)
             return False
 
-    # def remove_post(self, post_id):
-    #     """Removes the post with `post_id`. Should only be accessible to admins. """
-    #         self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
-    #         self.database.commit()
-    #
+    # TODO: activate this
+    '''
+    def remove_post(self, post_id):
+        """Removes the post with `post_id`. Should only be accessible to admins. """
+            self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+            self.database.commit()
+    '''

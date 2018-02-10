@@ -19,7 +19,8 @@ class Location:
         return Location(*args)
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        """Returns true iff the objects are equal. This is meant primarily for testing. """
+        return isinstance(other, Location) and self.__dict__ == other.__dict__
 
 
 class Message:
@@ -43,7 +44,8 @@ class Message:
         return [Message.from_tuple(element) for element in array]
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        """Returns true iff the objects are equal. This is meant primarily for testing. """
+        return isinstance(other, Message) and self.__dict__ == other.__dict__
 
 
 class HeatMapPoint:
@@ -58,6 +60,10 @@ class HeatMapPoint:
     @staticmethod
     def from_tuple_array(array):
         return [HeatMapPoint.from_tuple(element) for element in array]
+
+    def __eq__(self, other):
+        """Returns true iff the objects are equal. This is meant primarily for testing. """
+        return isinstance(other, HeatMapPoint) and self.__dict__ == other.__dict__
 
 
 def validate_request(form, logger, requires_valid_user_id=False):
