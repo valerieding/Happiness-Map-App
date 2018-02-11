@@ -5,16 +5,14 @@ var helloworld = function(){
 };
 
 // structures for mapping
-
 var FullNameKey = Object.freeze({
 	regenstein: "Regenstein Library",
 	bartlett: "Bartlett Dining Commons",
 	maxp: "Max Palevsky",
 	mansueto: "Mansueto Library",
 });
-
 const ColorNumKey = ["#721817", "#D0B8AC", "#E8E1EF", "#CAE7B9", "#182825"];
-const nullColor = ["#ADADAD"];
+const nullColor = "#ADADAD";
 const HappinessTextKey = ["saddest", "sad", "neutral", "happy", "happiest"];
 
 //map page functions
@@ -27,8 +25,20 @@ function databaseToMapObj(n) {
   };
 };
 
+function emptyMabObj(n) {
+  return {
+    id: n,
+    fullname: FullNameKey[n],
+    color: nullColor,
+    rating: "no data available"
+  };
+};
+
 function allMapObjects(ns) {
   let allObjs = {};
+  for (var prop in FullNameKey){
+    allObjs[prop] = emptyMabObj(prop);
+  }
   ns.forEach(function(n) {
     allObjs[n.logical_location] = databaseToMapObj(n);
   });
@@ -105,10 +115,7 @@ function getBuildingScore(logloc) {
     }
   });
   return score;
-}
-
-
-
+};
 
 
 // function just for testing
@@ -154,17 +161,17 @@ function populateDB() {
       'logical_location': 'mansueto', 'happiness_level': 3},
   });
   $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.793031, 'longitude': -87.599938,
-      'logical_location': 'maxp', 'happiness_level': 5},
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.791895, 'longitude': -87.598393,
-      'logical_location': 'bartlett', 'happiness_level': 4},
-  });
-}
+   url: '/request/add_vote',
+   type: 'post',
+   dataType: 'json',
+   data: {'latitude': 41.793031, 'longitude': -87.599938,
+     'logical_location': 'maxp', 'happiness_level': 5},
+ });
+ $.ajax({
+   url: '/request/add_vote',
+   type: 'post',
+   dataType: 'json',
+   data: {'latitude': 41.791895, 'longitude': -87.598393,
+     'logical_location': 'bartlett', 'happiness_level': 4},
+ });
+};
