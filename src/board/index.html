@@ -15,14 +15,67 @@
     <script>
       $(function(){
         $("#myNav").load("../nav.html");
+        // $.ajax({
+        //  url: 'request/add_vote',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
+        // });
+        // $.ajax({
+        //  url: 'request/add_post',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'message': 'another post'}
+        // });
+        // $.ajax({
+        //  url: 'request/add_post',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'message': 'feeling 2/5'}
+        // });
+        // $.ajax({
+        //  url: 'request/add_vote',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'happiness_level': 1}
+        // });
+        // $.ajax({
+        //  url: 'request/add_post',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'message': 'just voted again 1/5 very sad!!!'}
+        // });
+        // $.ajax({
+        //  url: 'request/add_post',
+        //  type: 'post',
+        //  dataType: 'json',
+        //  data: {'latitude': 10, 'longitude': 10, 'message': 'feeling 1/5'}
+        // });
       });
     </script>
     <script type="text/javascript">
     $(document).ready(function(){
-        var messageArray = ["Hi", "Hello", "whats up!!", "wow", "bye"];
-        $.each(messageArray, function(index, value){
-            $("#result").append(value + '<br>');
-        });
+        var messageArray = "";
+        console.log("messageArray 1is: " + messageArray);
+        $(function() {
+            $.ajax({
+               url: 'request/get_recent_posts',
+               type: 'post',
+               dataType: 'json',
+               data: {'latitude': 10, 'longitude': 10},
+               async: false,
+               success: function(data) {
+                  // console.log("got recent posts");
+                  // console.log(data);
+                  messageArray = data;
+                  // console.log("messageArray is: " + messageArray);
+               }
+              });
+            $.each(messageArray, function(index, value){
+              $("#posts").append(value['message'] + '<br>');
+              $("#votes").append(value['happiness_level'] + '/5' + '<br>');
+            });
+          });
     });
     </script>
     <div class="homepage">
@@ -31,17 +84,19 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Message Board</h1>
         </main>
-        <button type="button" class="btn btn-primary">Make New Post</button>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="">
+        <button type="button" class="btn btn-primary w-25 p-3 m-0">Make New Post</button>
+        <div class="card w-50 p-3 mt-3" style="overflow-y: scroll">
+          <img class="card-img-top" alt="">
           <div class="card-body">
             <div class="d-flex justify-content-between">
-              <h5 class="card-title">Posts</h5>
-              <h5 class="card-title">6/10</h5>
+              <h5 class="card-title">Post</h5>
+              <h5 class="card-title">Happiness Level</h5>
             </div>
-            <div id="result"></div>
-            <p class="card-text">This is where posts go.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+           <div class="d-flex justify-content-between">
+              <div id="posts"></div>
+              <div id="votes"></div>
+            </div>
+            </div>
           </div>
         </div>
       </div>
@@ -50,4 +105,25 @@
 
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
