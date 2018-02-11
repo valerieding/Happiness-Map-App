@@ -10,6 +10,9 @@ var ColorKey = Object.freeze({
 	saddest: "#721817"
 });
 
+populateDB();
+let allScores = getAllBuildingScores();
+console.log(getName(allScores[0]));
 
 
 var dic = {
@@ -56,10 +59,6 @@ regions.push(maxp);
 
 document.getElementById('region-name').innerHTML = 'Try hovering over a building!';
 
-populateDB();
-getBuildingScore('regenstein');
-getBuildingScore('mansueto');
-//getCampusScore();
 
 for (var i = 0; i < regions.length; i++){
 

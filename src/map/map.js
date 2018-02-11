@@ -1,17 +1,33 @@
 //where map stuff will go
 
 var helloworld = function(){
-   return 'Hello World';
+  return 'Hello World';
 };
+
+// structures for mapping
+
+var FullNameKey = Object.freeze({
+	regenstein: "Regenstein Library",
+	bartlett: "Bartlett Dining Commons",
+	maxp: "Max Palevsky",
+	mansueto: "Mansueto Library",
+});
+
+const ColorNumKey = ["#721817", "#D0B8AC", "#E8E1EF", "#CAE7B9", "#182825"];
+const HappinessTextKey = ["happiest", "happy", "neutral", "sad", "saddest"];
 
 //map page functions
 function databaseToMapObj(n) {return n};
 
 function getInfo(n) { return n};
 
-function getName(n) { return n};
+function getName(n) {
+  return FullNameKey[n.logical_location];
+};
 
-function computeColor(n) { return n};
+function computeColor(n) {
+  return
+};
 
 function getHappinessRating(n) {return n};
 
@@ -24,12 +40,27 @@ function getCampusScore() {
       async: false,
       success: function(data){
         campus_avg = data;
+        console.log(campus_avg);
       }
     });
-    //console.log(campus_avg);
+    return campus_avg;
 };
 
-function getAllBuildingScores() {return 0};
+function getAllBuildingScores() {
+  var allScores;
+  $.ajax({
+    url: '/request/get_heatmap',
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    data: {'start_time': 0, 'end_time': 1550000000},
+    success: function(data){
+      allScores = data;
+      console.log(allScores);
+    }
+  });
+  return allScores;
+};
 
 function getBuildingScore(logloc) {
   var score;
@@ -40,12 +71,18 @@ function getBuildingScore(logloc) {
     data: {'logical_location': logloc, 'start_time': 0, 'end_time': 1550000000},
     success: function(data){
       console.log("got building average");
-      console.log(data);
+      score = data;
+      console.log(score);
     }
   });
+  return score;
 }
 
 
+
+
+
+// function just for testing
 function populateDB() {
   $.ajax({
     url: '/request/issue_user_id',
@@ -58,18 +95,47 @@ function populateDB() {
     dataType: 'json',
     data: {'latitude': 41.792289, 'longitude': -87.599959,
       'logical_location': 'regenstein', 'happiness_level': 1},
-    success: function(data){
-      console.log("Added vote1 to db");
-    }
+  });
+  $.ajax({
+    url: '/request/add_vote',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 41.792289, 'longitude': -87.599959,
+      'logical_location': 'regenstein', 'happiness_level': 2},
+  });
+  $.ajax({
+    url: '/request/add_vote',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 41.792289, 'longitude': -87.599959,
+      'logical_location': 'regenstein', 'happiness_level': 1},
+  });
+  $.ajax({
+    url: '/request/add_vote',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 41.792289, 'longitude': -87.599959,
+      'logical_location': 'regenstein', 'happiness_level': 2},
   });
   $.ajax({
     url: '/request/add_vote',
     type: 'post',
     dataType: 'json',
     data: {'latitude': 41.791863, 'longitude': -87.600968,
-      'logical_location': 'mansueto', 'happiness_level': 5},
-    success: function(data){
-      console.log("Added vote2 to db");
-    }
+      'logical_location': 'mansueto', 'happiness_level': 3},
+  });
+  $.ajax({
+    url: '/request/add_vote',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 41.793031, 'longitude': -87.599938,
+      'logical_location': 'maxp', 'happiness_level': 5},
+  });
+  $.ajax({
+    url: '/request/add_vote',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 41.791895, 'longitude': -87.598393,
+      'logical_location': 'bartlett', 'happiness_level': 4},
   });
 }
