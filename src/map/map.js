@@ -12,7 +12,7 @@ var FullNameKey = Object.freeze({
 	mansueto: "Mansueto Library",
 });
 
-const ColorNumKey = ["#edf8fb", "#b3cde3", "#8c96c6", "#8856a7", "#810f7c"];
+const ColorNumKey = ['#ffffb2','#fecc5c','#fd8d3c','#f03b20','#bd0026'];
 const nullColor = "#ADADAD";
 const HappinessTextKey = ["very unhappy", "unhappy", "neutral", "happy", "very happy"];
 
@@ -20,7 +20,7 @@ const HappinessTextKey = ["very unhappy", "unhappy", "neutral", "happy", "very h
 function databaseToMapObj(n) {
   return {
     id: n.logical_location,
-    score: n.happiness_level,
+    score: formatScore(n.happiness_level),
     fullname: getName(n),
     color: computeColor(n),
     rating: getHappinessRating(n)
@@ -48,7 +48,7 @@ function allMapObjects(ns) {
 };
 
 function getInfo(n) {
-  return n.rating + "<br>average score of: " + n.score;
+  return n.rating + "<br>building happiness: " + n.score;
 };
 
 function getName(n) {
@@ -68,6 +68,10 @@ function getHappinessRating(n) {
   }
   return HappinessTextKey[Math.floor(n.happiness_level)];
 };
+
+function formatScore(n) {
+  return Math.round(100 * n) / 100;
+}
 
 
 

@@ -4,9 +4,13 @@
 
 .card {
 	display: flex;
-	padding: 0.7em;
+	padding: 0.4em;
 	background-color: '#333333';
 	align-items: center;
+}
+
+.list-group-item {
+	padding: 0.2em;
 }
 
 #map-container {
@@ -20,9 +24,8 @@
 
 #region-card {
 	position: fixed;
-	top: 1%;
-	left: 1%;
-	padding: 5px;
+	top: 0.1%;
+	left: 0.1%;
 }
 
 p {

@@ -7,6 +7,7 @@ let allScores = getAllBuildingScores();
 console.log(getName(allScores[0]));
 let allObjs = allMapObjects(allScores);
 console.log(allObjs);
+let campus_avg = getCampusScore();
 
 var mansueto = rsr.ellipse(411.775, 284.582, 30.927, 16.541);
 mansueto.transform("m-0.1795 -0.9838 0.9838 -0.1795 205.7261 740.7498");
@@ -39,7 +40,10 @@ maxp.attr({fill: allObjs["maxp"].color, class: "building", id: 'maxp'});
 maxp.data({'info': allObjs["maxp"]});
 regions.push(maxp);
 
-document.getElementById('region-header').innerHTML = 'Try hovering over a building!';
+document.getElementById('region-header').innerHTML =
+	'Try hovering over a building!';
+document.getElementById('campus-avg-text').innerHTML =
+	'campuswide happiness: ' + formatScore(campus_avg);
 
 
 for (var i = 0; i < regions.length; i++){
