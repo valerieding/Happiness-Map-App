@@ -11,7 +11,8 @@ var FullNameKey = Object.freeze({
 	maxp: "Max Palevsky",
 	mansueto: "Mansueto Library",
 });
-const ColorNumKey = ["#721817", "#D0B8AC", "#E8E1EF", "#CAE7B9", "#182825"];
+
+const ColorNumKey = ["#edf8fb", "#b3cde3", "#8c96c6", "#8856a7", "#810f7c"];
 const nullColor = "#ADADAD";
 const HappinessTextKey = ["very unhappy", "unhappy", "neutral", "happy", "very happy"];
 
