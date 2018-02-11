@@ -39,7 +39,7 @@ maxp.attr({fill: allObjs["maxp"].color, class: "building", id: 'maxp'});
 maxp.data({'info': allObjs["maxp"]});
 regions.push(maxp);
 
-document.getElementById('region-name').innerHTML = 'Try hovering over a building!';
+document.getElementById('region-header').innerHTML = 'Try hovering over a building!';
 
 
 for (var i = 0; i < regions.length; i++){
@@ -48,7 +48,8 @@ for (var i = 0; i < regions.length; i++){
 		this.node.style.opacity = 0.7;
 		this.node.style.stroke = 'yellow';
 		var i = getInfo(this.data('info'));
-		document.getElementById('region-name').innerHTML = i;
+		document.getElementById('region-header').innerHTML = this.data('info').fullname;
+		document.getElementById('region-text').innerHTML = i;
 	});
 
 	regions[i].mouseout(function(e){

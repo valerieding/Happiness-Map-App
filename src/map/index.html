@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../styles/bootstrap4.min.css">
     <link href="../styles/main.css" rel="stylesheet">
 	<link rel="stylesheet" href="map.css">
-
     <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="../lib/popper.min.js"></script>
     <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
@@ -25,10 +24,9 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Campus Map</h1>
           <p>This is the campus map, where you can see average happinesses across buildings</p>
-		        <div id="map" class="campus">
-			           <!-- Raphaël JS Map Here -->
+		        <div id="map-container" class="container-fluid">
+              <iframe height="900px" width="100%" frameborder="0" scrolling="yes" src="mapsvg.html">
 		        </div>
-		        <div id="region-name"></div>
             <script src="map.js"></script>
 		        <script src="raphael-min.js"></script>
 		        <script src="mmap.js"></script>

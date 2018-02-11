@@ -19,6 +19,7 @@ const HappinessTextKey = ["saddest", "sad", "neutral", "happy", "happiest"];
 function databaseToMapObj(n) {
   return {
     id: n.logical_location,
+    score: n.happiness_level,
     fullname: getName(n),
     color: computeColor(n),
     rating: getHappinessRating(n)
@@ -46,7 +47,7 @@ function allMapObjects(ns) {
 };
 
 function getInfo(n) {
-  return "<h3>" + n.fullname + "</h3><h4>" + n.rating + "</h4>";
+  return n.rating + "<br>average score of: " + n.score;
 };
 
 function getName(n) {
