@@ -77,16 +77,16 @@
     </script>
     <script>
       $(function() {
-      //hang on event of form with id=myform
         $("#myform").submit(function(e) {
           e.preventDefault();
           $.ajax({
               url: 'request/add_post',
               type: 'post',
               dataType: 'json',
-              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize()},
+              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8)},
               success: function(data) {
                  console.log("added post successfully");
+                 console.log("my form input: " + $("#myform").serialize().slice(8).replace(' ','%20'));
               }
           });
 
