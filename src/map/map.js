@@ -14,22 +14,51 @@ var FullNameKey = Object.freeze({
 });
 
 const ColorNumKey = ["#721817", "#D0B8AC", "#E8E1EF", "#CAE7B9", "#182825"];
-const HappinessTextKey = ["happiest", "happy", "neutral", "sad", "saddest"];
+const nullColor = ["#ADADAD"];
+const HappinessTextKey = ["saddest", "sad", "neutral", "happy", "happiest"];
 
 //map page functions
-function databaseToMapObj(n) {return n};
+function databaseToMapObj(n) {
+  return {
+    id: n.logical_location,
+    fullname: getName(n),
+    color: computeColor(n),
+    rating: getHappinessRating(n)
+  };
+};
 
-function getInfo(n) { return n};
+function allMapObjects(ns) {
+  let allObjs = {};
+  ns.forEach(function(n) {
+    allObjs[n.logical_location] = databaseToMapObj(n);
+  });
+  return allObjs;
+};
+
+function getInfo(n) {
+  return "<h3>" + n.fullname + "</h3><h4>" + n.rating + "</h4>";
+};
 
 function getName(n) {
   return FullNameKey[n.logical_location];
 };
 
 function computeColor(n) {
-  return
+  if (n.happiness_level >=5){
+    return ColorNumKey[4];
+  }
+  return ColorNumKey[Math.floor(n.happiness_level)];
 };
 
-function getHappinessRating(n) {return n};
+function getHappinessRating(n) {
+  if (n.happiness_level >=5){
+    return HappinessTextKey[4];
+  }
+  return HappinessTextKey[Math.floor(n.happiness_level)];
+};
+
+
+
 
 //querying database functions
 function getCampusScore() {
