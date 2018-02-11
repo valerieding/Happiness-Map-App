@@ -5,6 +5,10 @@
 	align-items: center;
 }
 
+#map-container {
+	background-color: '#F9EDCC';
+}
+
 .campus {
 	background-image: url(campus.png);
 	background-repeat: no-repeat;
@@ -19,6 +23,10 @@
 
 p {
 	color: white;
+}
+
+.card-text{
+	color: black;
 }
 
 .building {
