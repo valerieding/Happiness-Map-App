@@ -65,10 +65,7 @@
                data: {'latitude': 10, 'longitude': 10},
                async: false,
                success: function(data) {
-                  // console.log("got recent posts");
-                  // console.log(data);
                   messageArray = data;
-                  // console.log("messageArray is: " + messageArray);
                }
               });
             $.each(messageArray, function(index, value){
@@ -78,6 +75,25 @@
           });
     });
     </script>
+    <script>
+      $(function() {
+      //hang on event of form with id=myform
+        $("#myform").submit(function(e) {
+          e.preventDefault();
+          $.ajax({
+              url: 'request/add_post',
+              type: 'post',
+              dataType: 'json',
+              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize()},
+              success: function(data) {
+                 console.log("added post successfully");
+              }
+          });
+
+        });
+
+    });
+    </script>
     <div class="homepage">
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <div id="myNav"></div>
@@ -85,6 +101,9 @@
           <h1 class="cover-heading">Message Board</h1>
         </main>
         <button type="button" class="btn btn-primary w-25 p-3 m-0">Make New Post</button>
+        <form id="myform" method="post" action="">
+          <input type="text" size="50" value="" name="message">
+        </form>
         <div class="card w-50 p-3 mt-3" style="overflow-y: scroll">
           <img class="card-img-top" alt="">
           <div class="card-body">
