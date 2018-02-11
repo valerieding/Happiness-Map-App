@@ -1,4 +1,4 @@
-//where map stuff will go
+//where map stuff goes
 
 var helloworld = function(){
   return 'Hello World';
