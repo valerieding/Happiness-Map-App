@@ -62,27 +62,37 @@ function placeMarker(position, map) {
 
 function geocodeLatLng(geocoder, map, marker) {
   var latlng = marker.getPosition();
-  geocoder.geocode({'location': latlng}, function(results, status) {
-    if (status === 'OK') {
-      if (results[0]) {
-        var logicalLoc = toLogicalLoc(results[0].formatted_address);
-        if(logicalLoc == null) {
-          if(isQuad(latlng)) {
-            window.alert("Quads");
+  //window.alert(latlng);
+  if(isOnCampus(latlng)) {
+    if(isQuad(latlng)) {
+      window.alert("Quads");
+    } else {
+      geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          var logicalLoc = toLogicalLoc(results[0].formatted_address);
+          if(logicalLoc == null) {
+            window.alert("Unknown Location: " + latlng);
           } else {
-            window.alert("Unknown Location");
+            //map.setZoom(11);
+            window.alert(toLogicalLoc(results[0].formatted_address));
           }
         } else {
-          //map.setZoom(11);
-          window.alert(toLogicalLoc(results[0].formatted_address));
+          window.alert('No results found');
         }
       } else {
-        window.alert('No results found');
+        window.alert('Geocoder failed due to: ' + status);
       }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
+    });
     }
-  });
+  } else {
+    window.alert("Not on Campus");
+  }
+
+
+
+
+  
 }
 
 function isQuad(latlng) {
@@ -90,6 +100,17 @@ function isQuad(latlng) {
     && latlng.lat() < 41.7900248540438
     && latlng.lng() < -87.59810328483582
     && latlng.lng() > -87.60076940059662) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isOnCampus(latlng) {
+  if(latlng.lat() > 41.784113073154536 
+    && latlng.lat() < 41.79494425609071
+    && latlng.lng() < -87.59028196334839
+    && latlng.lng() > -87.60500192642212) {
     return true;
   } else {
     return false;
