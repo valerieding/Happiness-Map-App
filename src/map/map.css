@@ -1,6 +1,8 @@
-.campus {
-	background-image: url(img/campus.png);
-	background-repeat: no-repeat;
+#map {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
 }
 
 #region-name {
