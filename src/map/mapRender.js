@@ -1,28 +1,5 @@
 var rsr = Raphael('map', '1458', '1076.67');
 
-var regions = [];
-
-var ColorKey = Object.freeze({
-	happiest:"#182825",
-	happy:"#CAE7B9",
-	neutral:"#E8E1EF",
-	sad: "#D0B8AC",
-	saddest: "#721817"
-});
-
-
-
-var dic = {
-	"mansueto": {name: "Mansueto Library", val: "happiest"},
-	"regenstein": {name: "Regenstein Library", val: "saddest"},
-	"bartlett": {name: "Bartlett Dining Commons", val: "happy"},
-	"maxp": {name: "Max Palevsky Commons", val: "neutral"}
-};
-
-function getInfo(n) {
-	return "<h3>" + n.name + "</h3><h4>" + n.val + "</h4>";
-};
-
 var mansueto = rsr.ellipse(411.775, 284.582, 30.927, 16.541);
 mansueto.transform("m-0.1795 -0.9838 0.9838 -0.1795 205.7261 740.7498");
 mansueto.attr({fill: ColorKey[dic["mansueto"].val], class: "building", id: 'mansueto'});
@@ -71,5 +48,4 @@ for (var i = 0; i < regions.length; i++){
 		this.node.style.opacity = 1;
 		this.node.style.stroke = '#333333';
 	});
-
 }
