@@ -64,15 +64,16 @@ function geocodeLatLng(geocoder, map, marker) {
   var latlng = marker.getPosition();
   //window.alert(latlng);
   if(isOnCampus(latlng)) {
-    if(isQuad(latlng)) {
-      window.alert("Quads");
-    } else {
       geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
           var logicalLoc = toLogicalLoc(results[0].formatted_address);
           if(logicalLoc == null) {
-            window.alert("Unknown Location: " + latlng);
+            if(isQuad(latlng)) {
+              window.alert("Quads");
+            } else {
+              window.alert("Unknown Location: " + latlng);
+            }
           } else {
             //map.setZoom(11);
             window.alert(toLogicalLoc(results[0].formatted_address));
@@ -84,7 +85,6 @@ function geocodeLatLng(geocoder, map, marker) {
         window.alert('Geocoder failed due to: ' + status);
       }
     });
-    }
   } else {
     window.alert("Not on Campus");
   }
