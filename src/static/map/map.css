@@ -1,12 +1,12 @@
 .campus {
-	background-image: url(img/campus.png);
+	background-image: url(campus.png);
 	background-repeat: no-repeat;
 }
 
 #region-name {
 	position: fixed;
 	top: 30%;
-	left: 15%;	
+	left: 15%;
 	font-size: 30px;
 	font-family: sans-serif;
 	color: '#333333';
