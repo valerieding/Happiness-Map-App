@@ -56,17 +56,11 @@ function getName(n) {
 };
 
 function computeColor(n) {
-  if (n.happiness_level >=5){
-    return ColorNumKey[4];
-  }
-  return ColorNumKey[Math.floor(n.happiness_level)];
+  return ColorNumKey[Math.floor(n.happiness_level) - 1];
 };
 
 function getHappinessRating(n) {
-  if (n.happiness_level >=5){
-    return HappinessTextKey[4];
-  }
-  return HappinessTextKey[Math.floor(n.happiness_level)];
+  return HappinessTextKey[Math.floor(n.happiness_level) - 1];
 };
 
 function formatScore(n) {
