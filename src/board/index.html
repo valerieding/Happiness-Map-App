@@ -17,12 +17,18 @@
     <script>
       $(function(){
         $("#myNav").load("../static/nav.html");
-//         $.ajax({
-//          url: 'request/add_vote',
-//          type: 'post',
-//          dataType: 'json',
-//          data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
-//         });
+          $(function(){
+            $.ajax({
+              url: '/request/issue_user_id',
+              type: 'post',
+              async: false
+            })});
+        $.ajax({
+         url: 'request/add_vote',
+         type: 'post',
+         dataType: 'json',
+         data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
+        });
 
         // $.ajax({
         //  url: 'request/add_vote',
@@ -120,6 +126,7 @@
                  //console.log(decodeURI($(data))
                  console.log("my form input: " + $("#myform").serialize().slice(8));
               }
+
           });
 
         });
@@ -151,7 +158,8 @@
             is one better than the other? -->
             <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <!-- made it so window reloads on submit - not sure if theres a better way?-->
+          <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
         </form>
 
         <!-- <form id="myform" method="post" action="">
