@@ -1,5 +1,5 @@
 .campus-bg {
-	background-color: #F9EDCC;
+	background-color: #FFFFFF;
 }
 
 .card {
@@ -15,11 +15,6 @@
 
 #map-container {
 	background-color: '#F9EDCC';
-}
-
-.campus {
-	background-image: url(campus.png);
-	background-repeat: no-repeat;
 }
 
 #region-card {
