@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,7 +7,7 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../styles/bootstrap4.min.css">
     <link href="../styles/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="index_style.css">
+    <!-- <link rel="stylesheet" href="/index_style.css"> -->
     <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="../lib/popper.min.js"></script>
     <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
@@ -16,6 +17,13 @@
     <script>
       $(function(){
         $("#myNav").load("../nav.html");
+//         $.ajax({
+//          url: 'request/add_vote',
+//          type: 'post',
+//          dataType: 'json',
+//          data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
+//         });
+
         // $.ajax({
         //  url: 'request/add_vote',
         //  type: 'post',
@@ -79,7 +87,6 @@
             data: {'latitude': 10, 'longitude': 10},
             async: false,
             success: function(data) {
-            
               messageArray = data;
             }
           });
@@ -107,11 +114,11 @@
               url: 'request/add_post',
               type: 'post',
               dataType: 'json',
-              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'happiness_level': 5},
+              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8)},
               success: function(data) {
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
-                 console.log("my form input: " + $("#myform").serialize().slice(8).replace(' ','%20'));
+                 console.log("my form input: " + $("#myform").serialize().slice(8));
               }
           });
 
@@ -123,7 +130,7 @@
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
-          <h1 class="panel_heading">Message Board</h1>
+          <h1 class="cover-heading">Message Board</h1>
         </main>
         <!-- <button type="button" class="btn btn-primary w-25 p-3 m-0">Make New Post</button> -->
 
@@ -177,7 +184,7 @@
                   <div id="time"></div>
                   <div id="userid"></div>
                   <div>
-                    <button type="button" class="btn btn-primary btn-xs" onclick="upvote();">Upvote
+                    <button type="button" class="btn btn-primary btn-sm" onclick="upvote();">^
                     </button>
                   </div>
                 <!-- </tbody>
