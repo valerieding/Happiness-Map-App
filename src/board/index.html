@@ -16,7 +16,7 @@
   <body>
     <script>
       $(function(){
-        $("#myNav").load("../nav.html");
+        $("#myNav").load("../static/nav.html");
 //         $.ajax({
 //          url: 'request/add_vote',
 //          type: 'post',
@@ -72,7 +72,7 @@
           var month = months[a.getMonth()];
           var date = a.getDate();
           var hour = a.getHours();
-          var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes(); 
+          var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
           var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
           var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
           return time;
@@ -97,7 +97,7 @@
             $("#votes").append(value['happiness_level'] + '/5' + '<br>');
             $("#time").append(timeConverter(value['timestamp']) + '<br>');
             $("#userid").append(value['user_id'] + '<br>');
-            
+
           });
             // $('#total_post').append(trHTML);
             // },
@@ -167,7 +167,7 @@
               <h5 class="card-title">User ID</h5>
               <h5 class="card-title">Upvote</h5>
             </div>
-            
+
             <div class="d-flex justify-content-between">
               <!-- <table class="table table-hover" id="total_post">
                 <thead>
@@ -196,32 +196,10 @@
             </div>
           </div>
         </div>
-      
+
       </div>
     </div>
 
 
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
