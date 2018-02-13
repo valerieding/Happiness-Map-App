@@ -4,19 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../styles/bootstrap4.min.css">
-    <link href="../styles/main.css" rel="stylesheet">
-    <link href="vote.css" rel="stylesheet">
-    <script type="application/javascript" src="../lib/jquery-3.2.1.min.js"></script>
-    <script type="application/javascript" src="../lib/popper.min.js"></script>
-    <script type="application/javascript" src="../lib/bootstrap4.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap4.min.css">
+    <link href="/static/main.css" rel="stylesheet">
+    <link href="/static/vote/vote.css" rel="stylesheet">
+    <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="/static/popper.min.js"></script>
+    <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
     <title>Vote</title>
   </head>
   <body>
     <script>
       $(function(){
-        $("#myNav").load("../nav.html");
-      }); 
+        $("#myNav").load("../static/nav.html");
+      });
     </script>
     <div class="homepage">
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
@@ -43,15 +43,20 @@
                   <label class="radio-label-vertical">
                     <input type="radio" name="happiness_level" value="5">5
                   </label>
-                  <br><br><br><br>
+                  <br><br>
           <h5> Where are you?</h5>
-            <select form=vote>
+          <h5> Select from the map or dropdown below.</h5>
+            <select form=vote>https://webdesign.tutsplus.com/tutorials/a-beginners-guide-to-ajax-with-jquery--cms-25126
               <option name="location" value="Location 1">Location 1</option>
               <option name="location" value="Location 2">Location 2</option>
               <option name="location" value="Location 3">Location 3</option>
               <option name="location" value="Location 4">Location 4</option>
               <option name="location" value="Location 5">Location 5</option>
             </select>
+        </div>
+        <div id="campus-map">
+          <iframe height="400px" width="100%" frameborder="0" scrolling="no" src="/vote/clickMap.html">
+          </iframe>
         </div>
         <div>
           <input type="submit" value="Submit" class="button" onclick="myFunction()">
@@ -61,7 +66,7 @@
         </div>
         <script>
           function echoInput() {
-            document.getElementById("echo").innerHTML = "ok"; 
+            document.getElementById("echo").innerHTML = "ok";
           }
         </script>
     </form>
