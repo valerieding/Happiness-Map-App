@@ -118,7 +118,7 @@
             //     $.map(messageArray['messages'], totalrow)
             // );
               $.each(messageArray, function(index, value){
-                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><tr>' ;
+                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><td>' + value['reactions']['upvote'] + '</td><tr>' ;
               });
               $('#tuffy').append(trHTML);
             },
@@ -167,6 +167,7 @@
               dataType: 'json',
               data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'logical_location': "Maclean"},
               success: function(data) {
+                'request/upvote'
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
                  console.log("my form input: " + $("#myform").serialize().slice(8));
@@ -239,7 +240,7 @@
                           <th scope="col">Location</th>
                           <th scope="col">Time Stamp</th>
                           <th scope="col">User ID</th>
-
+                          <th scope="col">Upvote</th>
                       </tr>
                   </table>
                   <!-- <div id="posts"></div>
