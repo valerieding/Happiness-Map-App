@@ -56,6 +56,8 @@ class _UserID:
         """Returns the `UserID` described by the `user_id` cookie or None if the cookie is missing or invalid. """
 
         data = _UserID._safely_get_dict(request.cookies.get('user_id'))
+        if data is None:
+            return None
         result = _UserID(user_id=data['user_id'], signature=data['signature'])
         return result if result._validate() else None
 
@@ -92,7 +94,7 @@ def generate_response(FormValidator, response_generator, logger, requires_valid_
             user = _UserID.issue()
         kwargs['user_id'] = user.user_id
 
-    request_form_rep = '{}{}'.format(FormValidator, list(request.form.items()))
+    request_form_rep = '{}{}'.format(FormValidator.__name__, list(request.form.items()))
 
     logger.info('User {} requested {}'.format(user, request_form_rep))
     if not form.validate():
