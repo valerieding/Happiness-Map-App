@@ -69,7 +69,7 @@ class _UserID:
             return None
         try:
             decoded = pickle.loads(urlsafe_b64decode(code.encode('ascii')), fix_imports=False)
-        except PickleError:
+        except Exception:
             # `code` was altered. No user_id can be retrieved.
             return None
         if type(decoded) is not dict or 'user_id' not in decoded or 'signature' not in decoded:
