@@ -16,13 +16,6 @@ class MessageAPI:
         self.database = database
         self.logger = logging.getLogger('MessageAPI')
 
-    def _issue_post_id(self):
-        # Generate a random, unused post_ID. TODO: move this functionality to a database atomic integer.
-        post_id = randint(0, MessageAPI.POST_ID_MAX)
-        while len(self.database.execute("SELECT id FROM posts WHERE id = ? LIMIT 1", (post_id,))) != 0:
-            post_id = randint(0, MessageAPI.POST_ID_MAX)
-        return post_id
-
     def get_recent_posts(self, location, start_time, end_time):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
         # TODO: define what "around" means: right now, just returns all posts, sorted by timestamp, ignores location
@@ -39,8 +32,6 @@ class MessageAPI:
     def add_post(self, uid, location, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
 
-        post_id = self._issue_post_id()
-
         # Try to find most recent vote_id that corresponds to the given uid
         vote = self.database.execute("SELECT id,score FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
         if len(vote) != 1:
@@ -48,8 +39,8 @@ class MessageAPI:
         vote_id, happiness_level = vote[0]
 
         try:
-            self.database.execute("""INSERT INTO posts values  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                                  (post_id, vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
+            self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                                  (vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
                                    location.latitude, location.longitude, location.logical_location))
             self.database.commit()
             return True

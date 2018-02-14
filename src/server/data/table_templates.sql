@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS votes (
     score       integer     NOT NULL check(score between 0 and 5),
     latitude    real        check(latitude between -90 and 90),
     longitude   real        check(longitude between -180 and 180),
-    logical_loc varchar,    --TODO: restrict this to simple formats?
-    address     varchar     --TODO: ban dangerous characters
+    logical_loc varchar,
+    address     varchar
 );
 
 CREATE TABLE IF NOT EXISTS posts (
@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS posts (
     timestamp   float       NOT NULL,
     latitude    real        check(latitude between -90 and 90),
     longitude   real        check(longitude between -180 and 180),
-    logical_loc varchar    --TODO: restrict this to simple formats?
+    logical_loc varchar
 );
 
 CREATE TABLE IF NOT EXISTS post_votes (
-    postID      integer,     --FOREIGN KEY REFERENCES posts, --TODO: figure out if primary key may be a problem
+    postID      integer,
     uid         integer     NOT NULL,
     isUpvote    integer     NOT NULL check(isUpvote between 0 and 1),
     FOREIGN KEY(postID) REFERENCES posts(id)

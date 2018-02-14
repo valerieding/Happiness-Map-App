@@ -1,6 +1,4 @@
-from flask import request, jsonify
-
-from server.util.user import get_user_id, issue_user_id
+from constants import ALLOWED_REACTIONS_TO_POSTS
 
 
 class Location:
@@ -22,22 +20,48 @@ class Location:
         """Returns true iff the objects are equal. This is meant primarily for testing. """
         return isinstance(other, Location) and self.__dict__ == other.__dict__
 
+    def __repr__(self):
+        return str(self.__dict__)
+
+
+class Reactions:
+
+    INT_TO_REACTION = ALLOWED_REACTIONS_TO_POSTS
+
+    REACTION_TO_INT = {reaction: index for index, reaction in enumerate(INT_TO_REACTION)}
+
+    def __init__(self, data):
+        for reaction, count in zip(Reactions.INT_TO_REACTION, data):
+            self.__setattr__(reaction, count)
+
+    def __eq__(self, other):
+        return isinstance(other, Reactions) and self.__dict__ == other.__dict__
+
+    def __repr__(self):
+        return str(self.__dict__)
+
+    @staticmethod
+    def get_reaction_id(reaction):
+        return Reactions.REACTION_TO_INT.get(reaction)
+
 
 class Message:
-    def __init__(self, post_id, vote_id, parent_id, user_id, message, happiness_level, timestamp, location):
+    def __init__(self, post_id, vote_id, parent_id, user_id, message, happiness_level, reactions, timestamp, location):
         self.post_id = post_id
         self.vote_id = vote_id
         self.parent_id = parent_id
         self.user_id = user_id
         self.message = message
         self.happiness_level = happiness_level
+        self.reactions = reactions
         self.timestamp = timestamp
         self.location = location
 
     @staticmethod
     def from_tuple(args):
         return Message(post_id=args[0], vote_id=args[1], parent_id=args[2], user_id=args[3], message=args[4],
-                       happiness_level=args[5], timestamp=args[8], location=Location.from_tuple(args[9:]))
+                       happiness_level=args[5], reactions=Reactions(args[6:8]), timestamp=args[8],
+                       location=Location.from_tuple(args[9:]))
 
     @staticmethod
     def from_tuple_array(array):
@@ -68,32 +92,5 @@ class HeatMapPoint:
         """Returns true iff the objects are equal. This is meant primarily for testing. """
         return isinstance(other, HeatMapPoint) and self.__dict__ == other.__dict__
 
-
-def generate_response(FormValidator, response_generator, logger, requires_valid_user_id=False):
-    """
-    Validates the flask request form with `FormValidator` and returns 'Invalid request' if invalid or JSONifies the
-    output of `response_generator`. If `requires_valid_uer_id` is set to True then it may generate a user cookie if
-    one does not exist.
-    """
-    form = FormValidator(request.form)
-
-    kwargs = {'form': form}
-    uid = get_user_id()
-    need_to_send_new_id = False
-    if requires_valid_user_id:
-        if uid is None:
-            need_to_send_new_id = True
-            uid = issue_user_id()
-        kwargs['user_id'] = uid
-
-    request_form_rep = '{}{}'.format(FormValidator, list(request.form.items()))
-
-    logger.info('User {} requested {}'.format(uid, request_form_rep))
-    if not form.validate():
-        logger.warning('Invalid request from user {}: {}'.format(uid, request_form_rep))
-        return jsonify('Invalid request')
-
-    response = jsonify(response_generator(**kwargs))
-    if need_to_send_new_id:
-        response.set_cookie('user_id', str(uid), expires=None)
-    return response
+    def __repr__(self):
+        return str(self.__dict__)

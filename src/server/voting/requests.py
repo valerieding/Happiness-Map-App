@@ -4,7 +4,8 @@ from flask import Blueprint
 
 from server import DATABASE_MANAGER
 from server.database.voting_api import VotingAPI
-from server.util import Location, generate_response
+from server.util import Location
+from server.util.response import generate_response
 from server.voting.forms import *
 
 voting_requests = Blueprint('voting_requests', __name__)
