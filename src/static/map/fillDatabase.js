@@ -13,6 +13,4 @@ function fillDB() {
      'logical_location': place, 'happiness_level': vote},
    });
   }
-
-
 };
