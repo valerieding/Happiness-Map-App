@@ -65,12 +65,18 @@ describe("Map Tests", function(){
       expect(databaseToMapObj(thirdCase[3])).toEqual(thirdCaseObjs['booth']);
       expect(databaseToMapObj(thirdCase[4])).toEqual(thirdCaseObjs['cathey']);
       expect(databaseToMapObj(thirdCase[5])).toEqual(thirdCaseObjs['classicsBuilds']);
+      var undef = {id: undefined, score: NaN,
+        fullname: '', color: '', rating: ''};
+      expect(databaseToMapObj({})).toEqual(undef);
     });
   });
   describe("emptyMapObj tests", function(){
     it("should return empty map objects when given a valid logical_location", function(){
       expect(emptyMapObj('bookstore')).toEqual(thirdCaseObjs['bookstore']);
       expect(emptyMapObj('bond')).toEqual(thirdCaseObjs['bond']);
+      var undef = {id: 'fake_id', score: 'n/a',
+        fullname: undefined, color: '#ADADAD', rating: 'no data available'};
+      expect(emptyMapObj('fake_id')).toEqual(undef);
     });
   });
 
@@ -106,6 +112,7 @@ describe("Map Tests", function(){
       expect(getInfo(thirdCaseObjs['bond'])).toEqual("no data available<br>building happiness: n/a");
       expect(getInfo(thirdCaseObjs['cathey'])).toEqual("unhappy<br>building happiness: 2");
       expect(getInfo(thirdCaseObjs['classicsBuilds'])).toEqual("neutral<br>building happiness: 3.43");
+      expect(getInfo({})).toEqual('');
     });
   });
 
@@ -115,6 +122,9 @@ describe("Map Tests", function(){
       expect(getName(secondCase[0])).toEqual("Ratner Athletics Center");
       expect(getName(thirdCase[0])).toEqual("Alumni House");
       expect(getName(thirdCase[3])).toEqual("Booth School of Business");
+      expect(getName({happiness_level: 2,
+        logical_location: "fake_id"})).toBeUndefined();
+      expect(getName({})).toEqual('');
     });
   });
 
@@ -127,6 +137,7 @@ describe("Map Tests", function(){
       expect(getHappinessRating(thirdCase[2])).toEqual("happy");
       expect(getHappinessRating(thirdCase[4])).toEqual("unhappy");
       expect(getHappinessRating(thirdCase[5])).toEqual("neutral");
+      expect(getHappinessRating({})).toEqual('');
     });
   });
 
@@ -140,6 +151,7 @@ describe("Map Tests", function(){
       expect(computeColor(thirdCase[3])).toEqual("#fd8d3c");
       expect(computeColor(thirdCase[4])).toEqual("#fecc5c");
       expect(computeColor(thirdCase[5])).toEqual("#fd8d3c");
+      expect(computeColor({})).toEqual('');
     });
   });
 

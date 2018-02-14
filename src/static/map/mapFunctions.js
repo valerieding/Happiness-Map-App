@@ -96,19 +96,30 @@ function allMapObjects(ns) {
 };
 
 function getInfo(n) {
-  return n.rating + "<br>building happiness: " + n.score;
+  if (n.rating){
+    return n.rating + "<br>building happiness: " + n.score;
+  }
+  return "";
 };
 
 function getName(n) {
-  return FullNameKey[n.logical_location];
+  if (n.logical_location){
+    return FullNameKey[n.logical_location];
+  }
+  return "";
 };
 
 function computeColor(n) {
-  return ColorNumKey[Math.floor(n.happiness_level) - 1];
+  if (n.happiness_level){
+    return ColorNumKey[Math.floor(n.happiness_level) - 1];
+  }
+  return "";
 };
 
 function getHappinessRating(n) {
-  return HappinessTextKey[Math.floor(n.happiness_level) - 1];
+  if (n.happiness_level){
+    return HappinessTextKey[Math.floor(n.happiness_level) - 1];
+  } return "";
 };
 
 function formatScore(n) {
