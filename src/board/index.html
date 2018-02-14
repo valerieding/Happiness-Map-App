@@ -7,7 +7,7 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/static/bootstrap4.min.css">
     <link href="/static/main.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="/index_style.css"> -->
+    <link rel="stylesheet" href="/static/board/index_style.css">
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="/static/popper.min.js"></script>
     <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
@@ -18,17 +18,17 @@
       $(function(){
         $("#myNav").load("../static/nav.html");
           $(function(){
-            $.ajax({
-              url: '/request/issue_user_id',
-              type: 'post',
-              async: false
-            })});
-        $.ajax({
-         url: 'request/add_vote',
-         type: 'post',
-         dataType: 'json',
-         data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
-        });
+            // $.ajax({
+            //   url: '/request/issue_user_id',
+            //   type: 'post',
+            //   async: false
+            // })});
+  //         $.ajax({
+  //          url: 'request/add_vote',
+  //          type: 'post',
+  //          dataType: 'json',
+  //          data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5, 'logical_location': "reg"}
+  //         });
 
         // $.ajax({
         //  url: 'request/add_vote',
@@ -69,6 +69,7 @@
       });
     </script>
     <script type="text/javascript">
+
     $(document).ready(function(){
         var messageArray = "";
         function timeConverter(UNIX_timestamp){
@@ -93,24 +94,68 @@
             data: {'latitude': 10, 'longitude': 10},
             async: false,
             success: function(data) {
-              messageArray = data;
+              messageArray = data
+          //   }
+          // });
+
+              var trHTML = '';
+                // var i = 0;
+                // var table = '<table class="mainTable"><tr><th>message</th><th>happy level</th><th>time</th><th>loc</th></tr>';
+                // data = $.parseJSON(data)
+            // function createTableRow(cells) {
+            //     var tds = cells.map(function (cellContent) {
+            //         return '<td>' + cellContent + '</td>';
+            //     }).join('');
+            //     return '<tr>' + tds + '</tr>';
+            // }
+            // var totalrow = function (ignore, index) {
+            //     return createTableRow([
+            //         messageArray['messages'][index],
+            //         messageArray['happiness_level'][index]
+            //     ]);
+            // };
+            // $('#tuffy').append(
+            //     $.map(messageArray['messages'], totalrow)
+            // );
+              $.each(messageArray, function(index, value){
+                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><tr>' ;
+              });
+              $('#tuffy').append(trHTML);
+            },
+            error: function(msg) {
+              alert(msg.responseText);
             }
           });
-            //var trHTML = '';
-          $.each(messageArray, function(index, value){
-            // trHTML += '<tr><td>' + decodeURI(data['messages'][index]) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><tr>' ;
-            $("#posts").append(decodeURI(value['message']) + '<br>');
-            $("#votes").append(value['happiness_level'] + '/5' + '<br>');
-            $("#time").append(timeConverter(value['timestamp']) + '<br>');
-            $("#userid").append(value['user_id'] + '<br>');
+        });
+      });
 
-          });
+
+
+          //   $("#posts").append(decodeURI(value['message']) + '<br>');
+          //   $("#votes").append(value['happiness_level'] + '/5' + '<br>');
+          //   $("#time").append(timeConverter(value['timestamp']) + '<br>');
+          //   $("#userid").append(decodeURI(value['location']['logical_location']) + '<br>');
+          //   // table += ('<tr>');
+          //   // table += ('<td>' + decodeURI(value['message']) + '</td>');
+          //   // table += ('<td> + value['happiness_level'] + </td>');
+          //   // table += ('<td> + timeConverter(value['timestamp']) + </td>');
+          //   // table += ('<td>' + decodeURI(value['location']['logical_location']) + '</td>');
+          //   // table += ('</tr>');
+          // });
+              // table += '</table>';
+              // $("#tableContainer").html(table);
+
+
+            // },
+            // error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //                 alert("some error");
+            // }
             // $('#total_post').append(trHTML);
             // },
 
 
-        });
-    });
+      //   });
+      // });
     </script>
     <script>
       $(function() {
@@ -120,7 +165,7 @@
               url: 'request/add_post',
               type: 'post',
               dataType: 'json',
-              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8)},
+              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'logical_location': "Maclean"},
               success: function(data) {
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
@@ -168,13 +213,13 @@
         <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
           <img class="card-img-top" alt="">
           <div class="card-body">
-            <div class="d-flex justify-content-between">
+            <!-- <div class="d-flex justify-content-between">
               <h5 class="card-title">Post</h5>
               <h5 class="card-title">Happiness Level</h5>
               <h5 class="card-title">Datetime</h5>
               <h5 class="card-title">User ID</h5>
-              <h5 class="card-title">Upvote</h5>
-            </div>
+              <h5 class="card-title">Log Location</h5>
+            </div> -->
 
             <div class="d-flex justify-content-between">
               <!-- <table class="table table-hover" id="total_post">
@@ -187,14 +232,25 @@
                   </tr>
                 </thead>
                 <tbody> -->
-                  <div id="posts"></div>
+                  <table id="tuffy" border='2' class="table table-hover table-dark table-border">
+                      <tr>
+                          <th scope="col">Messages</th>
+                          <th scope="col">Happiness Level</th>
+                          <th scope="col">Location</th>
+                          <th scope="col">Time Stamp</th>
+                          <th scope="col">User ID</th>
+
+                      </tr>
+                  </table>
+                  <!-- <div id="posts"></div>
                   <div id="votes"></div>
                   <div id="time"></div>
                   <div id="userid"></div>
                   <div>
                     <button type="button" class="btn btn-primary btn-sm" onclick="upvote();">^
                     </button>
-                  </div>
+                  </div> -->
+                  <!-- change this -->
                 <!-- </tbody>
               </table> -->
               <!-- <div id="posts"></div>
