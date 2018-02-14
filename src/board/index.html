@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,66 +9,20 @@
     <link rel="stylesheet" href="/static/board/index_style.css">
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="/static/popper.min.js"></script>
-    <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
-    <title>Message Board</title>
-  </head>
-  <body>
     <script>
       $(function(){
         $("#myNav").load("../static/nav.html");
-          $(function(){
-            // $.ajax({
-            //   url: '/request/issue_user_id',
-            //   type: 'post',
-            //   async: false
-            // })});
-  //         $.ajax({
-  //          url: 'request/add_vote',
-  //          type: 'post',
-  //          dataType: 'json',
-  //          data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5, 'logical_location': "reg"}
-  //         });
-
-        // $.ajax({
-        //  url: 'request/add_vote',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'happiness_level': 2}
-        // });
-        // $.ajax({
-        //  url: 'request/add_post',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'message': 'another post'}
-        // });
-        // $.ajax({
-        //  url: 'request/add_post',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'message': 'feeling 2/5'}
-        // });
-        // $.ajax({
-        //  url: 'request/add_vote',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'happiness_level': 1}
-        // });
-        // $.ajax({
-        //  url: 'request/add_post',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'message': 'just voted again 1/5 very sad!!!'}
-        // });
-        // $.ajax({
-        //  url: 'request/add_post',
-        //  type: 'post',
-        //  dataType: 'json',
-        //  data: {'latitude': 10, 'longitude': 10, 'message': 'feeling 1/5'}
-        // });
+        //An example "add_vote", when really this will be done by the user on the voting page.
+        //Can change 'happiness_level' to see different welcome text (upon next reload)
+              $.ajax({
+                url: 'request/add_vote',
+                type: 'post',
+                dataType: 'json',
+                data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
+                });
       });
     </script>
     <script type="text/javascript">
-
     $(document).ready(function(){
         var messageArray = "";
         function timeConverter(UNIX_timestamp){
@@ -95,28 +48,7 @@
             async: false,
             success: function(data) {
               messageArray = data
-          //   }
-          // });
-
               var trHTML = '';
-                // var i = 0;
-                // var table = '<table class="mainTable"><tr><th>message</th><th>happy level</th><th>time</th><th>loc</th></tr>';
-                // data = $.parseJSON(data)
-            // function createTableRow(cells) {
-            //     var tds = cells.map(function (cellContent) {
-            //         return '<td>' + cellContent + '</td>';
-            //     }).join('');
-            //     return '<tr>' + tds + '</tr>';
-            // }
-            // var totalrow = function (ignore, index) {
-            //     return createTableRow([
-            //         messageArray['messages'][index],
-            //         messageArray['happiness_level'][index]
-            //     ]);
-            // };
-            // $('#tuffy').append(
-            //     $.map(messageArray['messages'], totalrow)
-            // );
               $.each(messageArray, function(index, value){
                 trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><td>' + value['reactions']['upvote'] + '</td><tr>' ;
               });
@@ -126,36 +58,45 @@
               alert(msg.responseText);
             }
           });
+
+          //AA: make function for different welcome messages based on last vote:
+          //TODO:   pull most recent happinesslevel, parameter to welcomeText(X)          
+          //right now it just takes happiness of the most recent post, 
+          //which is not what we want in the end obviously
+          document.body.onload = welcomeText(messageArray[0]['happiness_level']);
+
+          function welcomeText(happy_lvl){
+            var welcome = ""
+            switch(happy_lvl){
+              case 1:
+                welcome = "<h4 style=\"color:SlateBlue; text-align:left;\">1/5?!?! Why are you so sad?</h4>";
+                break;
+              case 2:
+                welcome ="<h4 style=\"color:DodgerBlue; text-align:left;\">2/5? Tell us why you're feeling blue...</h4>";
+                break;
+              case 3:
+                welcome ="<h4 style=\"color:Orange; text-align:left;\">Keep your chin up, and tell us why you feel so 3 right now</h4>";
+                break;
+              case 4:
+                welcome ="<h4 style=\"color:Yellow; text-align:left;\">4/5? Nice! How come?</h4>";
+                break;
+              case 5:
+                welcome = "<h4 style=\"color:MediumSeaGreen; text-align:left;\">You're too happy. Tell us why...</h4>";
+                break;
+              default:
+                welcome.append("Vote first, then post!");
+            }
+           document.getElementById("welcome").innerHTML = welcome;
+          }
+
         });
       });
-
-
-
+          //if we wanted it displayed in its own column (like before)
           //   $("#posts").append(decodeURI(value['message']) + '<br>');
           //   $("#votes").append(value['happiness_level'] + '/5' + '<br>');
           //   $("#time").append(timeConverter(value['timestamp']) + '<br>');
           //   $("#userid").append(decodeURI(value['location']['logical_location']) + '<br>');
-          //   // table += ('<tr>');
-          //   // table += ('<td>' + decodeURI(value['message']) + '</td>');
-          //   // table += ('<td> + value['happiness_level'] + </td>');
-          //   // table += ('<td> + timeConverter(value['timestamp']) + </td>');
-          //   // table += ('<td>' + decodeURI(value['location']['logical_location']) + '</td>');
-          //   // table += ('</tr>');
-          // });
-              // table += '</table>';
-              // $("#tableContainer").html(table);
 
-
-            // },
-            // error: function(XMLHttpRequest, textStatus, errorThrown) {
-            //                 alert("some error");
-            // }
-            // $('#total_post').append(trHTML);
-            // },
-
-
-      //   });
-      // });
     </script>
     <script>
       $(function() {
@@ -172,11 +113,8 @@
                  //console.log(decodeURI($(data))
                  console.log("my form input: " + $("#myform").serialize().slice(8));
               }
-
           });
-
         });
-
     });
     </script>
     <div class="homepage">
@@ -184,56 +122,32 @@
         <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Message Board</h1>
+            <!-- THIS is where 'welcomeText' goes when called on load: -->
+                <div id="welcome"></div>          
         </main>
-        <!-- <button type="button" class="btn btn-primary w-25 p-3 m-0">Make New Post</button> -->
 
         <form id="myform" method="post">
           <div class="form-group">
-            <!-- <div class="card">
-              <div class="card-block"> -->
-                <label for="exampleInputName2">
-                  <h3 style="color:white;">
-                      Why are you feeling blue?
-                  </h3>
-                </label>
-              <!-- </div>
-            </div> -->
-            <!-- <label for="exampleInputName2">hide this</label> -->
+
             <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
-            <!-- currently pressing enter and clicking button both work
-            is one better than the other? -->
-            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
           </div>
-          <!-- made it so window reloads on submit - not sure if theres a better way?-->
           <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
         </form>
 
-        <!-- <form id="myform" method="post" action="">
-          <input type="text" size="50" value="" name="message">
-        </form> -->
         <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
           <img class="card-img-top" alt="">
           <div class="card-body">
-            <!-- <div class="d-flex justify-content-between">
+            <!--  How we did it before:
+              <div class="d-flex justify-content-between">
               <h5 class="card-title">Post</h5>
               <h5 class="card-title">Happiness Level</h5>
               <h5 class="card-title">Datetime</h5>
               <h5 class="card-title">User ID</h5>
               <h5 class="card-title">Log Location</h5>
             </div> -->
-
             <div class="d-flex justify-content-between">
-              <!-- <table class="table table-hover" id="total_post">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Time Stamp</th>
-                    <th scope="col">Score</th>
-                  </tr>
-                </thead>
-                <tbody> -->
-                  <table id="tuffy" border='2' class="table table-hover table-dark table-border">
+
+                  <table id="tuffy" border='2' class="table table-hover table-border">
                       <tr>
                           <th scope="col">Messages</th>
                           <th scope="col">Happiness Level</th>
@@ -243,28 +157,19 @@
                           <th scope="col">Upvote</th>
                       </tr>
                   </table>
-                  <!-- <div id="posts"></div>
+                  <!-- Previously:
+                  <div id="posts"></div>
                   <div id="votes"></div>
                   <div id="time"></div>
                   <div id="userid"></div>
                   <div>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="upvote();">^
                     </button>
                   </div> -->
-                  <!-- change this -->
-                <!-- </tbody>
-              </table> -->
-              <!-- <div id="posts"></div>
-              <div id="votes"></div>
-              <div id="time"></div>
-              <div id="score"></div> -->
+
             </div>
           </div>
         </div>
-
       </div>
     </div>
-
-
   </body>
 </html>
