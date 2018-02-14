@@ -5,6 +5,7 @@ from constants import WEBSITE_ROOT_FOLDER
 static_server = Blueprint('static', __name__, static_folder=WEBSITE_ROOT_FOLDER)
 
 
+
 @static_server.route('/')
 @static_server.route('/index.html')
 def serve_main_page():
@@ -27,6 +28,10 @@ def serve_nav():
 @static_server.route('/lib/<filename>', defaults={'root': 'lib'})
 @static_server.route('/styles/<filename>', defaults={'root': 'styles'})
 @static_server.route('/scripts/<filename>', defaults={'root': 'scripts'})
+@static_server.route('/static/map/<filename>', defaults={'root': 'static/map'})
+@static_server.route('/static/board/<filename>', defaults={'root': 'static/board'})
+@static_server.route('/static/vote/<filename>', defaults={'root': 'static/vote'})
+@static_server.route('/static/stats/<filename>', defaults={'root': 'static/stats'})
 def serve_static_files(root, filename):
     return static_server.send_static_file(root + '/' + filename)
     # return app.send_static_file(os.path.join(root, filename))  TODO: figure out why this does not work

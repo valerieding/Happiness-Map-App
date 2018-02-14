@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/bootstrap4.min.css">
+    <link href="/static/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/map/map.css">
+    <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="/static/popper.min.js"></script>
+    <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
+  </head>
+  <body class="campus-bg">
+    <div id="map" class="campus">
+      <!-- Raphaël JS Map Here -->
+    </div>
+    <div id="region-card">
+      <div class="card">
+        <div class="card-block">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <h5 id="region-header" class="card-title"></h5>
+              <p id="region-text" class="card-text"></p>
+            </li>
+            <li class="list-group-item">
+              <p id="campus-avg-text" class="card-text"></p>
+            </li>
+        </div>
+      </div>
+    </div>
+    <script src="/static/map/raphael-min.js"></script>
+    <script src="/static/map/mapBackground.js"></script>
+    <script src="/static/map/mapFunctions.js"></script>
+    <script src="/static/map/mapBuildings.js"></script>
+  </body>
+</html>
