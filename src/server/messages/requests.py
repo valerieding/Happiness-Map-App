@@ -5,8 +5,8 @@ from flask import Blueprint
 from server import DATABASE_MANAGER
 from server.database.message_api import MessageAPI
 from server.messages.forms import *
-from server.util import Location, generate_response
-from server.util.user import get_user_id
+from server.util import Location
+from server.util.response import generate_response
 
 message_requests = Blueprint('message_requests', __name__)
 
@@ -32,26 +32,26 @@ def get_trending_posts():
 
 @message_requests.route('/request/add_post', methods=['POST'])
 def add_post():
-    def response(form):
-        return messageAPI.add_post(get_user_id(), Location.from_request(form), form.message.data, form.reply_to.data)
+    def response(form, user_id):
+        return messageAPI.add_post(user_id, Location.from_request(form), form.message.data, form.reply_to.data)
 
-    return generate_response(AddPostForm, response, logger)
+    return generate_response(AddPostForm, response, logger, requires_valid_user_id=True)
 
 
 @message_requests.route('/request/upvote', methods=['POST'])
 def upvote():
-    def response(form):
-        return messageAPI.upvote(get_user_id(), form.post_id.data)
+    def response(form, user_id):
+        return messageAPI.upvote(user_id, form.post_id.data)
 
-    return generate_response(UpvoteForm, response, logger)
+    return generate_response(UpvoteForm, response, logger, requires_valid_user_id=True)
 
 
 @message_requests.route('/request/downvote', methods=['POST'])
 def downvote():
-    def response(form):
-        return messageAPI.downvote(get_user_id(), form.post_id.data)
+    def response(form, user_id):
+        return messageAPI.downvote(user_id, form.post_id.data)
 
-    return generate_response(DownvoteForm, response, logger)
+    return generate_response(DownvoteForm, response, logger, requires_valid_user_id=True)
 
 
 # TODO: activate this and have some sort of admin verification
