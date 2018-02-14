@@ -1,6 +1,6 @@
 from flask import request, jsonify
 
-from server.util.user import get_user_id
+from server.util.user import get_user_id, issue_user_id
 
 
 class Location:
@@ -47,6 +47,9 @@ class Message:
         """Returns true iff the objects are equal. This is meant primarily for testing. """
         return isinstance(other, Message) and self.__dict__ == other.__dict__
 
+    def __repr__(self):
+        return str(self.__dict__)
+
 
 class HeatMapPoint:
     def __init__(self, logical_location, happiness_level):
@@ -66,13 +69,31 @@ class HeatMapPoint:
         return isinstance(other, HeatMapPoint) and self.__dict__ == other.__dict__
 
 
-def validate_request(form, logger, requires_valid_user_id=False):
-    """Validates a `form`, logs events in `logger` and returns an error message or None if the form is valid. """
+def generate_response(FormValidator, response_generator, logger, requires_valid_user_id=False):
+    """
+    Validates the flask request form with `FormValidator` and returns 'Invalid request' if invalid or JSONifies the
+    output of `response_generator`. If `requires_valid_uer_id` is set to True then it may generate a user cookie if
+    one does not exist.
+    """
+    form = FormValidator(request.form)
 
+    kwargs = {'form': form}
     uid = get_user_id()
-    request_form_rep = '{}{}'.format(form.__class__.__name__, list(request.form.items()))
+    need_to_send_new_id = False
+    if requires_valid_user_id:
+        if uid is None:
+            need_to_send_new_id = True
+            uid = issue_user_id()
+        kwargs['user_id'] = uid
+
+    request_form_rep = '{}{}'.format(FormValidator, list(request.form.items()))
+
     logger.info('User {} requested {}'.format(uid, request_form_rep))
-    if not form.validate() or (uid is None and requires_valid_user_id):
+    if not form.validate():
         logger.warning('Invalid request from user {}: {}'.format(uid, request_form_rep))
         return jsonify('Invalid request')
-    return None
+
+    response = jsonify(response_generator(**kwargs))
+    if need_to_send_new_id:
+        response.set_cookie('user_id', str(uid), expires=None)
+    return response

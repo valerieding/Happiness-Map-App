@@ -1,6 +1,8 @@
 import time
 import unittest
 
+import sys
+
 from server import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
@@ -38,8 +40,10 @@ class MessageAPITest(unittest.TestCase):
 
         self.assertTrue(self.messageApi.add_post(1, self.loc1, "This is USER 1 at location 1, adding my first post"))
         post_id1 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (1,))[0][0]
+        time.sleep(0.01)  # TODO: instead mock the time.time().
         self.assertTrue(self.messageApi.add_post(2, self.loc2, "This is USER 2 at location 2, adding my first post"))
         post_id2 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (2,))[0][0]
+        time.sleep(0.01)
         self.assertTrue(self.messageApi.add_post(3, self.loc3, "This is USER 3 at location 3, adding my first post"))
         post_id3 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (3,))[0][0]
         self.assertSequenceEqual(
