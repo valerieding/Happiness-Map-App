@@ -74,7 +74,7 @@ function databaseToMapObj(n) {
   };
 };
 
-function emptyMabObj(n) {
+function emptyMapObj(n) {
   return {
     id: n,
     score: "n/a",
@@ -87,7 +87,7 @@ function emptyMabObj(n) {
 function allMapObjects(ns) {
   let allObjs = {};
   for (var prop in FullNameKey){
-    allObjs[prop] = emptyMabObj(prop);
+    allObjs[prop] = emptyMapObj(prop);
   }
   ns.forEach(function(n) {
     allObjs[n.logical_location] = databaseToMapObj(n);
