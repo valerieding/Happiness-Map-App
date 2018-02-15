@@ -398,9 +398,10 @@ for (var i = 0; i < regions.length; i++){
 	regions[i].mouseover(function(e){
 		this.node.style.opacity = 0.7;
 		this.node.style.stroke = 'yellow';
-		var i = getInfo(this.data('info'));
+		let info = this.data('info');
+		let label = info.rating + "<br>building happiness: " + info.score;
 		document.getElementById('region-header').innerHTML = this.data('info').fullname;
-		document.getElementById('region-text').innerHTML = i;
+		document.getElementById('region-text').innerHTML = label;
 	});
 
 	regions[i].mouseout(function(e){
