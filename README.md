@@ -57,11 +57,14 @@ Backend:
 - Created database using SQLite
 - Set up server using Flask
 - Set up API for front-end to post requests and query the database
+- Maintained and updated database/queries to keep up with front end needs
 
 ### 6.) Divison of work:
 who did what: who paired with who; which part is implemented by which pair
 
 Claire and Keely made the maps page! Keely made the SVG/map design (mapBackground.js and mapBuildings.js). Claire connected the map to the database and formatted it on the page (mapFunctions.js, map.css, mapsvg.html, and index.html). Keely set up the Jasmine testing suite and Claire wrote the tests in MapSpec.js. Claire wrote the fillDatabase.js file for visualization testing.
+
+Mihai and Valerie worked on the backend. We pair-programmed the database (with Mihai driving), and pair-programmed unit tests. We both contributed to the database API (querying the database for specific requests). We pair-programmed the server. Mihai worked on form validation.
 
 ### 7.) Design changes or unit test changes:
 
