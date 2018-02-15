@@ -36,8 +36,19 @@ See above, first section
 See above, first section
 ### 3.) How to run unit tests:
 See above, section 3.a)
+
+#### 3a.) Any changes to unit tests:
+Backend:
+- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py). 
+
 ### 4.) Acceptance tests to try
 ((i.e., what inputs to use, and what outputs are expected))
+Map:
+
+Message Board:
+
+Voting:
+
 ### 5.) What's been implemented:
 ((text description of what is implemented. You can refer to the use cases and user stories in your design document.))
 Voting:
@@ -56,7 +67,7 @@ Backend:
 - Wrote unit tests for database API and requests
 - Created database using SQLite
 - Set up server using Flask
-- Set up API for front-end to post requests and query the database
+- Set up API for front-end to post requests and query the database (all functions outlined in the design doc are implemented, and any changes are noted below in section 7)
 - Maintained and updated database/queries to keep up with front end needs
 
 ### 6.) Divison of work:
@@ -83,4 +94,3 @@ Backend:
 - Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post(). 
 
 ### 8.) Anything else:
-### 9.) Peer-evaluation:
