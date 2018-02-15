@@ -49,19 +49,33 @@ class MessageAPI:
 
     def add_reaction(self, uid, post_id, reaction):
         """Adds an upvote to `post_id` by `uid`. """
-        reaction_exists = self.database.execute("SELECT postID FROM post_votes WHERE postID = ? AND uid = ? and isUpvote = ? ORDER BY postID DESC LIMIT 1", (post_id, uid, reaction))
-        if len(reaction_exists) != 0:
+        duplicate_reaction = len(self.database.execute("SELECT * FROM post_votes WHERE postID = ? AND uid = ? and isUpvote = ? ORDER BY postID DESC LIMIT 1", (post_id, uid, reaction)))
+        # If a user has already done this reaction to this post, disallow
+        if duplicate_reaction != 0:
             return False
 
         try:
-            # Remove previous reactions by the same user.
-            self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
-            # Add the reaction.
-            self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
-            if reaction == 1:
-                self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+            opposite_reaction = len(self.database.execute("SELECT * FROM post_votes WHERE postID = ? AND uid = ? ORDER BY postID DESC LIMIT 1", (post_id, uid)))
+            # If a user has previously done the opposite reaction to this post, we need to switch the reaction:
+            if opposite_reaction != 0:
+                # Remove previous reaction by the same user from post_votes
+                self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
+                # New reaction is a downvote, so we have to subtract one from upvotes, add one to downvotes in posts
+                if reaction == 1:
+                    self.database.execute("UPDATE posts SET upvotes = upvotes - 1 WHERE id = ?", (post_id,))
+                    self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+                # New reaction is an upvote, so we have to subtract one from downvotes, add one to upvotes in posts
+                else:
+                    self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+                    self.database.execute("UPDATE posts SET downvotes = downvotes - 1 WHERE id = ?", (post_id,))
+            # No previous opposite reaction, just increment the reaction to posts
             else:
-                self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+                if reaction == 1:
+                    self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+                else:
+                    self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+            # No matter what, add the reaction to post_votes.
+            self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
             self.database.commit()
             return True
         except IntegrityError as e:
@@ -75,3 +89,17 @@ class MessageAPI:
             self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
             self.database.commit()
     '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
