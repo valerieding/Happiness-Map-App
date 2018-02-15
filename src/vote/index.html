@@ -34,8 +34,7 @@
               dataType: 'json',
               data: {'latitude': 10, 
                      'longitude': 10, 
-                    'logical_location': $('input[name=loc_drop]:selected').val(),
-                    //'logical_location': $
+                     'logical_location': $('#loc_drop option:selected').val(),
                      'happiness_level': $('input[name=happiness_level]:checked').val()},
               beforeSend: function() {
                 //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());

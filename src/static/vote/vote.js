@@ -5,6 +5,7 @@ var helloworld = function(){
 // same as in src/static/map/mapFunctions.js
 // To Do: move to external static file for reference in both
 var log_locs = Object.freeze({
+  blank: "",
   bj : "Burton Judson Courts",
   cathey : "Cathey Dining Commons",
   south : "South Campus Residence Hall",
