@@ -23,7 +23,7 @@ class VotingAPI:
 
         # TODO: use user-specific locks around here (provided by the DatabaseManager).
         try:
-            self.database.execute("DELETE FROM votes WHERE id = ? AND timestamp >= ?",
+            self.database.execute("DELETE FROM votes WHERE uid = ? AND timestamp >= ?",
                                   (uid, time.time() - VotingAPI.VOTE_TIMEOUT))
             self.database.execute("INSERT INTO votes values (NULL, ?, ?, ?, ?, ?, ?, ?)",
                                   (uid, time.time(), happiness_level, location.latitude, location.longitude,

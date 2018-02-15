@@ -75,6 +75,7 @@ class MessageRequestsTest(TestCase):
     def test_add_reaction_valid(self, mocked):
         response = self.client.post('/request/add_reaction', data={'post_id': 10, 'reaction': 'upvote'})
         self.assertTrue(mocked.called)
+        self.assertEqual(mocked.call_args[0][1:], (10, 0))
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
     @mock.patch.object(messageAPI, 'add_reaction', return_value=DUMMY_RESPONSE)

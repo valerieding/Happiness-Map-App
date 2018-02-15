@@ -26,7 +26,6 @@ class VotingAPITest(unittest.TestCase):
             self.assertTrue(self.votingApi.add_vote(*user))
         self.assertEqual(self.votingApi.database.connection.total_changes, 10)
 
-    @unittest.skip('Not implemented. A new vote should remove recent votes by the same user from consideration.')
     def test_add_vote_disallow_multi_vote(self):
         self.votingApi.add_vote(1, LOC_A, 1)
         self.assertEqual(self.votingApi.get_campus_average(0, float('inf')), 1)
