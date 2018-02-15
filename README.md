@@ -62,5 +62,11 @@ Backend:
 who did what: who paired with who; which part is implemented by which pair
 
 ### 7.) Design changes or unit test changes:
+
+Map:
+- We added more tests and comments to explain the reasoning behind the test cases.
+- We wrote tests for additional functions that were added since last week (emptyMapObj, formatScore, allMapObjs).
+- We changed the data structures slightly so all tests were updated to reflect the new fields.
+
 ### 8.) Anything else:
 ### 9.) Peer-evaluation:
