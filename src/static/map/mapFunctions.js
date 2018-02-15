@@ -74,7 +74,7 @@ function databaseToMapObj(n) {
   };
 };
 
-function emptyMabObj(n) {
+function emptyMapObj(n) {
   return {
     id: n,
     score: "n/a",
@@ -87,7 +87,7 @@ function emptyMabObj(n) {
 function allMapObjects(ns) {
   let allObjs = {};
   for (var prop in FullNameKey){
-    allObjs[prop] = emptyMabObj(prop);
+    allObjs[prop] = emptyMapObj(prop);
   }
   ns.forEach(function(n) {
     allObjs[n.logical_location] = databaseToMapObj(n);
@@ -96,19 +96,30 @@ function allMapObjects(ns) {
 };
 
 function getInfo(n) {
-  return n.rating + "<br>building happiness: " + n.score;
+  if (n.rating){
+    return n.rating + "<br>building happiness: " + n.score;
+  }
+  return "";
 };
 
 function getName(n) {
-  return FullNameKey[n.logical_location];
+  if (n.logical_location){
+    return FullNameKey[n.logical_location];
+  }
+  return "";
 };
 
 function computeColor(n) {
-  return ColorNumKey[Math.floor(n.happiness_level) - 1];
+  if (n.happiness_level){
+    return ColorNumKey[Math.floor(n.happiness_level) - 1];
+  }
+  return "";
 };
 
 function getHappinessRating(n) {
-  return HappinessTextKey[Math.floor(n.happiness_level) - 1];
+  if (n.happiness_level){
+    return HappinessTextKey[Math.floor(n.happiness_level) - 1];
+  } return "";
 };
 
 function formatScore(n) {
@@ -159,63 +170,4 @@ function getBuildingScore(logloc) {
     }
   });
   return score;
-};
-
-
-// function just for testing
-function populateDB() {
-  $.ajax({
-    url: '/request/issue_user_id',
-    type: 'post',
-    async: false
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.792289, 'longitude': -87.599959,
-      'logical_location': 'regenstein', 'happiness_level': 1},
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.792289, 'longitude': -87.599959,
-      'logical_location': 'regenstein', 'happiness_level': 2},
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.792289, 'longitude': -87.599959,
-      'logical_location': 'regenstein', 'happiness_level': 1},
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.792289, 'longitude': -87.599959,
-      'logical_location': 'regenstein', 'happiness_level': 2},
-  });
-  $.ajax({
-    url: '/request/add_vote',
-    type: 'post',
-    dataType: 'json',
-    data: {'latitude': 41.791863, 'longitude': -87.600968,
-      'logical_location': 'mansueto', 'happiness_level': 3},
-  });
-  $.ajax({
-   url: '/request/add_vote',
-   type: 'post',
-   dataType: 'json',
-   data: {'latitude': 41.793031, 'longitude': -87.599938,
-     'logical_location': 'maxp', 'happiness_level': 5},
- });
- $.ajax({
-   url: '/request/add_vote',
-   type: 'post',
-   dataType: 'json',
-   data: {'latitude': 41.791895, 'longitude': -87.598393,
-     'logical_location': 'bartlett', 'happiness_level': 4},
- });
 };

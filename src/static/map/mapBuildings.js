@@ -1,4 +1,4 @@
-//populateDB();
+//fillDB();
 
 let allScores = getAllBuildingScores();
 console.log(allScores);
