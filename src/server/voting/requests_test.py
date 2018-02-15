@@ -20,36 +20,26 @@ class VotingRequestsTest(TestCase):
         self.client = app.test_client()
 
     def test_user_id_does_not_change(self):
-        self.client.post('/request/issue_user_id')
+        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         initial_cookies = list(self.client.cookie_jar)
-        self.client.post('/request/issue_user_id')
+        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertCountEqual(initial_cookies, list(self.client.cookie_jar))
 
     @mock.patch.object(votingAPI, 'add_vote', return_value=True)
     def test_add_vote_valid(self, mocked):
-        self.client.post('/request/issue_user_id')
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertEqual(response.data, SUCCESS_RESPONSE)
         self.assertTrue(mocked.called)
 
     @mock.patch.object(votingAPI, 'add_vote', return_value=False)
     def test_add_vote_valid_but_rejected_by_database(self, mocked):
-        self.client.post('/request/issue_user_id')
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertTrue(mocked.called)
 
     @mock.patch.object(votingAPI, 'add_vote')
     def test_add_vote_invalid(self, mocked):
-        self.client.post('/request/issue_user_id')
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': -1})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
-        self.assertFalse(mocked.called)
-
-    @mock.patch.object(votingAPI, 'add_vote')
-    def test_add_vote_no_cookie(self, mocked):
-        self.client.cookie_jar.clear()
-        response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
 

@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/bootstrap4.min.css">
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="/static/main.css" rel="stylesheet">
-	<link rel="stylesheet" href="/static/map/map.css">
-
+	  <link rel="stylesheet" href="/static/map/map.css">
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="/static/popper.min.js"></script>
     <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
@@ -25,16 +26,9 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Campus Map</h1>
           <p>This is the campus map, where you can see average happinesses across buildings</p>
-		 <div class="card w-100 p-3 mt-3" style="overflow-x: scroll"> 
-			<div id="map" class="campus">
-				<!-- Raphaël JS Map Here -->
-			</div>
-		</div>
-		<div id="region-name"></div>
-		<script src="/static/map/raphael-min.js"></script>
-		<script src="/static/map/mapFunctions.js"></script>
-		<script src="/static/map/mapBackground.js"></script>
-		<script src="/static/map/mapBuildings.js"></script>
+		        <div id="map-container" class="card campus-bg">
+              <iframe height="500px" width="100%" frameborder="0" scrolling="yes" src="/static/map/mapsvg.html">
+		        </div>
         </main>
       </div>
     </div>

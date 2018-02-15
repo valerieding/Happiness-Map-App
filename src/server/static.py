@@ -5,6 +5,7 @@ from constants import WEBSITE_ROOT_FOLDER
 static_server = Blueprint('static', __name__, static_folder=WEBSITE_ROOT_FOLDER)
 
 
+
 @static_server.route('/')
 @static_server.route('/index.html')
 def serve_main_page():

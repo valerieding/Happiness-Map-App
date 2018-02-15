@@ -10,6 +10,9 @@ body {
   height: 100%;
 }
 
+
+
+body,
 .homepage {
 	background-color: #333;
 	height: 100%;
@@ -21,8 +24,4 @@ body {
 
 h1 {
 	color: white;
-}
-
-#map {
-	height: 100%;
 }
