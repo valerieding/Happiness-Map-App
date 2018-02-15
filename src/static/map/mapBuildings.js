@@ -1,9 +1,7 @@
 //fillDB();
 
 let allScores = getAllBuildingScores();
-console.log(allScores);
 let allPlaces = allMapObjects(allScores);
-console.log(allPlaces);
 let campus_avg = getCampusScore();
 
 var crerar = rsr.rect(254.833, 383.835, 40.667, 75.602);

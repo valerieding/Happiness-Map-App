@@ -36,24 +36,24 @@ describe("Map Tests", function(){
   // floats, truncated floats, and empty map objects (when no data is available)
   let thirdCaseObjs = Object.freeze({
     alumni: {id: "alumni", score: 5, fullname: "Alumni House",
-      color: "#bd0026", rating: "very happy"},
+      color: "#980043", rating: "very happy"},
     bartlett: {id: "bartlett", score: 1, fullname: "Bartlett Dining Commons",
-      color: "#ffffb2", rating: "very unhappy"},
+      color: "#f1eef6", rating: "very unhappy"},
     bj: {id: "bj", score: 4.25, fullname: "Burton Judson Courts",
-      color: "#f03b20", rating: "happy"},
+      color: "#dd1c77", rating: "happy"},
     bond: {id: "bond", score: "n/a", fullname: "Bond Chapel",
       color: "#ADADAD", rating: "no data available"},
     bookstore: {id: "bookstore", score: "n/a", fullname: "University Bookstore",
       color: "#ADADAD", rating: "no data available"},
     booth: {id: "booth", score: 3.25, fullname: "Booth School of Business",
-      color: "#fd8d3c", rating: "neutral"},
+      color: "#df65b0", rating: "neutral"},
     cathey: {id: "cathey", score: 2, fullname: "Cathey Dining Commons",
-      color: "#fecc5c", rating: "unhappy"},
+      color: "#dd1c77", rating: "unhappy"},
     classicsBuilds: {id: "classicsBuilds", score: 3.43, fullname: "Classics Quad Buildings",
-      color: "#fd8d3c", rating: "neutral"}});
+      color: "#df65b0", rating: "neutral"}});
 
   let ratnerObj = {id: "ratner", score: 2.8, fullname: "Ratner Athletics Center",
-    color: "#fecc5c", rating: "unhappy"}
+    color: "#dd1c77", rating: "unhappy"}
 
 
   describe("databaseToMapObj tests", function(){
@@ -144,13 +144,13 @@ describe("Map Tests", function(){
   describe("computeColor tests", function(){
     it("should return the appropriate color in hex for any entry " +
       "from a get_heatmap call", function(){
-      expect(computeColor(secondCase[0])).toEqual("#fecc5c");
-      expect(computeColor(thirdCase[0])).toEqual("#bd0026");
-      expect(computeColor(thirdCase[1])).toEqual("#ffffb2");
-      expect(computeColor(thirdCase[2])).toEqual("#f03b20");
-      expect(computeColor(thirdCase[3])).toEqual("#fd8d3c");
-      expect(computeColor(thirdCase[4])).toEqual("#fecc5c");
-      expect(computeColor(thirdCase[5])).toEqual("#fd8d3c");
+      expect(computeColor(secondCase[0])).toEqual("#dd1c77");
+      expect(computeColor(thirdCase[0])).toEqual("#980043");
+      expect(computeColor(thirdCase[1])).toEqual("#f1eef6");
+      expect(computeColor(thirdCase[2])).toEqual("#dd1c77");
+      expect(computeColor(thirdCase[3])).toEqual("#df65b0");
+      expect(computeColor(thirdCase[4])).toEqual("#dd1c77");
+      expect(computeColor(thirdCase[5])).toEqual("#df65b0");
       expect(computeColor({})).toEqual('');
     });
   });
