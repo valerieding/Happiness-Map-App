@@ -16,7 +16,7 @@
   </head>
     <script>
       $(function(){
-        $("#myNav").load("../static/nav.html");
+        $("#myNav").load("/static/nav.html");
         //An example "add_vote", when really this will be done by the user on the voting page.
         //Can change 'happiness_level' to see different welcome text (upon next reload)
               // $.ajax({
@@ -52,16 +52,31 @@
             data: {'latitude': 10, 'longitude': 10},
             async: false,
             success: function(data) {
-              messageArray = data
+              messageArray = data;
+              console.log(messageArray);
               var trHTML = '';
               $.each(messageArray, function(index, value){
-                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><td>' + value['reactions']['upvote'] + '</td></tr>' ;
+                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + 
+                '</td><td> <button onclick=\"callReact(\'upvote\',' + value['post_id']  + ')\" class=\"btn btn-primary\">Upvotes: ' + value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + value['post_id'] +')\" class=\"btn btn-primary\">Downvotes: ' + value['reactions']['downvote'] + '</button></td></tr>' ;
               });
               $('#tuffy').append(trHTML);
             },
             error: function(msg) {
               alert(msg.responseText);
             }
+
+            // function callReact(vote){
+            //   switch(vote){
+            //     case "upvote":
+
+            //       break;
+            //     case "downvote":
+
+            //       break;
+            //     default:
+            //   }
+            // }
+
           });
 
           //AA: make function for different welcome messages based on last vote:
@@ -94,6 +109,8 @@
            document.getElementById("welcome").innerHTML = welcome;
           }
 
+
+
         });
       });
           //if we wanted it displayed in its own column (like before)
@@ -113,7 +130,7 @@
               dataType: 'json',
               data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'logical_location': "Maclean"},
               success: function(data) {
-                'request/upvote'
+                // 'request/upvote'
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
                  console.log("my form input: " + $("#myform").serialize().slice(8));
@@ -134,6 +151,33 @@
 
 
     });
+
+      function callReact(vote,postID){
+              switch(vote){
+                case "upvote":
+                  $(function(){
+                    $.ajax({
+                     url: '/request/add_reaction',
+                     type: 'post',
+                     dataType: 'json',
+                     data: {'post_id': postID, 'reaction': 'upvote'}
+                    });
+                  });
+                  break;
+                case "downvote":
+                  $(function(){
+                    $.ajax({
+                     url: '/request/add_reaction',
+                     type: 'post',
+                     dataType: 'json',
+                     data: {'post_id': postID, 'reaction': 'downvote'}
+                    });
+                  });
+                  break;
+                default:
+                  window.alert("hi!");
+              }
+            }
     </script>
     <div class="homepage">
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
