@@ -16,7 +16,7 @@ $(document).ready(function(){
         $(function() {
           $.ajax(
           {
-            url: 'request/get_recent_posts',
+            url: '/request/get_recent_posts',
             type: 'post',
             dataType: 'json',
             data: {'latitude': 10, 'longitude': 10},

@@ -11,7 +11,7 @@ class GetTrendingPostsForm(Form, LocationForm):
     """Validates the get_trending_posts request form. """
 
 
-class AddPostForm(Form, LocationForm):
+class AddPostForm(Form):
     """Validates the add_posts request form. """
     reply_to = IntegerField('reply_to')
     message = StringField('message', [validators.InputRequired()])

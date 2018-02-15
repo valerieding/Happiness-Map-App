@@ -49,13 +49,13 @@ class MessageRequestsTest(TestCase):
 
     @mock.patch.object(messageAPI, 'add_post', return_value=DUMMY_RESPONSE)
     def test_add_post_valid(self, mocked):
-        response = self.client.post('/request/add_post', data={'latitude': 45, 'longitude': 45, 'message': 'Something'})
+        response = self.client.post('/request/add_post', data={'message': 'Something'})
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
     @mock.patch.object(messageAPI, 'add_post', return_value=DUMMY_RESPONSE)
     def test_add_post_invalid(self, mocked):
-        response = self.client.post('/request/add_post', data={'latitude': 45, 'longitude': 45, 'start_time': -1.3})
+        response = self.client.post('/request/add_post')
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 

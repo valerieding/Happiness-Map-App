@@ -1,10 +1,8 @@
 import logging
 import time
-
-from random import randint
 from sqlite3 import IntegrityError
 
-from server.util import Message
+from server.util import Message, Location
 
 
 class MessageAPI:
@@ -28,19 +26,20 @@ class MessageAPI:
         return Message.from_tuple_array(self.database.execute(
             "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
 
-    def add_post(self, uid, location, message, reply_to=None):
+    def add_post(self, uid, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
 
         # Try to find most recent vote_id that corresponds to the given uid
-        vote = self.database.execute("SELECT id,score FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
+        vote = self.database.execute("""SELECT id, score, latitude, longitude, logical_loc FROM votes
+                                        WHERE uid = ? ORDER BY timestamp DESC LIMIT 1""", (uid,))
         if len(vote) != 1:
             return False
-        vote_id, happiness_level = vote[0]
+        vote_id, happiness_level = vote[0][:2]
 
         try:
             self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                                   (vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
-                                   location.latitude, location.longitude, location.logical_location))
+                                   *vote[0][2:]))
             self.database.commit()
             return True
         except IntegrityError as e:
@@ -48,7 +47,7 @@ class MessageAPI:
             return False
 
     def add_reaction(self, uid, post_id, reaction):
-        """Adds an upvote to `post_id` by `uid`. """
+        """Adds a reaction to `post_id` by `uid`. """
         reaction_exists = self.database.execute("SELECT postID FROM post_votes WHERE postID = ? AND uid = ? and isUpvote = ? ORDER BY postID DESC LIMIT 1", (post_id, uid, reaction))
         if len(reaction_exists) != 0:
             return False
