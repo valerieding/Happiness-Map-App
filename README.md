@@ -75,5 +75,12 @@ Map:
 - We wrote tests for additional functions that were added since last week (emptyMapObj, formatScore, allMapObjs).
 - We changed the data structures slightly so all tests were updated to reflect the new fields.
 
+Backend:
+- The design doc says there will be addUpvote() and addDownvote() functions. We changed these to be add_reaction() to make it easier to incorporate a wider range of reactions in the future (ex. happy, sad, funny, etc.). For this iteration, you can add an upvote reaction, or a downvote reaction.
+- The design doc says that add_vote() will call updateCampusAverage() and updateBuildingAverage(). We moved the functionality of the latter two functions into get_building_average() and get_campus_average(): they calculate the average values when called, so there is no need to have an updateCampusAverage() or updateBuildingAverage() function.
+- We added a get_happiness_level(userId) method to return the most recent happiness vote level of a given user
+- Because all voting/posting takes place on campus right now, for this iteration, get_recent_posts() returns all posts within a given time range, posted on campus, sorted by timestamp. get_trending_posts() returns all posts posted on campus, sorted by upvote count. In the next iteration, we will take location into consideration.
+- Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post(). 
+
 ### 8.) Anything else:
 ### 9.) Peer-evaluation:
