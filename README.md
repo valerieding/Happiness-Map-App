@@ -45,6 +45,12 @@ Voting:
 Message Board:
 
 Map:
+- Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
+- Used Raphael to make our own SVG campus map which runs in an iframe on the campus map page
+- Implemented the conversion of query results into color map of campus happiness
+- Included a 'region-card' in the corner of the iframe which shows users information about the selected building and the campus happiness averag
+- Wrote unit tests for all map object creation and manipulation functions
+- We have finished implementing the use case where a user clicks on the Campus Map tab, intending to learn how happy the various campus buildings are and how happy the campus is in general.
 
 Backend:
 - Wrote unit tests for database API and requests
@@ -54,6 +60,17 @@ Backend:
 
 ### 6.) Divison of work:
 who did what: who paired with who; which part is implemented by which pair
+
+Claire and Keely made the maps page! Keely made the SVG/map design (mapBackground.js and mapBuildings.js). Claire connected the map to the database and formatted it on the page (mapFunctions.js, map.css, mapsvg.html, and index.html). Keely set up the Jasmine testing suite and Claire wrote the tests in MapSpec.js. Claire wrote the fillDatabase.js file for visualization testing.
+
 ### 7.) Design changes or unit test changes:
+
+Map:
+- Designwise, we decided to make our own svg map instead of using the google maps api. We wanted more customization options and a building-focused design that would show newer buildings like north campus.
+- We made more final decisions about which buildings to use in our system, standardized the list of "logical_location"s to coordinate with the database and grouped certain buildings.
+- We added more tests and comments to explain the reasoning behind the test cases.
+- We wrote tests for additional functions that were added since last week (emptyMapObj, formatScore, allMapObjs).
+- We changed the data structures slightly so all tests were updated to reflect the new fields.
+
 ### 8.) Anything else:
 ### 9.) Peer-evaluation:

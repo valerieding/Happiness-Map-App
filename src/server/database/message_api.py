@@ -10,6 +10,8 @@ from server.util import Message
 class MessageAPI:
     """Handles database requests relating to message posts. """
 
+    # TODO: make use of localization throughout the MessageAPI interface.
+
     POST_ID_MAX = 2 ** 32
 
     def __init__(self, database):
@@ -18,14 +20,11 @@ class MessageAPI:
 
     def get_recent_posts(self, location, start_time, end_time):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
-        # TODO: define what "around" means: right now, just returns all posts, sorted by timestamp, ignores location
-        # TODO: this needs to be a class in order to jsonify it nicely
         return Message.from_tuple_array(self.database.execute(
             "SELECT * FROM posts WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC", (start_time, end_time)))
 
     def get_trending_posts(self, location):
         """Retrieves the trending messages posted around `location`. """
-        # TODO: define what "around" means: right now, just returns all posts sorted by net upvote count
         return Message.from_tuple_array(self.database.execute(
             "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
 
@@ -48,34 +47,17 @@ class MessageAPI:
             self.logger.exception(e)
             return False
 
-    def upvote(self, uid, post_id):
+    def add_reaction(self, uid, post_id, reaction):
         """Adds an upvote to `post_id` by `uid`. """
-        # Check if this user has already upvoted this post
-        # TODO: this needs a lock
-        if len(self.database.execute("SELECT uid FROM post_votes WHERE uid = ? AND postID = ? AND isUpvote = ?",
-                                     (uid, post_id, True))) != 0:
-            return False
-        num_upvotes = self.database.execute("SELECT upvotes FROM posts WHERE id = ?", (post_id,))[0][0]
         try:
-            self.database.execute("INSERT INTO post_votes values (?, ?, ?)", (post_id, uid, True))
-            self.database.execute("UPDATE posts SET upvotes = ? WHERE id = ?", (num_upvotes + 1, post_id))
-            self.database.commit()
-            return True
-        except IntegrityError as e:
-            self.logger.exception(e)
-            return False
-
-    def downvote(self, uid, post_id):
-        """Adds a downvote to `post_id` by `uid`. """
-        # Check if this user has already downvoted this post
-        # TODO: this needs a lock
-        if len(self.database.execute("SELECT uid FROM post_votes WHERE uid = ? AND postID = ? AND isUpvote = ?",
-                                     (uid, post_id, False))) != 0:
-            return False
-        num_downvotes = self.database.execute("SELECT downvotes FROM posts WHERE id = ?", (post_id,))[0][0]
-        try:
-            self.database.execute("INSERT INTO post_votes values (?, ?, ?)", (post_id, uid, False))
-            self.database.execute("UPDATE posts SET downvotes = ? WHERE id = ?", (num_downvotes + 1, post_id))
+            # Remove previous reactions by the same user.
+            self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
+            # Add the reaction.
+            self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
+            if reaction == 1:
+                self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+            else:
+                self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
             self.database.commit()
             return True
         except IntegrityError as e:

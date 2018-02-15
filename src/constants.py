@@ -18,4 +18,4 @@ LOG_FILE = join(_DATA_FOLDER, 'log.txt')
 
 SIGNATURE_KEY_FILE = join(_DATA_FOLDER, 'uid_key.pem')
 
-ALLOWED_REACTIONS_TO_POSTS = ['upvote', 'downvote']
+ALLOWED_REACTIONS_TO_POST = ['upvote', 'downvote']

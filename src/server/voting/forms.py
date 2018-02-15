@@ -3,6 +3,10 @@ from wtforms import Form, validators, StringField
 from server.util.forms import LocationForm, HappinessForm, TimeIntervalForm, LOGICAL_LOCATION_VALIDATOR
 
 
+class GetHappinessLevelForm(Form):
+    """Validates the add_vote request form. """
+
+
 class AddVoteForm(Form, LocationForm, HappinessForm):
     """Validates the add_vote request form. """
 

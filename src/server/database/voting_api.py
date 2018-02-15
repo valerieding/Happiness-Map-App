@@ -11,8 +11,6 @@ class VotingAPI:
     """Time limit in seconds between two votes by the same person."""
     VOTE_TIMEOUT = 600  # Ten minutes
 
-    # TODO: figure out how to filter out racing votes from the same user.
-
     def __init__(self, database):
         self.database = database
         self.logger = logging.getLogger('VotingAPI')
@@ -23,7 +21,10 @@ class VotingAPI:
         in the last `VOTE_TIMEOUT` seconds, that vote is then changed to have this happiness level.
         """
 
+        # TODO: use user-specific locks around here (provided by the DatabaseManager).
         try:
+            self.database.execute("DELETE FROM votes WHERE id = ? AND timestamp >= ?",
+                                  (uid, time.time() - VotingAPI.VOTE_TIMEOUT))
             self.database.execute("INSERT INTO votes values (NULL, ?, ?, ?, ?, ?, ?, ?)",
                                   (uid, time.time(), happiness_level, location.latitude, location.longitude,
                                    location.logical_location, location.address))
@@ -52,3 +53,9 @@ class VotingAPI:
         """
         return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ? AND logical_loc = ?",
                                      (start_time, end_time, building_label))[0][0]
+
+    def get_happiness_level(self, uid):
+        """ Returns the most recent happiness level registered for `uid`. """
+
+        votes = self.database.execute("SELECT score FROM votes WHERE id = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
+        return votes[0][0] if len(votes) != 0 else None
