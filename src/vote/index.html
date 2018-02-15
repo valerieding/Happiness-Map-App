@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/bootstrap4.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="/static/main.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="/index_style.css"> -->
     <link href="/static/vote/vote.css" rel="stylesheet">
@@ -17,27 +18,29 @@
   <body>
     <script>
       $(function(){
-        $("#myNav").load("../static/nav.html")
+        $("#myNav").load("/static/nav.html")
       });
     </script>
     <script>
       $(document).ready(function(){
         for (let key in log_locs) {
-          $("#loc_drop").append('<option value=' + log_locs[key] + '>' + log_locs[key] + '</option>');
+          $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
         }
 
         $("#vote_btn").click(function(){
-          $.ajax({
+          $.ajax({            
               url: 'request/add_vote',
               method: 'post',
               dataType: 'json',
               data: {'latitude': 10, 
                      'longitude': 10, 
-                     //'logical_loc': $('input[name=loc_drop]:selected').val();
+                    'logical_location': $('input[name=loc_drop]:selected').val(),
+                    //'logical_location': $
                      'happiness_level': $('input[name=happiness_level]:checked').val()},
               beforeSend: function() {
                 //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                alert("Location: " + $("#loc_drop option:selected").text());
+                alert("Location: " + $("#loc_drop option:selected").val());
+                //alert('echo');
               },
               success: function() {             
                 alert('Vote Submitted');
@@ -77,7 +80,7 @@
                   <br><br>
           <h5> Where are you?</h5>
           <h5> Select from the map or dropdown below.</h5>
-            <select id="loc_drop" form=vote>
+            <select id="loc_drop" form="vote" name="location">
               <!--
               <option name="location" value="Location 1">Location 1</option>
               <option name="location" value="Location 2">Location 2</option>

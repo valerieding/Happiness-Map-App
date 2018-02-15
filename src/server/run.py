@@ -11,6 +11,7 @@ from server.voting.requests import voting_requests
 def get_flask_app():
     class DictBasedJSONEncoder(flask.json.JSONEncoder):
         """Defaults to the dict representation of classes for convenience. """
+
         def default(self, o):
             return o.__dict__
 
