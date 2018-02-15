@@ -46,3 +46,11 @@ def get_heat_map():
         return votingAPI.get_heat_map(form.start_time.data, form.end_time.data)
 
     return generate_response(GetHeatMapForm, response, logger)
+
+
+@voting_requests.route('/request/happiness_level', methods=['POST'])
+def get_happiness_level():
+    def response(form, user_id):
+        return votingAPI.get_happiness_level(user_id)
+
+    return generate_response(GetHappinessLevelForm, response, logger, requires_valid_user_id=True)

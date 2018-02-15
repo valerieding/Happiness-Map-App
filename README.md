@@ -61,9 +61,13 @@ Backend:
 ### 6.) Divison of work:
 who did what: who paired with who; which part is implemented by which pair
 
+Claire and Keely made the maps page! Keely made the SVG/map design (mapBackground.js and mapBuildings.js). Claire connected the map to the database and formatted it on the page (mapFunctions.js, map.css, mapsvg.html, and index.html). Keely set up the Jasmine testing suite and Claire wrote the tests in MapSpec.js. Claire wrote the fillDatabase.js file for visualization testing.
+
 ### 7.) Design changes or unit test changes:
 
 Map:
+- Designwise, we decided to make our own svg map instead of using the google maps api. We wanted more customization options and a building-focused design that would show newer buildings like north campus.
+- We made more final decisions about which buildings to use in our system, standardized the list of "logical_location"s to coordinate with the database and grouped certain buildings.
 - We added more tests and comments to explain the reasoning behind the test cases.
 - We wrote tests for additional functions that were added since last week (emptyMapObj, formatScore, allMapObjs).
 - We changed the data structures slightly so all tests were updated to reflect the new fields.
