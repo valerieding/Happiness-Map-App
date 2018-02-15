@@ -18,9 +18,9 @@ class MessageAPITest(unittest.TestCase):
         self.messageApi = MessageAPI(self.db)
 
     def test_post_failure(self):
-        self.assertFalse(self.messageApi.add_post(4, self.loc1, "this is user 4, this post should fail"))
+        self.assertFalse(self.messageApi.add_post(4, "this is user 4, this post should fail"))
         self.assertTrue(self.votingApi.add_vote(2, self.loc2, 5))
-        self.assertFalse(self.messageApi.add_post(2, self.loc2, None))
+        self.assertFalse(self.messageApi.add_post(2, None))
 
     def test_add_post(self):
         keys_to_keep = ['user_id', 'message', 'happiness_level', 'reactions', 'location']
@@ -35,27 +35,27 @@ class MessageAPITest(unittest.TestCase):
         self.assertTrue(self.votingApi.add_vote(2, self.loc2, 5))
         self.assertTrue(self.votingApi.add_vote(3, self.loc3, 1))
 
-        self.assertTrue(self.messageApi.add_post(1, self.loc1, "This is USER 1 at location 1, adding my first post"))
+        self.assertTrue(self.messageApi.add_post(1, "This is USER 1, adding my first post"))
         post_id1 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (1,))[0][0]
         time.sleep(0.01)  # TODO: instead mock the time.time().
-        self.assertTrue(self.messageApi.add_post(2, self.loc2, "This is USER 2 at location 2, adding my first post"))
+        self.assertTrue(self.messageApi.add_post(2, "This is USER 2, adding my first post"))
         post_id2 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (2,))[0][0]
         time.sleep(0.01)
-        self.assertTrue(self.messageApi.add_post(3, self.loc3, "This is USER 3 at location 3, adding my first post"))
+        self.assertTrue(self.messageApi.add_post(3, "This is USER 3, adding my first post"))
         time.sleep(0.01)
         post_id3 = self.db.execute("SELECT * FROM posts WHERE uid = ?", (3,))[0][0]
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((0, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((0, 0)), self.loc2),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((0, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 0)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
         # TODO: test that this is ordered by upvotes/downvotes properly
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((0, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((0, 0)), self.loc2),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((0, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 0)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
 
         # User 1 upvotes user 2's and user 3's posts:
@@ -67,19 +67,18 @@ class MessageAPITest(unittest.TestCase):
         self.assertFalse(self.messageApi.add_reaction(None, post_id2, 0))
         self.assertFalse(self.messageApi.add_reaction(None, post_id2, 1))
         # Recent posts should be the same
-        self.maxDiff=None
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((2, 0)), self.loc2),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 0)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
         # # Trending posts should be: user 2 (2 upvotes), user 3 (1 upvote), user 1 (0 upvotes)
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((2, 0)), self.loc2),
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 0)), self.loc2),
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
         # User 1 downvotes user 2's post:
         self.assertTrue(self.messageApi.add_reaction(1, post_id2, 1))
@@ -88,19 +87,19 @@ class MessageAPITest(unittest.TestCase):
         # Trending posts should be: user 3 (1 upvotes), user 2 (2 upvotes 2 downtoves) or user 1 (0 upvotes)
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
         # # User 1 adds another vote:
         self.votingApi.add_vote(1, self.loc1, 5)
-        self.assertTrue(self.messageApi.add_post(1, self.loc1, "This is USER 1 at location 1, SECOND post"))
+        self.assertTrue(self.messageApi.add_post(1, "This is USER 1, SECOND post"))
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
-                dummy_message(1, 'This is USER 1 at location 1, SECOND post', 5, Reactions((0, 0)), self.loc1),
-                dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
-                dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(1, 'This is USER 1, SECOND post', 5, Reactions((0, 0)), self.loc1),
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
 
         # post_id12 = (self.db.execute("SELECT * FROM posts WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (1,)))[0][0]
@@ -108,9 +107,9 @@ class MessageAPITest(unittest.TestCase):
         # self.assertTrue(self.messageApi.remove_post(post_id12))
         # self.assertSequenceEqual(
         #     list(map(filter_message, (self.messageApi.get_recent_posts(self.loc1, 0, time.time())))),
-        #     [dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, 0, self.loc3),
-        #      dummy_message(2, 'This is USER 2 at location 2, adding my first post', 5, 0, self.loc2),
-        #      dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, 0, self.loc1)
+        #     [dummy_message(3, 'This is USER 3, adding my first post', 1, 0, self.loc3),
+        #      dummy_message(2, 'This is USER 2, adding my first post', 5, 0, self.loc2),
+        #      dummy_message(1, 'This is USER 1, adding my first post', 3, 0, self.loc1)
         #      ])
         # # Trying to remove post that is no longer in the database
         # self.assertFalse(self.messageApi.remove_post(post_id12))

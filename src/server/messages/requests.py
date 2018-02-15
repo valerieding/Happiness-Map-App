@@ -33,7 +33,7 @@ def get_trending_posts():
 @message_requests.route('/request/add_post', methods=['POST'])
 def add_post():
     def response(form, user_id):
-        return messageAPI.add_post(user_id, Location.from_request(form), form.message.data, form.reply_to.data)
+        return messageAPI.add_post(user_id, form.message.data, form.reply_to.data)
 
     return generate_response(AddPostForm, response, logger, requires_valid_user_id=True)
 
