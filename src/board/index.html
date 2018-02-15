@@ -9,17 +9,20 @@
     <link rel="stylesheet" href="/static/board/index_style.css">
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="/static/popper.min.js"></script>
+    <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
+    <title>Message Board</title>
+  </head>
     <script>
       $(function(){
         $("#myNav").load("../static/nav.html");
         //An example "add_vote", when really this will be done by the user on the voting page.
         //Can change 'happiness_level' to see different welcome text (upon next reload)
-              $.ajax({
-                url: 'request/add_vote',
-                type: 'post',
-                dataType: 'json',
-                data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
-                });
+              // $.ajax({
+              //   url: 'request/add_vote',
+              //   type: 'post',
+              //   dataType: 'json',
+              //   data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
+              //   });
       });
     </script>
     <script type="text/javascript">
@@ -50,7 +53,7 @@
               messageArray = data
               var trHTML = '';
               $.each(messageArray, function(index, value){
-                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><td>' + value['reactions']['upvote'] + '</td><tr>' ;
+                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + '</td><td>' + value['reactions']['upvote'] + '</td></tr>' ;
               });
               $('#tuffy').append(trHTML);
             },
@@ -115,6 +118,19 @@
               }
           });
         });
+       
+        // $("#upvote").submit(function(e){
+        //   e.preventDefault();
+        //   $.ajax({
+        //     url: 'request/upvote',
+        //     type: 'post',
+        //     dataType: 'json',
+        //     data: {'upvotes': }
+        //   })
+        // })
+
+
+
     });
     </script>
     <div class="homepage">
