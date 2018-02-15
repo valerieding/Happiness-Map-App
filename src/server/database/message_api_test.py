@@ -59,14 +59,15 @@ class MessageAPITest(unittest.TestCase):
             ])
 
         # User 1 upvotes user 2's and user 3's posts:
-        self.assertTrue(self.messageApi.upvote(1, post_id2))
-        self.assertTrue(self.messageApi.upvote(1, post_id3))
+        self.assertTrue(self.messageApi.add_reaction(1, post_id2, 0))
+        self.assertTrue(self.messageApi.add_reaction(1, post_id3, 0))
         # User 3 upvotes user 2's post:
-        self.assertTrue(self.messageApi.upvote(3, post_id2))
+        self.assertTrue(self.messageApi.add_reaction(3, post_id2, 0))
         # Fail to upvote/downvote with a null user ID
-        self.assertFalse(self.messageApi.upvote(None, post_id2))
-        self.assertFalse(self.messageApi.downvote(None, post_id2))
+        self.assertFalse(self.messageApi.add_reaction(None, post_id2, 0))
+        self.assertFalse(self.messageApi.add_reaction(None, post_id2, 1))
         # Recent posts should be the same
+        self.maxDiff=None
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
                 dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
@@ -80,14 +81,10 @@ class MessageAPITest(unittest.TestCase):
                 dummy_message(3, 'This is USER 3 at location 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
                 dummy_message(1, 'This is USER 1 at location 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
-        # User 1 can't upvote user 2's post again:
-        self.assertFalse(self.messageApi.upvote(1, post_id2))
         # User 1 downvotes user 2's post:
-        self.assertTrue(self.messageApi.downvote(1, post_id2))
+        self.assertTrue(self.messageApi.add_reaction(1, post_id2, 1))
         # User 3 downvotes user 2's post:
-        self.assertTrue(self.messageApi.downvote(3, post_id2))
-        # User 3 cant downvote user 2's post AGAIN:
-        self.assertFalse(self.messageApi.downvote(3, post_id2))
+        self.assertTrue(self.messageApi.add_reaction(3, post_id2, 1))
         # Trending posts should be: user 3 (1 upvotes), user 2 (2 upvotes 2 downtoves) or user 1 (0 upvotes)
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
@@ -98,7 +95,6 @@ class MessageAPITest(unittest.TestCase):
         # # User 1 adds another vote:
         self.votingApi.add_vote(1, self.loc1, 5)
         self.assertTrue(self.messageApi.add_post(1, self.loc1, "This is USER 1 at location 1, SECOND post"))
-        self.maxDiff=None
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
                 dummy_message(1, 'This is USER 1 at location 1, SECOND post', 5, Reactions((0, 0)), self.loc1),
