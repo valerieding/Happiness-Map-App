@@ -38,7 +38,7 @@ describe("Map Tests", function(){
     alumni: {id: "alumni", score: 5, fullname: "Alumni House",
       color: "#980043", rating: "very happy"},
     bartlett: {id: "bartlett", score: 1, fullname: "Bartlett Dining Commons",
-      color: "#f1eef6", rating: "very unhappy"},
+      color: "#f1eef6", rating: "not at all happy"},
     bj: {id: "bj", score: 4.25, fullname: "Burton Judson Courts",
       color: "#dd1c77", rating: "happy"},
     bond: {id: "bond", score: "n/a", fullname: "Bond Chapel",
@@ -46,14 +46,14 @@ describe("Map Tests", function(){
     bookstore: {id: "bookstore", score: "n/a", fullname: "University Bookstore",
       color: "#ADADAD", rating: "no data available"},
     booth: {id: "booth", score: 3.25, fullname: "Booth School of Business",
-      color: "#df65b0", rating: "neutral"},
+      color: "#df65b0", rating: "somewhat happy"},
     cathey: {id: "cathey", score: 2, fullname: "Cathey Dining Commons",
-      color: "#dd1c77", rating: "unhappy"},
+      color: "#dd1c77", rating: "only a little happy"},
     classicsBuilds: {id: "classicsBuilds", score: 3.43, fullname: "Classics Quad Buildings",
-      color: "#df65b0", rating: "neutral"}});
+      color: "#df65b0", rating: "somewhat happy"}});
 
   let ratnerObj = {id: "ratner", score: 2.8, fullname: "Ratner Athletics Center",
-    color: "#dd1c77", rating: "unhappy"}
+    color: "#dd1c77", rating: "only a little happy"}
 
 
   describe("databaseToMapObj tests", function(){
@@ -107,11 +107,11 @@ describe("Map Tests", function(){
     it("should return the html formatted string with the building's happiness " +
       "for use in the region-card", function(){
       expect(getInfo(thirdCaseObjs['alumni'])).toEqual("very happy<br>building happiness: 5");
-      expect(getInfo(thirdCaseObjs['bartlett'])).toEqual("very unhappy<br>building happiness: 1");
+      expect(getInfo(thirdCaseObjs['bartlett'])).toEqual("not at all happy<br>building happiness: 1");
       expect(getInfo(thirdCaseObjs['bj'])).toEqual("happy<br>building happiness: 4.25");
       expect(getInfo(thirdCaseObjs['bond'])).toEqual("no data available<br>building happiness: n/a");
-      expect(getInfo(thirdCaseObjs['cathey'])).toEqual("unhappy<br>building happiness: 2");
-      expect(getInfo(thirdCaseObjs['classicsBuilds'])).toEqual("neutral<br>building happiness: 3.43");
+      expect(getInfo(thirdCaseObjs['cathey'])).toEqual("only a little happy<br>building happiness: 2");
+      expect(getInfo(thirdCaseObjs['classicsBuilds'])).toEqual("somewhat happy<br>building happiness: 3.43");
       expect(getInfo({})).toEqual('');
     });
   });
@@ -131,12 +131,12 @@ describe("Map Tests", function(){
   describe("getHappinessRating tests", function(){
     it("should return the happiness rating (a text label) for any entry " +
       "from a get_heatmap call", function(){
-      expect(getHappinessRating(secondCase[0])).toEqual("unhappy");
+      expect(getHappinessRating(secondCase[0])).toEqual("only a little happy");
       expect(getHappinessRating(thirdCase[0])).toEqual("very happy");
-      expect(getHappinessRating(thirdCase[1])).toEqual("very unhappy");
+      expect(getHappinessRating(thirdCase[1])).toEqual("not at all happy");
       expect(getHappinessRating(thirdCase[2])).toEqual("happy");
-      expect(getHappinessRating(thirdCase[4])).toEqual("unhappy");
-      expect(getHappinessRating(thirdCase[5])).toEqual("neutral");
+      expect(getHappinessRating(thirdCase[4])).toEqual("only a little happy");
+      expect(getHappinessRating(thirdCase[5])).toEqual("somewhat happy");
       expect(getHappinessRating({})).toEqual('');
     });
   });

@@ -61,7 +61,7 @@ var FullNameKey = Object.freeze({
 
 const ColorNumKey = ['#f1eef6','#dd1c77','#df65b0','#dd1c77','#980043'];
 const nullColor = "#ADADAD";
-const HappinessTextKey = ["very unhappy", "unhappy", "neutral", "happy", "very happy"];
+const HappinessTextKey = ["not at all happy", "only a little happy", "somewhat happy", "happy", "very happy"];
 
 //map page functions
 function databaseToMapObj(n) {
