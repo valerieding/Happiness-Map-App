@@ -2,7 +2,7 @@ describe("Map Tests", function(){
   /* Testing Strategy */
   /* We need to test all of the functions in mapFunctions.js
   * The general strategy for the map page is to query the database, convert
-  * the results into "map objects", and use this information to render the
+  * the results into "map objects", and use these objects to render the
   * visualization.
   * All other mapping files are used for rendering the visual components
   * of the map page and so they are not included in this test suite.
@@ -17,11 +17,13 @@ describe("Map Tests", function(){
   });
 
 
-  // example returns from database queries
-  // for a diverse test set, includes max and min scores (1 and 5), integers,
-  // floats, and truncated floats. covers all 5 happiness categories.
-  // tests database returns of size 0, 1, and many. (database returns contain as
-  // many entries as buildings which have been voted at)
+  /* example returns from database queries
+  * for a diverse test set, includes max and min scores (1 and 5), integers,
+  * floats, and floats with many digits after the decimal. covers all 5
+  * happiness categories.
+  * tests database returns of size 0, 1, and many. (database returns contain as
+  * many entries as buildings which have been voted at)
+  */
   let firstCase = [];
   let secondCase = [{happiness_level: 2.8, logical_location: "ratner"}];
   let thirdCase = [{happiness_level: 5, logical_location: "alumni"},
@@ -31,9 +33,10 @@ describe("Map Tests", function(){
     {happiness_level: 2, logical_location: "cathey"},
     {happiness_level: 3.4285714285714284, logical_location: "classicsBuilds"}];
 
-  // example returns from allMapObjects() (truncated)
-  // for a diverse test set, includes max and min scores (1 and 5), integers,
-  // floats, truncated floats, and empty map objects (when no data is available)
+  /* example returns from allMapObjects() (truncated)
+  * for a diverse test set, includes max and min scores (1 and 5), integers,
+  * floats, truncated floats, and empty map objects (when no data is available)
+  */
   let thirdCaseObjs = Object.freeze({
     alumni: {id: "alumni", score: 5, fullname: "Alumni House",
       color: "#980043", rating: "very happy"},
@@ -51,9 +54,6 @@ describe("Map Tests", function(){
       color: "#dd1c77", rating: "only a little happy"},
     classicsBuilds: {id: "classicsBuilds", score: 3.43, fullname: "Classics Quad Buildings",
       color: "#df65b0", rating: "somewhat happy"}});
-
-  let ratnerObj = {id: "ratner", score: 2.8, fullname: "Ratner Athletics Center",
-    color: "#dd1c77", rating: "only a little happy"}
 
 
   describe("databaseToMapObj tests", function(){
@@ -82,18 +82,23 @@ describe("Map Tests", function(){
 
   describe("allMapObjects tests", function(){
     it("should return dictionaries of all map objects. should all " +
-      "be the same length with entries for all logical_locations, regardless " +
-      "of the input size. should contain the correct scores, colors, " +
-      "full names etc.", function(){
+      "be the same length with entries for all logical_locations in " +
+      "FullNameKey, regardless of the input size. should contain the " +
+      "correct scores, colors, full names etc.", function(){
+      let ratnerObj = {id: "ratner", score: 2.8, fullname: "Ratner Athletics Center",
+        color: "#dd1c77", rating: "only a little happy"};
       let lengthOfAllBuildings = Object.keys(FullNameKey).length;
+
       let firstRes = allMapObjects(firstCase);
       expect(Object.keys(firstRes).length).toEqual(lengthOfAllBuildings);
       expect(firstRes['alumni']).toEqual(emptyMapObj('alumni'));
       expect(firstRes['ratner']).toEqual(emptyMapObj('ratner'));
+
       let secondRes = allMapObjects(secondCase);
       expect(Object.keys(secondRes).length).toEqual(lengthOfAllBuildings);
       expect(secondRes['alumni']).toEqual(emptyMapObj('alumni'));
       expect(secondRes['ratner']).toEqual(ratnerObj);
+
       let thirdRes = allMapObjects(thirdCase);
       expect(Object.keys(thirdRes).length).toEqual(lengthOfAllBuildings);
       expect(thirdRes['alumni']).toEqual(thirdCaseObjs['alumni']);
@@ -103,22 +108,9 @@ describe("Map Tests", function(){
     });
   });
 
-  describe("getInfo tests", function(){
-    it("should return the html formatted string with the building's happiness " +
-      "for use in the region-card", function(){
-      expect(getInfo(thirdCaseObjs['alumni'])).toEqual("very happy<br>building happiness: 5");
-      expect(getInfo(thirdCaseObjs['bartlett'])).toEqual("not at all happy<br>building happiness: 1");
-      expect(getInfo(thirdCaseObjs['bj'])).toEqual("happy<br>building happiness: 4.25");
-      expect(getInfo(thirdCaseObjs['bond'])).toEqual("no data available<br>building happiness: n/a");
-      expect(getInfo(thirdCaseObjs['cathey'])).toEqual("only a little happy<br>building happiness: 2");
-      expect(getInfo(thirdCaseObjs['classicsBuilds'])).toEqual("somewhat happy<br>building happiness: 3.43");
-      expect(getInfo({})).toEqual('');
-    });
-  });
-
   describe("getName tests", function(){
-    it("should return the fullname for any logical_location " +
-      "in the FullNameKey", function(){
+    it("should return the fullname for any entry from a get_heatmap call " +
+      "with a logical_location in the FullNameKey", function(){
       expect(getName(secondCase[0])).toEqual("Ratner Athletics Center");
       expect(getName(thirdCase[0])).toEqual("Alumni House");
       expect(getName(thirdCase[3])).toEqual("Booth School of Business");
@@ -157,7 +149,7 @@ describe("Map Tests", function(){
 
   describe("formatScore tests", function(){
     it("should return a formatted score when given a building average rating " +
-      "(truncates to 2 decimals)", function(){
+      "(rounds to 2 decimals)", function(){
       expect(formatScore(1)).toEqual(1);
       expect(formatScore(4.25)).toEqual(4.25);
       expect(formatScore(3.4285714285714284)).toEqual(3.43);

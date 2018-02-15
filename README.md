@@ -2,7 +2,7 @@
 ## Instructions to run on localhost
 
 1. Install python3, if you don't already have it installed
-2. Install flask, wtforms, and coverage (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage). 
+2. Install flask, wtforms, and coverage (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage).
 3. Navigate to the src directory, and run: python3 main.py --debug
 4. Open a browser and navigate to "localhost:8000"
 
@@ -39,7 +39,7 @@ See above, section 3.a)
 
 #### 3a.) Any changes to unit tests:
 Backend:
-- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py). 
+- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py).
 
 ### 4.) Acceptance tests to try
 ((i.e., what inputs to use, and what outputs are expected))
@@ -80,10 +80,11 @@ Mihai and Valerie worked on the backend. We pair-programmed the database (with M
 ### 7.) Design changes or unit test changes:
 
 Map:
-- Designwise, we decided to make our own svg map instead of using the google maps api. We wanted more customization options and a building-focused design that would show newer buildings like north campus.
-- We made more final decisions about which buildings to use in our system, standardized the list of "logical_location"s to coordinate with the database and grouped certain buildings.
-- We added more tests and comments to explain the reasoning behind the test cases.
-- We wrote tests for additional functions that were added since last week (emptyMapObj, formatScore, allMapObjs).
+- Designwise, we decided to make our own svg map instead of using the google maps api. We wanted more customization options and a building-focused design that would show newer building, such as North dorms and Baker dining.
+- We made more final decisions about which buildings to use in our system, standardized the list of "logical_location"s to coordinate with the database and grouped certain buildings (such as the medical buildings).
+- We have several more functions in our MapSpec.js than we originally described in our design documents. We did not change the functionality of the Map page since writing the design document, but we did decide to break one larger function down into several smaller functions. Since we made this decision recently, the smaller functions were not in the original design document. We thought it would make our code more clear and easier to test if we used these smaller functions. In the design document, we mentioned one function "getHeatMap" which would render the heat map. Now however, the heat map renders using data that is an output of allMapObjects(). allMapObjects() makes calls databaseToMapObj() and emptyMapObj() depending on whether there is any voting data for a building. In turn, databaseToMapObj() makes calls to formatScore(), getName(), computeColor(), and getHappinessRating(). Again, these short functions represent pieces of the larger function we envisioned in the design document, and are not new features.
+- We removed the getInfo() function because it was deemed redundant.
+- We added more tests and comments to explain the reasoning behind the test cases, including functions that were added since last week (emptyMapObj(), formatScore(), allMapObjs()).
 - We changed the data structures slightly so all tests were updated to reflect the new fields.
 
 Backend:
@@ -91,6 +92,6 @@ Backend:
 - The design doc says that add_vote() will call updateCampusAverage() and updateBuildingAverage(). We moved the functionality of the latter two functions into get_building_average() and get_campus_average(): they calculate the average values when called, so there is no need to have an updateCampusAverage() or updateBuildingAverage() function.
 - We added a get_happiness_level(userId) method to return the most recent happiness vote level of a given user
 - Because all voting/posting takes place on campus right now, for this iteration, get_recent_posts() returns all posts within a given time range, posted on campus, sorted by timestamp. get_trending_posts() returns all posts posted on campus, sorted by upvote count. In the next iteration, we will take location into consideration.
-- Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post(). 
+- Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post().
 
 ### 8.) Anything else:

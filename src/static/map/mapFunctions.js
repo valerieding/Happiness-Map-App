@@ -95,13 +95,6 @@ function allMapObjects(ns) {
   return allObjs;
 };
 
-function getInfo(n) {
-  if (n.rating){
-    return n.rating + "<br>building happiness: " + n.score;
-  }
-  return "";
-};
-
 function getName(n) {
   if (n.logical_location){
     return FullNameKey[n.logical_location];
@@ -150,7 +143,7 @@ function getAllBuildingScores() {
     type: 'post',
     dataType: 'json',
     async: false,
-    data: {'start_time': 0, 'end_time': 1550000000},
+    data: {'start_time': 0},
     success: function(data){
       allScores = data;
     }
@@ -164,7 +157,7 @@ function getBuildingScore(logloc) {
     url: '/request/get_building_average',
     type: 'post',
     dataType: 'json',
-    data: {'logical_location': logloc, 'start_time': 0, 'end_time': 1550000000},
+    data: {'logical_location': logloc, 'start_time': 0},
     success: function(data){
       score = data;
     }

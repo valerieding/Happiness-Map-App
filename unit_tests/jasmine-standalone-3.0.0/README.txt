@@ -1,1 +1,1 @@
-Run test by clicking 'SpecRunner.html'. Put tests in spec folder. Currently, SpecRunner runs demo test on helloworld.js, which is in src folder of this directory. Link tests and source in SpecRunner.html.
+Run test by clicking 'SpecRunner.html'. Put tests in spec folder. Link tests and source in SpecRunner.html.
