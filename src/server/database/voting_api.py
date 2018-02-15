@@ -52,3 +52,9 @@ class VotingAPI:
         """
         return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ? AND logical_loc = ?",
                                      (start_time, end_time, building_label))[0][0]
+
+    def get_happiness_level(self, uid):
+        """ Returns the most recent happiness level registered for `uid`. """
+
+        votes = self.database.execute("SELECT score FROM votes WHERE id = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
+        return votes[0][0] if len(votes) != 0 else None

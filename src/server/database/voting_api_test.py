@@ -91,5 +91,11 @@ class VotingAPITest(unittest.TestCase):
         self.assertCountEqual(self.votingApi.get_heat_map(0, time.time()),
                               [HeatMapPoint("A", 2), HeatMapPoint("B", 5)])
 
+    def test_get_happiness_level(self):
+        self.assertIsNone(self.votingApi.get_happiness_level(1))
+        self._populate(USERS_A)
+        self.assertEqual(self.votingApi.get_happiness_level(1), 0)
+
+
 if __name__ == '__main__':
     unittest.main()
