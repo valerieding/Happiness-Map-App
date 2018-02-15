@@ -49,6 +49,10 @@ class MessageAPI:
 
     def add_reaction(self, uid, post_id, reaction):
         """Adds an upvote to `post_id` by `uid`. """
+        reaction_exists = self.database.execute("SELECT postID FROM post_votes WHERE postID = ? AND uid = ? and isUpvote = ? ORDER BY postID DESC LIMIT 1", (post_id, uid, reaction))
+        if len(reaction_exists) != 0:
+            return False
+
         try:
             # Remove previous reactions by the same user.
             self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
