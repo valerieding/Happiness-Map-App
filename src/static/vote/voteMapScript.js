@@ -1,8 +1,69 @@
 var arr = [
-  ['1116 E 59th St', 'Harper'],
+  ['1116 E 59th St', 'harper'],
   ['5640 S University Ave', 'Bartlett'],
-  ['1005 E 60th St', 'Burton-Judson Courts'],
-  ['6025 S Ellis Ave', 'Burton-Judson Courts'],
+  ['1005 E 60th St', 'bj'],
+  ['6025 S Ellis Ave', 'bj'],
+  ['Burton-Judson Courts', 'bj'],
+  ['Mansueto', 'mansueto'],
+  ['South Campus Dining Commons', 'cathey"'],
+  ['Renee Granville-Grossman Residential Commons', 'south'],
+  ['Laird Bell Law Quadrangle', 'law'],
+  ['1121 E 60th St,', 'law'],
+  ['Harris School of Public Policy', 'harris'],
+  ['New Graduate Residence', 'new_grad'],
+  ['Ida Noyes Hall', 'ida'],
+  ['Chicago Booth Harper Center', 'booth'],
+  ['The Oriental Institute', 'oriental'],
+  ['5850 S Woodlawn Ave', 'rock'],
+  ['1155 E 57th St', 'quadr'],
+  ['5757 S University Ave', 'saieh'],
+  ['5550 S University Ave', 'henry'],
+  ['Alumni House', 'alumni'],
+  //TODO snell
+  ['Hutchinson Commons', 'reynolds'],
+  ['5706 S University Ave', 'reynolds'],
+  ['Samuel Kersten Jr Physics Teaching Center', 'physics'], //TODO check
+  //TODO medical campus
+  ['Midway Studio', 'logan'],
+  ['5737 S University Ave', 'east'],
+  ['5735 S University Ave', 'east'],
+  ['5733 S University Ave', 'east'],
+  ['5803 S University Ave', 'east'],
+  ['5514 S University Ave', 'north'],
+  ['1105 E 55th St', 'north'],
+  ['5500 S University Ave', 'north'],
+  ['1125 E 55th St', 'north'],
+  ['Omsa/LGBTQ', 'multi'],
+  //TODO north quadr
+  ['Kent Chemical Laboratory', 'lab'],
+  ['Searle Chemical Laboratory', 'lab'],
+  ['5730 S Ellis Ave', 'crerar'],
+  ['Regenstein Library', 'regenstein'],
+  ['5640 S University Ave', 'bartlett'],
+  ['5625 S Ellis Ave', 'maxp'],
+  ['1101 E 56th St', 'maxp'],
+  ['1119-1137 E 56th St', 'maxp'],
+  ['5630 S University Ave', 'maxp'],
+  ['5707 S University Ave', 'maxp'],
+  ['5702 S Greenwood Ave', 'maxp'],
+  //TODO hutch
+  ['Swift Hall', 'swift'],
+  ['Culver Hall', 'mainNorth'],
+  ['Anatomy Bldg', 'mainNorth'],
+  ['Zoology Bldg', 'mainNorth'],
+  ['Ida B. and Walter Erman Biology Center', 'mainNorth'],
+  ['970 E 58th St', 'bookstore'],
+  ['Edward H. Levi Hall', 'edward'],
+  ['Cobb Lecture Hall', 'cobb'],
+  //TODO classics
+  ['Social Science Research Bldg', 'ssr'],
+  ['Harold Leonard Stuart Hall', 'stuart'],
+  ['Rosenwald Hall', 'rosenwald'],
+  ['Ryerson Physical Laboratory', 'ryeck'],
+  ['Eckhart Hall', 'ryeck'],
+  ['Ratner', 'ratner'],
+  ['5848 S University Ave', 'southeast'],
+  ['Albert Pick Hall for International Studies', 'southeast'],
 ];
 var myStringMap = new Map(arr);
 
@@ -67,6 +128,7 @@ function geocodeLatLng(geocoder, map, marker) {
       geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
+          //window.alert(results[0].formatted_address);
           var logicalLoc = toLogicalLoc(results[0].formatted_address);
           if(logicalLoc == null) {
             if(isQuad(latlng)) {
@@ -120,12 +182,8 @@ function isOnCampus(latlng) {
 function toLogicalLoc(formatted_address) {
   var ret = null;//formatted_address;//"Unknown Location";
   var split = formatted_address.split(',');
-  if(!isNaN(formatted_address[0])) {
-    if(myStringMap.has(split[0])) {
-      ret = myStringMap.get(split[0]);
-    }
-  } else {
-    ret = split[0];
+  if(myStringMap.has(split[0])) {
+    ret = myStringMap.get(split[0]);
   }
   return ret;
 }

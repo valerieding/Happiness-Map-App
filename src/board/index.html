@@ -58,6 +58,7 @@
               $.each(messageArray, function(index, value){
                 trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + 
                 '</td><td> <button onclick=\"callReact(\'upvote\',' + value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\">Upvotes: ' + value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\">Downvotes: ' + value['reactions']['downvote'] + '</button></td></tr>' ;
+
               });
               $('#tuffy').append(trHTML);
             },
@@ -80,8 +81,8 @@
           });
 
           //AA: make function for different welcome messages based on last vote:
-          //TODO:   pull most recent happinesslevel, parameter to welcomeText(X)          
-          //right now it just takes happiness of the most recent post, 
+          //TODO:   pull most recent happinesslevel, parameter to welcomeText(X)
+          //right now it just takes happiness of the most recent post,
           //which is not what we want in the end obviously
           document.body.onload = welcomeText(messageArray[0]['happiness_level']);
 
@@ -137,7 +138,7 @@
               }
           });
         });
-       
+
         // $("#upvote").submit(function(e){
         //   e.preventDefault();
         //   $.ajax({
@@ -188,7 +189,7 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Message Board</h1>
             <!-- THIS is where 'welcomeText' goes when called on load: -->
-                <div id="welcome"></div>          
+                <div id="welcome"></div>
         </main>
 
         <form id="myform" method="post">

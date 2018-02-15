@@ -1,9 +1,7 @@
 //fillDB();
 
 let allScores = getAllBuildingScores();
-console.log(allScores);
 let allPlaces = allMapObjects(allScores);
-console.log(allPlaces);
 let campus_avg = getCampusScore();
 
 var crerar = rsr.rect(254.833, 383.835, 40.667, 75.602);
@@ -277,13 +275,13 @@ multi.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi.data({'info': allPlaces['multi']});
 regions.push(multi);
 
-var multi3 = rsr.rect(671.5, 368.085, 8, 9.25).attr({id: 'multi3',x: '671.5',y: '368.085',parent: 'multi',fill: 'none','stroke-width': '0','stroke-opacity': '1'}).data('id', 'multi3');
+var multi3 = rsr.rect(671.5, 368.085, 8, 9.25)
 multi3.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi3.data({'info': allPlaces['multi']});
-var multi2 = rsr.rect(671.5, 380.835, 8, 12.25).attr({id: 'multi2',x: '671.5',y: '380.835',parent: 'multi',fill: 'none','stroke-width': '0','stroke-opacity': '1'}).data('id', 'multi2');
+var multi2 = rsr.rect(671.5, 380.835, 8, 12.25)
 multi2.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi2.data({'info': allPlaces['multi']});
-var multi1 = rsr.rect(694.25, 377.335, 15.419, 11.5).attr({id: 'multi1',x: '694.25',y: '377.335',parent: 'multi',fill: 'none','stroke-width': '0','stroke-opacity': '1'}).data('id', 'multi1');
+var multi1 = rsr.rect(694.25, 377.335, 15.419, 11.5)
 multi1.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi1.data({'info': allPlaces['multi']});
 
