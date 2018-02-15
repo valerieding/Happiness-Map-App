@@ -1,4 +1,6 @@
-from wtforms import IntegerField, FloatField, validators, StringField
+from wtforms import IntegerField, FloatField, validators, StringField, SelectField
+
+from constants import ALLOWED_REACTIONS_TO_POST
 
 """
 Defines several form stubs that should be used via inheritance by the end-user Form validators.
@@ -32,3 +34,10 @@ class TimeIntervalForm:
 
 class PostIDForm:
     post_id = IntegerField('post_id', [validators.InputRequired()])
+
+
+class ReactionForm:
+
+    ALLOWED_REACTIONS = [(val, index) for index, val in enumerate(ALLOWED_REACTIONS_TO_POST)]
+    reaction = SelectField('reaction', [validators.InputRequired()], choices=ALLOWED_REACTIONS)
+

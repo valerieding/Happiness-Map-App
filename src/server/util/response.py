@@ -35,7 +35,8 @@ class _UserID:
         self.signature = signature
 
     def _validate(self):
-        return _UserID._VERIFY_KEY.verify(self.signature, bytes(self.user_id))
+        # TODO[SECURITY]: activate validation once it is no longer so expensive to validate
+        return True  # _UserID._VERIFY_KEY.verify(self.signature, bytes(self.user_id))
 
     def save_cookie(self, response):
         response.set_cookie('user_id', urlsafe_b64encode(pickle.dumps(self.__dict__)).decode('ascii'))
@@ -69,7 +70,7 @@ class _UserID:
             return None
         try:
             decoded = pickle.loads(urlsafe_b64decode(code.encode('ascii')), fix_imports=False)
-        except PickleError:
+        except Exception:
             # `code` was altered. No user_id can be retrieved.
             return None
         if type(decoded) is not dict or 'user_id' not in decoded or 'signature' not in decoded:
@@ -98,7 +99,7 @@ def generate_response(FormValidator, response_generator, logger, requires_valid_
 
     logger.info('User {} requested {}'.format(user, request_form_rep))
     if not form.validate():
-        logger.warning('Invalid request from user {}: {}'.format(user, request_form_rep))
+        logger.warning('Invalid request from user {}: {}:\n\t{}'.format(user, request_form_rep, form.errors))
         return jsonify('Invalid request')
 
     response = jsonify(response_generator(**kwargs))

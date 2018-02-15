@@ -1,4 +1,4 @@
-from constants import ALLOWED_REACTIONS_TO_POSTS
+from constants import ALLOWED_REACTIONS_TO_POST
 
 
 class Location:
@@ -26,7 +26,7 @@ class Location:
 
 class Reactions:
 
-    INT_TO_REACTION = ALLOWED_REACTIONS_TO_POSTS
+    INT_TO_REACTION = ALLOWED_REACTIONS_TO_POST
 
     REACTION_TO_INT = {reaction: index for index, reaction in enumerate(INT_TO_REACTION)}
 
