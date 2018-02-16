@@ -58,6 +58,12 @@ Voting:
 - removed addVote() tests. addVote() functionality is moved to submitVote(), but is mainly a wrapper for AJAX posts to the database. 
 - added unit tests for getLogicalLoc()
 
+Board:
+- getposts() and removeposts() is not a thing. removed.
+- getrecentposts() and gettrendingposts() were never meant to do any other filtering, we can do that on front end if we want
+- added some and all in the test file
+
+
 ### 4.) Acceptance tests to try
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
 
@@ -66,6 +72,11 @@ After adding a vote, check the campus map to make sure the campus-wide average w
 
 
 Message Board:
+You cannot post if you did not already vote.
+Does not accept empty messages
+You cannot double upvote/downvote
+Switching vote subtracts from current and adds to new vote so not double counted
+When switching sort, that is visible to user.
 
 Voting:
 	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. Off-campus users cannot post to the Message Board.
@@ -112,6 +123,13 @@ Voting:
 - Wrote unit tests for interactive map functions and acceptance tests for vote submission
 
 Message Board:
+- wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
+- users can see all the posts and laugh and cry with their friends.
+- designed the message board page
+- dynamic welcome text
+- A post can be added after a vote 
+- This post can be up/down voted on
+- populates a table and can be sorted via buttons
 
 Map:
 - Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
@@ -137,6 +155,8 @@ Mihai and Valerie worked on the backend. We pair-programmed the database (with M
 
 Anthony and Mitch worked on the vote submission page. Anthony made the UI for vote submission (happiness level and dropdown menu) and form submission via the submit button (vote/index.html, vote.js, vote.css) and wrote unit tests (VoteSpec.js). Mitch made the interactive map with Google Maps API (clickMap.html, voteMapSpec.js).
 
+Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic loading and Xavi making an unruly table work right.
+
 ### 7.) Design changes or unit test changes:
 
 Map:
@@ -160,5 +180,10 @@ Voting:
 - Removed nameToLocation(). This function would resolve a given name to a Location object, which the backend now handles.
 - Removed addvote(). Functionality has moved to submitVote(), which uses AJAX queries. Test submitVote() using the above acceptance tests
 - Added unit tests for getLogicalLoc(), function added in implementation of the interactive map.
+
+Message Board:
+- design doc says there will be getposts() removeposts(). That is not in our iteration. Getposts() is done in trending and in recent posts.  removeposts() will be relevant when an Admin is included in iteration 2.
+- created a change to make up of post. Reactions is a class that contains upvotes and downvotes. just in case we make other reactions, easier to have it's own class. Classic code smell.
+
 
 ### 8.) Anything else:
