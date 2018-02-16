@@ -123,13 +123,13 @@ Voting:
 - Wrote unit tests for interactive map functions and acceptance tests for vote submission
 
 Message Board:
-- wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
-- users can see all the posts and laugh and cry with their friends.
-- designed the message board page
-- dynamic welcome text
+- Wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
+- Users can see all the posts and laugh and cry with their friends.
+- Designed the message board page
+- Dynamic welcome text
 - A post can be added after a vote 
 - This post can be up/down voted on
-- populates a table and can be sorted via buttons
+- Populates a table and can be sorted via buttons
 
 Map:
 - Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
@@ -155,7 +155,7 @@ Mihai and Valerie worked on the backend. We pair-programmed the database (with M
 
 Anthony and Mitch worked on the vote submission page. Anthony made the UI for vote submission (happiness level and dropdown menu) and form submission via the submit button (vote/index.html, vote.js, vote.css) and wrote unit tests (VoteSpec.js). Mitch made the interactive map with Google Maps API (clickMap.html, voteMapSpec.js).
 
-Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic loading and Xavi making an unruly table work right.
+Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic loading and Xavi making an unruly table work right. 
 
 ### 7.) Design changes or unit test changes:
 
@@ -182,8 +182,8 @@ Voting:
 - Added unit tests for getLogicalLoc(), function added in implementation of the interactive map.
 
 Message Board:
-- design doc says there will be getposts() removeposts(). That is not in our iteration. Getposts() is done in trending and in recent posts.  removeposts() will be relevant when an Admin is included in iteration 2.
-- created a change to make up of post. Reactions is a class that contains upvotes and downvotes. just in case we make other reactions, easier to have it's own class. Classic code smell.
+- Design document says there will be getposts() removeposts(). That is not in our iteration. Getposts() is done in trending and in recent posts.  Removeposts() will be relevant when an Admin is included in iteration two.
+- Created a change to make up of post. Reactions is a class that contains upvotes and downvotes. Just in case we make other reactions, easier to have it's own class. Classic code smell.
 
 
 ### 8.) Anything else:
