@@ -28,26 +28,56 @@
         }
 
         $("#vote_btn").click(function(){
-          $.ajax({
-              url: 'request/add_vote',
-              method: 'post',
-              dataType: 'json',
-              data: {'latitude': 10,
-                     'longitude': 10,
-                     'logical_location': $('#loc_drop option:selected').val(),
-                     'happiness_level': $('input[name=happiness_level]:checked').val()},
-              beforeSend: function() {
-                //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                alert("Location: " + $("#loc_drop option:selected").val());
-                //alert('echo');
-              },
-              success: function() {
-                alert('Vote Submitted');
-              },
-              error: function() {
-                alert('Failed to submit vote');
-              }
+          var drop_loc = $("#loc_drop option:selected").val();
+          if (drop_loc === 'blank')
+            drop_loc = '';
+          // var map_loc = ...
+
+          var happy = $("input[name=happiness_level]:checked").val();
+          
+          // for the time being
+          var loc = drop_loc;
+
+          //var loc = '';
+          // map selection should take priority over dropdown selection
+          /* if (typeof map_loc != 'undefined') {
+                loc = map_loc;
+            }
+            else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
+            {
+                loc = drop_loc;
+            }
+          */
+
+          alert(loc + ": " + happy);
+         // alert($("#loc_drop option:selected").val());          
+         if (typeof happy != 'undefined' && typeof loc != 'undefined'){
+            $.ajax({
+                url: 'request/add_vote',
+                method: 'post',
+                dataType: 'json',
+                data: {'latitude': 10,
+                       'longitude': 10,
+                       'logical_location': loc,
+                       'happiness_level': happy},
+                       //'logical_location': $('#loc_drop option:selected').val(),
+                       //'happiness_level': $('input[name=happiness_level]:checked').val()},
+                beforeSend: function() {
+                  alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
+                  alert("Location: " + $("#loc_drop option:selected").val());
+                  //alert('echo');
+                },
+                success: function() {
+                  alert('Vote Submitted');
+                },
+                error: function() {
+                  alert('Failed to submit vote');
+                }              
             });
+          }
+          else{
+            alert("You have to submit both a happiness value and your location");
+          }
         });
       });
     </script>

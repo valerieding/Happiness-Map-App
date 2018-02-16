@@ -53,4 +53,4 @@ var log_locs = Object.freeze({
   ryeck : "Ryerson/Eckhart",
   ratner : "Ratner Athletics Center",
   southeast : "South East Quad Buildings",
-});
+}); 
