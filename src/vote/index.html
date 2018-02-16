@@ -9,7 +9,8 @@
     <link href="/static/main.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="/index_style.css"> -->
     <link href="/static/vote/vote.css" rel="stylesheet">
-    <script tyep="application/javascript" src="/static/vote/vote.js"></script>
+    <script type="application/javascript" src="/static/vote/vote.js"></script>
+    <script type="application/javascript" src="/static/vote/voteMapScript.js"></script>
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
     <script type="application/javascript" src="/static/popper.min.js"></script>
     <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
@@ -31,7 +32,8 @@
           var drop_loc = $("#loc_drop option:selected").val();
           if (drop_loc === 'blank')
             drop_loc = '';
-          // var map_loc = ...
+          var map_loc = $("map_loc").val();
+          //alert("map loc = " + map_loc);
 
           var happy = $("input[name=happiness_level]:checked").val();
           
@@ -49,7 +51,7 @@
             }
           */
 
-          alert(loc + ": " + happy);
+         // alert(loc + ": " + happy);
          // alert($("#loc_drop option:selected").val());          
          if (typeof happy != 'undefined' && typeof loc != 'undefined'){
             $.ajax({
@@ -63,15 +65,15 @@
                        //'logical_location': $('#loc_drop option:selected').val(),
                        //'happiness_level': $('input[name=happiness_level]:checked').val()},
                 beforeSend: function() {
-                  alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                  alert("Location: " + $("#loc_drop option:selected").val());
+                  //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
+                  //alert("Location: " + $("#loc_drop option:selected").val());
                   //alert('echo');
                 },
                 success: function() {
-                  alert('Vote Submitted');
+                  //alert('Vote Submitted');
                 },
                 error: function() {
-                  alert('Failed to submit vote');
+                  //alert('Failed to submit vote');
                 }              
             });
           }
@@ -119,7 +121,7 @@
             -->
             </select>
         </div>
-        <div id="campus-map">
+        <div id="campus-map" name="loc_map">
           <iframe height="400px" width="100%" frameborder="0" scrolling="no" src="/vote/clickMap.html">
           </iframe>
         </div>
