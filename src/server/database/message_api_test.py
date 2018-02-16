@@ -88,8 +88,8 @@ class MessageAPITest(unittest.TestCase):
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
                 dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
-                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 2)), self.loc2)
             ])
         # # User 1 adds another vote:
         self.votingApi.add_vote(1, self.loc1, 5)
@@ -98,7 +98,7 @@ class MessageAPITest(unittest.TestCase):
             filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
                 dummy_message(1, 'This is USER 1, SECOND post', 5, Reactions((0, 0)), self.loc1),
                 dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
-                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((2, 2)), self.loc2),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 2)), self.loc2),
                 dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
 
