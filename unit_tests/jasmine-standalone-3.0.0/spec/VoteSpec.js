@@ -1,8 +1,7 @@
 describe("Vote", function() {
 
-	describe("quad tests", function(){
-    //testing the testing infrastructure with an easy test
-    let lat1 = 41.7880849860361;
+	// Quads
+	let lat1 = 41.7880849860361;
 	let lat2 = 41.7880849860363;
 	let lat3 = 41.789;
 	let lat4 = 41.7900248540437;
@@ -20,48 +19,23 @@ describe("Vote", function() {
 	let p4 = {lat: lat3, lng: lng3};
 	let p5 = {lat: lat3, lng: lng4};
 	let p6 = {lat: lat3, lng: lng5};
-	
-	it("isOnQuad() tests", function()
-	{
-		expect(isQuad(p1)).toEqual(false);
-		expect(isQuad(p2)).toEqual(false);
-		expect(isQuad(p3)).toEqual(true);
-		expect(isQuad(p4)).toEqual(true);
-		expect(isQuad(p5)).toEqual(true);
-		expect(isQuad(p6)).toEqual(false);
-	});
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	it("should Return Hello world", function(){
-		expect(helloworld()).toEqual('Hello World');
-	});
 
 	// tests for voteMapScript functions that are easily testable outside of Google Maps API
 	// Many of the interactive map functions rely extensivley on Google Maps API and be assumed
 	// to work, taking Google Maps API as a black-box
 	// These functions can still be tested using the Acceptance Testing scenarios
+	describe("quad tests", function(){
+	    
+		
+		it("isQuad() tests", function()
+		{
+			expect(isQuad(p1)).toEqual(false);
+			expect(isQuad(p2)).toEqual(false);
+			expect(isQuad(p3)).toEqual(true);
+			expect(isQuad(p4)).toEqual(true);
+			expect(isQuad(p5)).toEqual(true);
+			expect(isQuad(p6)).toEqual(false);
 
-	/* Jasmine doesn't work well with asynchronous requests. Use Acceptance Tests to test isQuad and isOnCampus 
-	describe("isQuad tests", function(){
-		it("should resolve given latitude, longitude to UChicago Quad area", function(){
 			expect(isQuad({lat: 41.7881, lng: -87.599})).toEqual(true);
 				// true, lat and lng both in quad boundaries
 			expect(isQuad({lat: 41.7881, lng: -87.62})).toEqual(false);
@@ -71,25 +45,57 @@ describe("Vote", function() {
 			expect(isQuad({lat: 42, lng: -90})).toEqual(false);
 				// false, boht lat, lng outside of Quad boundaries
 		});
-	});
+  	});
 
-	describe("isOnCampus tests", function(){
-		it("should resolve given latitude, longitude to UChicago campus area", function(){
-			var coords = LatLng(lat: 41.7881, lng: -87.599);
-			expect(isQuad(coords)).toEqual(true);
-			/*
-			expect(isQuad({lat: 41.7881, lng: -87.599})).toEqual(true);
+
+
+
+  	let lat6 = 41.784113073154535;
+	let lat7 = 41.784113073154540;
+	let lat8 = 41.790;
+	let lat9 = 41.79494425609070;
+	let lat10 = 41.79494425609072;
+
+	let lng6 = -87.59028196334838;
+	let lng7 = -87.59028196334840;
+	let lng8 = -87.591;
+	let lng9 = -87.60500192642211;
+	let lng10 = -87.60500192642213;
+
+	let p7 = {lat: lat6, lng: lng6};
+	let p8 = {lat: lat7, lng: lng6};
+	let p9 = {lat: lat7, lng: lng7};
+	let p10 = {lat: lat8, lng: lng8};
+	let p11 = {lat: lat8, lng: lng6};
+	let p12 = {lat: lat10, lng: lng8};
+	let p13 = {lat: lat9, lng: lng9};
+
+
+  	describe("onCampus() tests", function(){
+	    
+		
+		it("isOnCampus() tests", function()
+		{
+			expect(isOnCampus(p7)).toEqual(false);
+			expect(isOnCampus(p8)).toEqual(false);
+			expect(isOnCampus(p9)).toEqual(true);
+			expect(isOnCampus(p10)).toEqual(true);
+			expect(isOnCampus(p11)).toEqual(false);
+			expect(isOnCampus(p12)).toEqual(false);
+			expect(isOnCampus(p13)).toEqual(true);
+
+			expect(isOnCampus({lat: 41.7881, lng: -87.599})).toEqual(true);
 				// true, lat and lng both in campus boundaries
-			expect(isQuad({lat: 41.7881, lng: -87.62})).toEqual(false);
+			expect(isOnCampus({lat: 41.7881, lng: -87.62})).toEqual(false);
 				// false, lng out of campus boundaries
-			expect(isQuad({lat: 42, lng: -87.599})).toEqual(false);
+			expect(isOnCampus({lat: 42, lng: -87.599})).toEqual(false);
 				// false, lat out of campus boundaries
-			expect(isQuad({lat: 42, lng: -90})).toEqual(false);
+			expect(isOnCampus({lat: 42, lng: -90})).toEqual(false);
 				// false, boht lat, lng outside of campus boundaries
-				
 		});
-	});	
-*/
+  	});
+
+
 	describe("toLogicalLoc tests", function(){
 		it("should resolve address from Google Maps geolocating to" +
 			"HappinessMap App standardized location name", function(){
