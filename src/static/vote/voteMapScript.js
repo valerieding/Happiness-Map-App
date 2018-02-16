@@ -169,30 +169,36 @@ function geocodeLatLng(geocoder, map, marker) {
   } else {
     currentMapLoc = 'offcampus';
     window.alert("Not on Campus");
-  }  
-
+  }
+}  
 
 /* This function determines if a given click is within the boundaries of
  * the quad. It does not check whether the click is a buliding within the 
  * boundaries of the quad */
 function isQuad(latlng) {
-  if(latlng.lat() > 41.7880849860362 
-    && latlng.lat() < 41.7900248540438
-    && latlng.lng() < -87.59810328483582
-    && latlng.lng() > -87.60076940059662) {
+  if(latlng.lat > 41.7880849860362 
+    && latlng.lat < 41.7900248540438
+    && latlng.lng < -87.59810328483582
+    && latlng.lng > -87.60076940059662) {
     return true;
   } else {
     return false;
   }
 }
 
+function mitchTest() {
+  return true;
+}
+
+
+
 /* This function determines if a given click is within the boundaries of
  * campus. */
 function isOnCampus(latlng) {
-  if(latlng.lat() > 41.784113073154536 
-    && latlng.lat() < 41.79494425609071
-    && latlng.lng() < -87.59028196334839
-    && latlng.lng() > -87.60500192642212) {
+  if(latlng.lat > 41.784113073154536 
+    && latlng.lat < 41.79494425609071
+    && latlng.lng < -87.59028196334839
+    && latlng.lng > -87.60500192642212) {
     return true;
   } else {
     return false;

@@ -49,7 +49,10 @@ Voting:
 
 ### 4.) Acceptance tests to try
 ((i.e., what inputs to use, and what outputs are expected))
+
 Map:
+After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map.
+
 
 Message Board:
 
