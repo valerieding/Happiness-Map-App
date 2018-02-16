@@ -11,9 +11,9 @@ describe("Message Board", function(){
   describe("test time function",function(){
     //testing the testing infrastructure with an easy test
     it("should return proper time format", function(){
-      expect(timeConverter(423)).toEqual('31 Dec 1969 18:07:03');
-      expect(timeConverter(4395)).toEqual('31 Dec 1969 19:13:15');
-      expect(timeConverter(42913293)).toEqual('12 May 1971 11:21:33');
+      expect(timeSince(423)).toEqual('~48 years ago');
+      expect(timeSince(48008395)).toEqual('~47 years ago');
+      expect(timeSince(429913293)).toEqual('~35 years ago');
     });
   });
 
