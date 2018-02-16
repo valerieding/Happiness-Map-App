@@ -27,8 +27,10 @@ $(document).ready(function(){
               console.log(messageArray);
               var trHTML = '';
               $.each(messageArray, function(index, value){
-                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) + '</td><td>' + timeConverter(value['timestamp']) + '</td><td>' + value['user_id'] + 
-                '</td><td> <button onclick=\"callReact(\'upvote\',' + value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\">Upvotes: ' + value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\">Downvotes: ' + value['reactions']['downvote'] + '</button></td></tr>' ;
+                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' 
+                + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) 
+                + '</td><td>' + timeConverter(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\">Upvotes: ' + value['reactions']['upvote'] 
+                + '</button> <button onclick=\"callReact(\'downvote\',' + value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\">Downvotes: ' + value['reactions']['downvote'] + '</button></td></tr>' ;
 
               });
               $('#tuffy').append(trHTML);
