@@ -43,14 +43,14 @@ See above, first section.
 2. TO RUN ON DNS:
 http://happymap.ddns.net
 
-Note: running locally will create a new instance of the database and server for you, so there will not be any data. Thus, your campus map and message board will be empty. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better.
+Note: running locally will create a new instance of the database and server for you, so there will not be any data. Thus, your campus map and message board will be empty. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better, and will be faster.
 
 ### 3.) How to run unit tests:
 See above, section 3.a)
 
 #### 3a.) Any changes to unit tests:
 Backend:
-- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py).
+- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), and get_happiness_level() (located in message_api_test.py and voting_api_test.py).
 
 Voting:
 - added getLogicalLoc() which maps from a Google Maps provided address to standardized 'logical location' names
