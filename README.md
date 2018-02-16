@@ -93,5 +93,6 @@ Backend:
 - We added a get_happiness_level(userId) method to return the most recent happiness vote level of a given user
 - Because all voting/posting takes place on campus right now, for this iteration, get_recent_posts() returns all posts within a given time range, posted on campus, sorted by timestamp. get_trending_posts() returns all posts posted on campus, sorted by upvote count. In the next iteration, we will take location into consideration.
 - Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post().
+- We have gotten rid of getPost(filter) altogether: currently, we have two methods of getting posts: getRecentPosts() and getTrendingPosts(). 
 
 ### 8.) Anything else:
