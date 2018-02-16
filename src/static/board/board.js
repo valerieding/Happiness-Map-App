@@ -13,6 +13,25 @@ $(document).ready(function(){
           var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
           return time;
         }
+        function timeSince(timeStamp) {
+          var now = new Date(),
+            secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+          if(secondsPast < 60){
+            return parseInt(secondsPast) + 's';
+          }
+          if(secondsPast < 3600){
+            return parseInt(secondsPast/60) + 'm';
+          }
+          if(secondsPast <= 86400){
+            return parseInt(secondsPast/3600) + 'h';
+          }
+          if(secondsPast > 86400){
+              day = timeStamp.getDate();
+              month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+              year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+              return day + " " + month + year;
+          }
+        }
         console.log("messageArray 1is: " + messageArray);
         $(function() {
           $.ajax(
@@ -27,10 +46,14 @@ $(document).ready(function(){
               console.log(messageArray);
               var trHTML = '';
               $.each(messageArray, function(index, value){
-                trHTML += '<tr><td>' + decodeURI(value['message']) + '</td><td>' 
-                + value['happiness_level'] + '/5' + '</td><td>' + decodeURI(value['location']['logical_location']) 
-                + '</td><td>' + timeConverter(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\">Upvotes: ' + value['reactions']['upvote'] 
-                + '</button> <button onclick=\"callReact(\'downvote\',' + value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\">Downvotes: ' + value['reactions']['downvote'] + '</button></td></tr>' ;
+                trHTML += '<tr><td>' + 
+                decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+                decodeURI(value['location']['logical_location']) + '</td><td>' + 
+                timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+                value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+                value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+                value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+                value['reactions']['downvote'] + '</button></td></tr>' ;
 
               });
               $('#tuffy').append(trHTML);
@@ -57,7 +80,7 @@ $(document).ready(function(){
           //TODO:   pull most recent happinesslevel, parameter to welcomeText(X)
           //right now it just takes happiness of the most recent post,
           //which is not what we want in the end obviously
-          document.body.onload = welcomeText(messageArray[0]['happiness_level']);
+          document.body.onload = welcomeText('/request/get_happiness_level');
 
           function welcomeText(happy_lvl){
             var welcome = ""
