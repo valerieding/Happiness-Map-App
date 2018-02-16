@@ -57,5 +57,5 @@ class VotingAPI:
     def get_happiness_level(self, uid):
         """ Returns the most recent happiness level registered for `uid`. """
 
-        votes = self.database.execute("SELECT score FROM votes WHERE id = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
+        votes = self.database.execute("SELECT score FROM votes WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (uid,))
         return votes[0][0] if len(votes) != 0 else None

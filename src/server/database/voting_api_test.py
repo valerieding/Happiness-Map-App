@@ -93,7 +93,7 @@ class VotingAPITest(unittest.TestCase):
     def test_get_happiness_level(self):
         self.assertIsNone(self.votingApi.get_happiness_level(1))
         self._populate(USERS_A)
-        self.assertEqual(self.votingApi.get_happiness_level(1), 0)
+        self.assertEqual(self.votingApi.get_happiness_level(2), 2)
 
 
 if __name__ == '__main__':
