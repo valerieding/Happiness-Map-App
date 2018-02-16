@@ -1,6 +1,13 @@
+/* This script initializes the embedded Google Map, and handles functions
+ * such as clicks on the map in order to determing the logical location
+ * from the click location, to set the location for a happiness vote. 
+ */
+
+
+// An array mapping addresses to logical locations used for voting
 var arr = [
   ['1116 E 59th St', 'harper'],
-  ['5640 S University Ave', 'Bartlett'],
+  ['5640 S University Ave', 'bartlett'],
   ['1005 E 60th St', 'bj'],
   ['6025 S Ellis Ave', 'bj'],
   ['Burton-Judson Courts', 'bj'],
@@ -67,6 +74,11 @@ var arr = [
 ];
 var myStringMap = new Map(arr);
 
+
+
+/** MAP FUNCTIONS **/
+
+// Styles for the Google Map
 var styles = {
   default: null,
   hide: [
@@ -81,50 +93,49 @@ var styles = {
   ]
 };
 
+/* This function initializes the Map, including defining its starting location 
+ * and linking onClick functions to place a new marker and determine the logical
+ * location of that click. */
 function initMap() {
   var myLatlng = {lat: 41.791422, lng: -87.599729};
-
   var map = new google.maps.Map(document.getElementById('campus-map'), {
-    zoom: 15,
+    zoom: 16,
     center: myLatlng
   });
-   map.setOptions({styles: styles['hide']});
-  
+  map.setOptions({styles: styles['hide']});
   var geocoder = new google.maps.Geocoder;
-
   var marker = new google.maps.Marker({
     position: myLatlng,
     map: map,
     title: 'Click to zoom'
   });
 
-
   map.addListener('click', function(e) {
     marker.setMap(null);
     marker = null;
     marker = placeMarker(e.latLng, map);
-
     geocodeLatLng(geocoder, map, marker);
   });
 
-
-  marker.addListener('click', function() {
-    //getLocName();
-    //map.setZoom(8);
-    //map.setCenter(marker.getPosition());
-  });
+  marker.addListener('click', function() {});
 }
 
+/* This function places a marker on the map at the specified position. */
 function placeMarker(position, map) {
-  //marker.setMap(null);
   var marker = new google.maps.Marker({
       position: position,
       map: map
   });
   return marker;
-  //map.panTo(position);
 }
 
+/* This function determines the address of the clicked location, and further
+ * maps this address to a logical location of the type used in voting.
+ * 
+ * This function sets the value of a global variable currentMapLoc (which is 
+ * NOT declared in this script, and must be declared in the HTML file or script 
+ * that contains this script) to the determined logical location 
+ */
 function geocodeLatLng(geocoder, map, marker) {
   var latlng = marker.getPosition();
   //window.alert(latlng);
@@ -159,8 +170,11 @@ function geocodeLatLng(geocoder, map, marker) {
     currentMapLoc = 'offcampus';
     window.alert("Not on Campus");
   }  
-}
 
+
+/* This function determines if a given click is within the boundaries of
+ * the quad. It does not check whether the click is a buliding within the 
+ * boundaries of the quad */
 function isQuad(latlng) {
   if(latlng.lat() > 41.7880849860362 
     && latlng.lat() < 41.7900248540438
@@ -172,6 +186,8 @@ function isQuad(latlng) {
   }
 }
 
+/* This function determines if a given click is within the boundaries of
+ * campus. */
 function isOnCampus(latlng) {
   if(latlng.lat() > 41.784113073154536 
     && latlng.lat() < 41.79494425609071
@@ -183,8 +199,11 @@ function isOnCampus(latlng) {
   }
 }
 
+/* This function finds if a formatted_address from the geolocator is in 
+ * myStringMap and returns the logical location from myStringMap if it is 
+ * (or null if not). */
 function toLogicalLoc(formatted_address) {
-  var ret = null;//formatted_address;//"Unknown Location";
+  var ret = null;
   var split = formatted_address.split(',');
   if(myStringMap.has(split[0])) {
     ret = myStringMap.get(split[0]);
