@@ -84,7 +84,7 @@ var styles = {
 function initMap() {
   var myLatlng = {lat: 41.791422, lng: -87.599729};
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  var map = new google.maps.Map(document.getElementById('campus-map'), {
     zoom: 15,
     center: myLatlng
   });
@@ -98,14 +98,18 @@ function initMap() {
     title: 'Click to zoom'
   });
 
+
   map.addListener('click', function(e) {
     marker.setMap(null);
     marker = null;
     marker = placeMarker(e.latLng, map);
+
     geocodeLatLng(geocoder, map, marker);
   });
 
+
   marker.addListener('click', function() {
+    //getLocName();
     //map.setZoom(8);
     //map.setCenter(marker.getPosition());
   });
@@ -132,29 +136,29 @@ function geocodeLatLng(geocoder, map, marker) {
           var logicalLoc = toLogicalLoc(results[0].formatted_address);
           if(logicalLoc == null) {
             if(isQuad(latlng)) {
-              window.alert("Quads");
+              currentMapLoc = 'quad';
+              //window.alert("Quads");
             } else {
+              currentMapLoc = null;
               window.alert("Unknown Location: " + latlng);
             }
           } else {
+            currentMapLoc = toLogicalLoc(results[0].formatted_address);
             //map.setZoom(11);
-            window.alert(toLogicalLoc(results[0].formatted_address));
           }
         } else {
+          currentMapLoc = null;
           window.alert('No results found');
         }
       } else {
+        currentMapLoc = null;
         window.alert('Geocoder failed due to: ' + status);
       }
     });
   } else {
+    currentMapLoc = null;
     window.alert("Not on Campus");
-  }
-
-
-
-
-  
+  }  
 }
 
 function isQuad(latlng) {

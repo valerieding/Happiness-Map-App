@@ -4,6 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+      #campus-map {
+        height: 400px;
+      }
+      html, body {
+        height: 400px;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="/static/main.css" rel="stylesheet">
@@ -29,60 +39,69 @@
         }
 
         $("#vote_btn").click(function(){
-          var drop_loc = $("#loc_drop option:selected").val();
-          if (drop_loc === 'blank')
-            drop_loc = '';
-          var map_loc = $("map_loc").val();
-          //alert("map loc = " + map_loc);
+          var drop_loc;
+          var map_lock;
+          var happy;
+          var lock;
+          if(currentMapLoc == null) {
+            drop_loc = $("#loc_drop option:selected").val();
+            if (drop_loc === 'blank')
+              drop_loc = '';
+            map_loc = $("map_loc").val();
+            //alert("map loc = " + map_loc);
 
-          var happy = $("input[name=happiness_level]:checked").val();
-          
-          // for the time being
-          var loc = drop_loc;
+            happy = $("input[name=happiness_level]:checked").val();
+            
+            // for the time being
+            loc = drop_loc;
 
-          //var loc = '';
-          // map selection should take priority over dropdown selection
-          /* if (typeof map_loc != 'undefined') {
-                loc = map_loc;
+            //var loc = '';
+            // map selection should take priority over dropdown selection
+            /* if (typeof map_loc != 'undefined') {
+                  loc = map_loc;
+              }
+              else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
+              {
+                  loc = drop_loc;
+              }
+            */
+            alert("Fuck jquery");
+            submitVote(loc, happy);
+           // alert(loc + ": " + happy);
+           // alert($("#loc_drop option:selected").val());          
+           /*
+           if (typeof happy != 'undefined' && typeof loc != 'undefined'){
+              $.ajax({
+                  url: 'request/add_vote',
+                  method: 'post',
+                  dataType: 'json',
+                  data: {'latitude': 10,
+                         'longitude': 10,
+                         'logical_location': loc,
+                         'happiness_level': happy},
+                         //'logical_location': $('#loc_drop option:selected').val(),
+                         //'happiness_level': $('input[name=happiness_level]:checked').val()},
+                  beforeSend: function() {
+                    //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
+                    //alert("Location: " + $("#loc_drop option:selected").val());
+                    //alert('echo');
+                  },
+                  success: function() {
+                    //alert('Vote Submitted');
+                  },
+                  error: function() {
+                    //alert('Failed to submit vote');
+                  }              
+              });
             }
-            else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
-            {
-                loc = drop_loc;
+            else{
+              alert("You have to submit both a happiness value and your location");
             }
-          */
-          alert("Fuck jquery");
-          submitVote(loc, happy);
-         // alert(loc + ": " + happy);
-         // alert($("#loc_drop option:selected").val());          
-         /*
-         if (typeof happy != 'undefined' && typeof loc != 'undefined'){
-            $.ajax({
-                url: 'request/add_vote',
-                method: 'post',
-                dataType: 'json',
-                data: {'latitude': 10,
-                       'longitude': 10,
-                       'logical_location': loc,
-                       'happiness_level': happy},
-                       //'logical_location': $('#loc_drop option:selected').val(),
-                       //'happiness_level': $('input[name=happiness_level]:checked').val()},
-                beforeSend: function() {
-                  //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                  //alert("Location: " + $("#loc_drop option:selected").val());
-                  //alert('echo');
-                },
-                success: function() {
-                  //alert('Vote Submitted');
-                },
-                error: function() {
-                  //alert('Failed to submit vote');
-                }              
-            });
+            */
+          } else {
+            happy = $("input[name=happiness_level]:checked").val();
+            submitVote(currentMapLoc, happy);
           }
-          else{
-            alert("You have to submit both a happiness value and your location");
-          }
-          */
         });
       });
     </script>
@@ -124,10 +143,13 @@
             -->
             </select>
         </div>
-        <div id="campus-map" name="loc_map">
-          <iframe height="400px" width="100%" frameborder="0" scrolling="no" src="/vote/clickMap.html">
-          </iframe>
-        </div>
+        <script>
+          var currentMapLoc = null;
+        </script>
+        <div id="campus-map" name="loc_map"></div>
+        <script type="text/javascript" src="/static/vote/voteMapScript.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsbxNy5GODdnbs1MuazTLziaCXJnN9dCM&callback=initMap">
+        </script>
         <div>
           <button id="vote_btn"> Submit Vote </button>
         </div> 
