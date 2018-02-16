@@ -186,10 +186,6 @@ function isQuad(latlng) {
   }
 }
 
-function mitchTest() {
-  return true;
-}
-
 
 
 /* This function determines if a given click is within the boundaries of

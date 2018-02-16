@@ -1,5 +1,55 @@
 describe("Vote", function() {
 
+	describe("quad tests", function(){
+    //testing the testing infrastructure with an easy test
+    let lat1 = 41.7880849860361;
+	let lat2 = 41.7880849860363;
+	let lat3 = 41.789;
+	let lat4 = 41.7900248540437;
+	let lat5 = 41.7900248540439;
+
+	let lng1 = -87.59810328483581;
+	let lng2 = -87.59810328483583;
+	let lng3 = -87.599;
+	let lng4 = -87.60076940059661;
+	let lng5 = -87.60076940059663;
+	
+	let p1 = {lat: lat1, lng: lng1};
+	let p2 = {lat: lat1, lng: lng3};
+	let p3 = {lat: lat2, lng: lng2};
+	let p4 = {lat: lat3, lng: lng3};
+	let p5 = {lat: lat3, lng: lng4};
+	let p6 = {lat: lat3, lng: lng5};
+	
+	it("isOnQuad() tests", function()
+	{
+		expect(isQuad(p1)).toEqual(false);
+		expect(isQuad(p2)).toEqual(false);
+		expect(isQuad(p3)).toEqual(true);
+		expect(isQuad(p4)).toEqual(true);
+		expect(isQuad(p5)).toEqual(true);
+		expect(isQuad(p6)).toEqual(false);
+	});
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	it("should Return Hello world", function(){
 		expect(helloworld()).toEqual('Hello World');
 	});
