@@ -59,10 +59,8 @@ Voting:
 - added unit tests for getLogicalLoc()
 
 Board:
-- getposts() and removeposts() is not a thing. removed.
-- getrecentposts() and gettrendingposts() were never meant to do any other filtering, we can do that on front end if we want
-- added some and all in the test file
-
+- Added tests for new functions callReact(), welcomeText() and timeSince().
+- Instead of a filtering function 'getposts(filter)' for this iteration, we decided to use the database queries 'get_trending_posts' and 'get_recent_posts' to sort the message board, implemented with the buttons 'trending' and 'recent'. We removed removeposts(), as we plan to implement an 'Admin' user in later iterations. 
 
 ### 4.) Acceptance tests to try
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
@@ -70,13 +68,12 @@ Note: A user MUST add a vote before posting a message. If you don't add a vote, 
 Map:
 After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map.
 
-
 Message Board:
 You cannot post if you did not already vote.
-Does not accept empty messages
-You cannot double upvote/downvote
-Switching vote subtracts from current and adds to new vote so not double counted
-When switching sort, that is visible to user.
+Message board does not accept empty messages.
+You cannot double upvote/downvote, but you may switch between upvote and downvote on a post. 
+Switching your vote subtracts from current vote and adds to new vote so as to not double count it.
+Sorting posts by 'trending' or 'recent' should result in either the highest rated or most recently added posts.
 
 Voting:
 	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. Off-campus users cannot post to the Message Board.
@@ -123,13 +120,14 @@ Voting:
 - Wrote unit tests for interactive map functions and acceptance tests for vote submission
 
 Message Board:
-- Wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
-- Users can see all the posts and laugh and cry with their friends.
 - Designed the message board page
-- Dynamic welcome text
-- A post can be added after a vote 
-- This post can be up/down voted on
+- A user can post on the board after they vote 
+- This post can be up and down voted on
 - Populates a table and can be sorted via buttons
+- Users can see all the posts and laugh and cry with their friends
+- Dynamic welcome text depending on the user's last happiness vote
+- Changed the way we display time on the message board (now "1 minute ago") versus how it's stored in the database
+- Wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
 
 Map:
 - Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
@@ -155,7 +153,7 @@ Mihai and Valerie worked on the backend. We pair-programmed the database (with M
 
 Anthony and Mitch worked on the vote submission page. Anthony made the UI for vote submission (happiness level and dropdown menu) and form submission via the submit button (vote/index.html, vote.js, vote.css) and wrote unit tests (VoteSpec.js). Mitch made the interactive map with Google Maps API (clickMap.html, voteMapSpec.js).
 
-Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic loading and Xavi making an unruly table work right. 
+Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic sorting of posts and Xavi making an unruly table serve up the right posts. 
 
 ### 7.) Design changes or unit test changes:
 
@@ -183,7 +181,8 @@ Voting:
 
 Message Board:
 - Design document says there will be getposts() removeposts(). That is not in our iteration. Getposts() is done in trending and in recent posts.  Removeposts() will be relevant when an Admin is included in iteration two.
-- Created a change to make up of post. Reactions is a class that contains upvotes and downvotes. Just in case we make other reactions, easier to have it's own class. Classic code smell.
+- Created a change to the makeup of post. 'Reactions' is a class that contains upvotes and downvotes. Just in case we make other reactions, it will be easier to have its own class. Classic code smell.
 
 
 ### 8.) Anything else:
+- Find us on the web at http://happymap.ddns.net/!
