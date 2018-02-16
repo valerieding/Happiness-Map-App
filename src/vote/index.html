@@ -50,9 +50,11 @@
                 loc = drop_loc;
             }
           */
-
+          alert("Fuck jquery");
+          submitVote(loc, happy);
          // alert(loc + ": " + happy);
          // alert($("#loc_drop option:selected").val());          
+         /*
          if (typeof happy != 'undefined' && typeof loc != 'undefined'){
             $.ajax({
                 url: 'request/add_vote',
@@ -80,6 +82,7 @@
           else{
             alert("You have to submit both a happiness value and your location");
           }
+          */
         });
       });
     </script>
@@ -89,7 +92,7 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Vote</h1>
         </main>
-        <form id="vote">
+        <form id="vote" method="post">
           <div class="ui">
             <h5> On a scale of 1 (least happy) to 5 (most happy), how happy are you? </h5>
               <div class="radio-label-vertical-wrapper">
@@ -127,7 +130,7 @@
         </div>
         <div>
           <button id="vote_btn"> Submit Vote </button>
-        </div>
+        </div> 
     </form>
     </div>
   </body>

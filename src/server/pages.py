@@ -18,7 +18,7 @@ HOMEPAGE = {'route': 'map', 'path': 'index.html'}
 @page_server.route('/map/<path:path>', defaults={'route': 'map'})
 @page_server.route('/stats', defaults={'route': 'stats'})
 @page_server.route('/stats/<path:path>', defaults={'route': 'stats'})
-@page_server.route('/vote', defaults={'route': 'vote'})
+@page_server.route('/vote', defaults={'route': 'vote'}, methods=['GET', 'POST'])
 @page_server.route('/vote/<path:path>', defaults={'route': 'vote'})
 def serve_pages(route, path='index.html'):
     return render_template(route + '/' + path)
