@@ -13,29 +13,30 @@ function timeConverter(UNIX_timestamp){
   var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
   var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
   return time;
-}
+};
 
 function welcomeText(happy_lvl){
-var welcome = ""
-switch(happy_lvl){
-  case 1:
-    welcome = "<h4 style=\"color:SlateBlue; text-align:left;\">1/5?!?! Why are you so sad?</h4>";
-    break;
-  case 2:
-    welcome ="<h4 style=\"color:DodgerBlue; text-align:left;\">2/5? Tell us why you're feeling blue...</h4>";
-    break;
-  case 3:
-    welcome ="<h4 style=\"color:Orange; text-align:left;\">Keep your chin up, and tell us why you feel so 3 right now</h4>";
-    break;
-  case 4:
-    welcome ="<h4 style=\"color:Yellow; text-align:left;\">4/5? Nice! How come?</h4>";
-    break;
-  case 5:
-    welcome = "<h4 style=\"color:MediumSeaGreen; text-align:left;\">You're too happy. Tell us why...</h4>";
-    break;
-  default:
-    welcome.append("Vote first, then post!");
-}
+  var welcome = ""
+  switch(happy_lvl){
+    case 1:
+      welcome = "<h4 style=\"color:SlateBlue; text-align:left;\">1/5?!?! Why are you so sad?</h4>";
+      break;
+    case 2:
+      welcome ="<h4 style=\"color:DodgerBlue; text-align:left;\">2/5? Tell us why you're feeling blue...</h4>";
+      break;
+    case 3:
+      welcome ="<h4 style=\"color:Orange; text-align:left;\">Keep your chin up, and tell us why you feel so 3 right now</h4>";
+      break;
+    case 4:
+      welcome ="<h4 style=\"color:Yellow; text-align:left;\">4/5? Nice! How come?</h4>";
+      break;
+    case 5:
+      welcome = "<h4 style=\"color:MediumSeaGreen; text-align:left;\">You're too happy. Tell us why...</h4>";
+      break;
+    default:
+      welcome.append("Vote first, then post!");
+  }
+};
 
 
 function callReact(vote,postID,userID){
@@ -51,24 +52,18 @@ case "upvote":
 
     });
   });
-
   break;
-case "downvote":
-  $(function(){
-    $.ajax({
-     url: '/request/add_reaction',
-     type: 'post',
-     dataType: 'json',
-     data: {'post_id': postID, 'reaction': 'downvote'}
+  case "downvote":
+    $(function(){
+      $.ajax({
+       url: '/request/add_reaction',
+       type: 'post',
+       dataType: 'json',
+       data: {'post_id': postID, 'reaction': 'downvote'}
+      });
     });
-  });
-  break;
-default:
-  window.alert("hi!");
-}
-}
-
-
-
-
-        
+    break;
+  default:
+    window.alert("hi!");
+  }
+};

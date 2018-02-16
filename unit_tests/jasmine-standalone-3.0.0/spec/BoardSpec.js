@@ -11,27 +11,27 @@ describe("Message Board", function(){
   describe("test time function",function(){
     //testing the testing infrastructure with an easy test
     it("should return proper time format", function(){
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
     });
   });
 
   describe("Welcome Test",function(){
     //testing the testing infrastructure with an easy test
     it("should return greeting based on what last vote was", function(){
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
     });
   });
 
   describe("call react Test",function(){
     //testing the testing infrastructure with an easy test
     it("should return upvote() or downvote() depending on type of react", function(){
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World'));
-      expect(timeConverter(423).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('Hello World');
     });
   });
 
@@ -43,7 +43,7 @@ describe("Message Board", function(){
 
    // let testpost1 = [];
    // let testpost2 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 1000, message: "test post"}];
-   // let testpost3 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 0, message: "dup"}, 
+   // let testpost3 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 0, message: "dup"},
    //  {post_id: 1,vote_id: 2, reply_to: 0, uid: 123, message: "dup"}];
    // let testpost4 = [{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post"}];
 
