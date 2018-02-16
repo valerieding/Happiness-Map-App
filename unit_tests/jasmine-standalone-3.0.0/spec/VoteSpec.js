@@ -1,6 +1,6 @@
 describe("Vote", function() {
 
-	// Quads
+	/** Variables for onQuad() tests **/
 	let lat1 = 41.7880849860361;
 	let lat2 = 41.7880849860363;
 	let lat3 = 41.789;
@@ -12,13 +12,6 @@ describe("Vote", function() {
 	let lng3 = -87.599;
 	let lng4 = -87.60076940059661;
 	let lng5 = -87.60076940059663;
-	
-	let p1 = {lat: lat1, lng: lng1};
-	let p2 = {lat: lat1, lng: lng3};
-	let p3 = {lat: lat2, lng: lng2};
-	let p4 = {lat: lat3, lng: lng3};
-	let p5 = {lat: lat3, lng: lng4};
-	let p6 = {lat: lat3, lng: lng5};
 
 	// tests for voteMapScript functions that are easily testable outside of Google Maps API
 	// Many of the interactive map functions rely extensivley on Google Maps API and be assumed
@@ -31,26 +24,26 @@ describe("Vote", function() {
 		it("isQuad() tests", function()
 		{
 			
-			expect(isQuad(p1)).toEqual(false);
-			expect(isQuad(p2)).toEqual(false);
-			expect(isQuad(p3)).toEqual(true);
-			expect(isQuad(p4)).toEqual(true);
-			expect(isQuad(p5)).toEqual(true);
-			expect(isQuad(p6)).toEqual(false);
+			expect(isQuad(lat1, lng1)).toEqual(false);
+			expect(isQuad(lat1, lng3)).toEqual(false);
+			expect(isQuad(lat2, lng2)).toEqual(true);
+			expect(isQuad(lat3, lng3)).toEqual(true);
+			expect(isQuad(lat3, lng4)).toEqual(true);
+			expect(isQuad(lat3, lng5)).toEqual(false);
 
-			expect(isQuad({lat: 41.7881, lng: -87.599})).toEqual(true);
+			expect(isQuad(41.7881, -87.599)).toEqual(true);
 				// true, lat and lng both in quad boundaries
-			expect(isQuad({lat: 41.7881, lng: -87.62})).toEqual(false);
+			expect(isQuad(41.7881, -87.62)).toEqual(false);
 				// false, lng out of quad boundaries
-			expect(isQuad({lat: 42, lng: -87.599})).toEqual(false);
+			expect(isQuad(42, -87.599)).toEqual(false);
 				// false, lat out of quad boundaries
-			expect(isQuad({lat: 42, lng: -90})).toEqual(false);
+			expect(isQuad(42, -90)).toEqual(false);
 				// false, boht lat, lng outside of Quad boundaries
 		});
   	});
 
 
-
+  	/** For onCampus() tests **/
 
   	let lat6 = 41.784113073154535;
 	let lat7 = 41.784113073154540;
@@ -64,35 +57,27 @@ describe("Vote", function() {
 	let lng9 = -87.60500192642211;
 	let lng10 = -87.60500192642213;
 
-	let p7 = {lat: lat6, lng: lng6};
-	let p8 = {lat: lat7, lng: lng6};
-	let p9 = {lat: lat7, lng: lng7};
-	let p10 = {lat: lat8, lng: lng8};
-	let p11 = {lat: lat8, lng: lng6};
-	let p12 = {lat: lat10, lng: lng8};
-	let p13 = {lat: lat9, lng: lng9};
-
 
   	describe("onCampus() tests", function(){
 	    
 		
 		it("isOnCampus() tests", function()
 		{
-			expect(isOnCampus(p7)).toEqual(false);
-			expect(isOnCampus(p8)).toEqual(false);
-			expect(isOnCampus(p9)).toEqual(true);
-			expect(isOnCampus(p10)).toEqual(true);
-			expect(isOnCampus(p11)).toEqual(false);
-			expect(isOnCampus(p12)).toEqual(false);
-			expect(isOnCampus(p13)).toEqual(true);
+			expect(isOnCampus(lat6, lng6)).toEqual(false);
+			expect(isOnCampus(lat7, lng6)).toEqual(false);
+			expect(isOnCampus(lat7, lng7)).toEqual(true);
+			expect(isOnCampus(lat8, lng8)).toEqual(true);
+			expect(isOnCampus(lat8, lng6)).toEqual(false);
+			expect(isOnCampus(lat10, lng8)).toEqual(false);
+			expect(isOnCampus(lat9, lng9)).toEqual(true);
 
-			expect(isOnCampus({lat: 41.7881, lng: -87.599})).toEqual(true);
+			expect(isOnCampus(41.7881, -87.599)).toEqual(true);
 				// true, lat and lng both in campus boundaries
-			expect(isOnCampus({lat: 41.7881, lng: -87.62})).toEqual(false);
+			expect(isOnCampus(41.7881, -87.62)).toEqual(false);
 				// false, lng out of campus boundaries
-			expect(isOnCampus({lat: 42, lng: -87.599})).toEqual(false);
+			expect(isOnCampus(42, -87.599)).toEqual(false);
 				// false, lat out of campus boundaries
-			expect(isOnCampus({lat: 42, lng: -90})).toEqual(false);
+			expect(isOnCampus(42, -90)).toEqual(false);
 				// false, boht lat, lng outside of campus boundaries
 		});
   	});
