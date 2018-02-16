@@ -33,7 +33,14 @@ Follow steps 1-3 from 'Running unit tests for heat map'
 ### 1.) How to compile:
 See above, first section
 ### 2.) How to run code:
-See above, first section
+1. TO RUN LOCALLY:
+See above, first section. 
+
+2. TO RUN ON DNS:
+http://happymap.ddns.net
+
+Note: running locally will create a new instance of the database and server for you, so there will not be any data. Thus, your campus map and message board will be empty. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better.
+
 ### 3.) How to run unit tests:
 See above, section 3.a)
 
@@ -48,7 +55,7 @@ Voting:
 - added unit tests for getLogicalLoc()
 
 ### 4.) Acceptance tests to try
-((i.e., what inputs to use, and what outputs are expected))
+Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
 
 Map:
 After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map.
