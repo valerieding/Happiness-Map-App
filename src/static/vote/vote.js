@@ -2,6 +2,7 @@ var helloworld = function(){
 	return 'Hello World';
 }
 
+// send happiness vote to database
 function submitVote(loc, happy){
   alert(loc + " " + happy);
   if (typeof happy != 'undefined' && typeof loc != 'undefined'){
@@ -30,7 +31,9 @@ function submitVote(loc, happy){
   }
   else{
     alert("You have to submit both a happiness value and your location");
+    return false;
   }
+  return true;
 };
 
 // same as in src/static/map/mapFunctions.js
