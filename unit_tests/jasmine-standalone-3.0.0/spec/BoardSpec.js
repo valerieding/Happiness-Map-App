@@ -11,27 +11,33 @@ describe("Message Board", function(){
   describe("test time function",function(){
     //testing the testing infrastructure with an easy test
     it("should return proper time format", function(){
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
+      expect(timeConverter(423)).toEqual('31 Dec 1969 18:07:03');
+      expect(timeConverter(4395)).toEqual('31 Dec 1969 19:13:15');
+      expect(timeConverter(42913293)).toEqual('12 May 1971 11:21:33');
     });
   });
 
   describe("Welcome Test",function(){
     //testing the testing infrastructure with an easy test
     it("should return greeting based on what last vote was", function(){
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
+      expect(welcomeText(1)).toEqual('<h4 style=\"color:SlateBlue; text-align:left;\">1/5?!?! Why are you so sad?</h4>');
+      expect(welcomeText(2)).toEqual('<h4 style=\"color:DodgerBlue; text-align:left;\">2/5? Tell us why you\'re feeling blue...</h4>');
+      expect(welcomeText(3)).toEqual('<h4 style=\"color:Orange; text-align:left;\">Keep your chin up, and tell us why you feel so 3 right now</h4>');
+      expect(welcomeText(4)).toEqual('<h4 style=\"color:Yellow; text-align:left;\">4/5? Nice! How come?</h4>');
+      expect(welcomeText(5)).toEqual('<h4 style=\"color:MediumSeaGreen; text-align:left;\">You\'re too happy. Tell us why...</h4>');
+      // expect(welcomeText(0)).toEqual('Vote first, then post!');
+      // expect(welcomeText(0)).toEqual('Vote first, then post!');
     });
   });
 
   describe("call react Test",function(){
     //testing the testing infrastructure with an easy test
     it("should return upvote() or downvote() depending on type of react", function(){
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
-      expect(timeConverter(423)).toEqual('Hello World');
+      expect(callReact('upvote',3,2)).toEqual('success: upvote');
+      expect(callReact('downvote',3,2)).toEqual('success: downvote');
+      expect(callReact('uh oh',3,2)).toEqual('no react');
+      // expect(timeConverter(423)).toEqual('Hello World');
+      // expect(timeConverter(423)).toEqual('Hello World');
     });
   });
 
