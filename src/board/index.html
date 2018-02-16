@@ -47,19 +47,19 @@
             <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
           </div>
           <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+          <div class='btn-toolbar pull-right'>
+            <div class='btn-group'>
+            <button  onclick="filterPosts('recent')" class="btn btn-primary">Recent</button>
+            <button  onclick="filterPosts('trending');window.location.reload()" class="btn btn-primary">Trending</button>
+          </div>
+          </div>
         </form>
 
         <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
           <img class="card-img-top" alt="">
           <div class="card-body">
-            <!--  How we did it before:
-              <div class="d-flex justify-content-between">
-              <h5 class="card-title">Post</h5>
-              <h5 class="card-title">Happiness Level</h5>
-              <h5 class="card-title">Datetime</h5>
-              <h5 class="card-title">User ID</h5>
-              <h5 class="card-title">Log Location</h5>
-            </div> -->
+
+
             <div class="d-flex justify-content-between">
 
                   <table id="tuffy" border='2' class="table table-hover table-border">
@@ -68,7 +68,7 @@
                           <th scope="col">Happiness Level</th>
                           <th scope="col">Location</th>
                           <th scope="col">Time Stamp</th>
-                          <th scope="col">Upvote</th>
+                          <th scope="col">Reactions</th>
                       </tr>
                   </table>
                   <!-- Previously:

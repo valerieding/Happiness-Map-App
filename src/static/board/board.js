@@ -107,7 +107,7 @@ $(document).ready(function(){
       $(function() {
         $.ajax(
         {
-          url: '/request/get_trending_posts',
+          url: '/request/get_recent_posts',
           type: 'post',
           dataType: 'json',
           data: {'latitude': 10, 'longitude': 10},
@@ -189,3 +189,89 @@ $(document).ready(function(){
               window.alert("hi!");
           }
         }
+
+      function filterPosts(filter){
+        switch(filter){
+          case "trending":
+            var messageArray = "";
+            console.log("messageArray 1is: " + messageArray);
+            $(function() {
+              $.ajax({
+                url: '/request/get_trending_posts',
+                type: 'post',
+                dataType: 'json',
+                data: {'latitude': 10, 'longitude': 10},
+                async: false,
+                success: function(data) {
+                  messageArray = data;
+                  console.log(messageArray);
+                  var trHTML = '';
+                  $.each(messageArray, function(index, value){
+                    trHTML += '<tr><td>' + 
+                    decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+                    decodeURI(value['location']['logical_location']) + '</td><td>' + 
+                    timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+                    value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+                    value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+                    value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+                    value['reactions']['downvote'] + '</button></td></tr>' ;
+
+                  });
+                  $('#tuffy').append(trHTML);
+                },
+                error: function(msg) {
+                  alert(msg.responseText);
+                }
+                });
+              });
+            break;
+          case "recent":
+            var messageArray = "";
+            console.log("messageArray 1is: " + messageArray);
+            $(function() {
+              $.ajax({
+                url: '/request/get_recent_posts',
+                type: 'post',
+                dataType: 'json',
+                data: {'latitude': 10, 'longitude': 10},
+                async: false,
+                success: function(data) {
+                  messageArray = data;
+                  console.log(messageArray);
+                  var trHTML = '';
+                  $.each(messageArray, function(index, value){
+                    trHTML += '<tr><td>' + 
+                    decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+                    decodeURI(value['location']['logical_location']) + '</td><td>' + 
+                    timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+                    value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+                    value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+                    value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+                    value['reactions']['downvote'] + '</button></td></tr>' ;
+                  });
+                  $('#tuffy').append(trHTML);
+                },
+                error: function(msg) {
+                  alert(msg.responseText);
+                }
+                });
+              });
+            break;
+          default:
+            window.alert("hello");
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
