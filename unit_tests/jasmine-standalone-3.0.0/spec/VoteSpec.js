@@ -24,11 +24,13 @@ describe("Vote", function() {
 	// Many of the interactive map functions rely extensivley on Google Maps API and be assumed
 	// to work, taking Google Maps API as a black-box
 	// These functions can still be tested using the Acceptance Testing scenarios
+	/*
 	describe("quad tests", function(){
 	    
 		
 		it("isQuad() tests", function()
 		{
+			/*
 			expect(isQuad(p1)).toEqual(false);
 			expect(isQuad(p2)).toEqual(false);
 			expect(isQuad(p3)).toEqual(true);
@@ -94,7 +96,7 @@ describe("Vote", function() {
 				// false, boht lat, lng outside of campus boundaries
 		});
   	});
-
+	*/
 
 	describe("toLogicalLoc tests", function(){
 		it("should resolve address from Google Maps geolocating to" +
