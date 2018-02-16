@@ -2,6 +2,40 @@ var helloworld = function(){
 	return 'Hello World';
 }
 
+// send happiness vote to database
+function submitVote(loc, happy){
+  alert(loc + " " + happy);
+  if (typeof happy != 'undefined' && typeof loc != 'undefined'){
+    $.ajax({
+                url: '/request/add_vote',
+                method: 'post',
+                dataType: 'json',
+                data: {'latitude': 10,
+                       'longitude': 10,
+                       'logical_location': loc,
+                       'happiness_level': happy},
+                       //'logical_location': $('#loc_drop option:selected').val(),
+                       //'happiness_level': $('input[name=happiness_level]:checked').val()},
+                beforeSend: function() {
+                  //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
+                  //alert("Location: " + $("#loc_drop option:selected").val());
+                  //alert('echo');
+                },
+                success: function() {
+                  //alert('Vote Submitted');
+                },
+                error: function() {
+                  //alert('Failed to submit vote');
+                }              
+            }); 
+  }
+  else{
+    alert("You have to submit both a happiness value and your location");
+    return false;
+  }
+  return true;
+};
+
 // same as in src/static/map/mapFunctions.js
 // To Do: move to external static file for reference in both
 var log_locs = Object.freeze({
@@ -38,12 +72,10 @@ var log_locs = Object.freeze({
   maxp : "Max Palevsky Commons",
   hutch : "Hutchinson Commons",
   swift : "Swift Hall",
-  reynolds : "Reynolds Club",
   mainNorth : "Main Quad North Buildings",
   bookstore : "University Bookstore",
   edward : "Edward H Levi Hall",
   cobb : "Cobb Hall",
-  swift : "Swift Hall",
   bond : "Bond Chapel",
   classicsBuilds : "Classics Quad Buildings",
   harper : "Harper Memorial Library",
@@ -53,4 +85,6 @@ var log_locs = Object.freeze({
   ryeck : "Ryerson/Eckhart",
   ratner : "Ratner Athletics Center",
   southeast : "South East Quad Buildings",
+  offcampus: "Off Campus",
 }); 
+
