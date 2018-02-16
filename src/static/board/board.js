@@ -84,9 +84,9 @@ $(document).ready(function(){
           decodeURI(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
           decodeURI(value['location']['logical_location']) + '</td><td>' + 
           timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-          value['post_id']  + ')\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+          value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
           value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-          value['post_id'] +')\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+          value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
           value['reactions']['downvote'] + '</button></td></tr>' ;
         });
         return trHTML;
@@ -100,7 +100,7 @@ $(document).ready(function(){
               url: 'request/add_post',
               type: 'post',
               dataType: 'json',
-            //  data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'logical_location': "Maclean"},
+              data: {'latitude': 10, 'longitude': 10, 'message': $("#myform").serialize().slice(8), 'logical_location': "Maclean"},
               success: function(data) {
                 // 'request/upvote'
                  console.log("added post successfully");
