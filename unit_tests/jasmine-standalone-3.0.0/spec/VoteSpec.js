@@ -54,69 +54,66 @@ describe("Vote", function() {
 		expect(helloworld()).toEqual('Hello World');
 	});
 
-	//example returns from nameToMapObject()
-    let reg = {logical: "Regenstein Library", raw_happy: 100, num_votes: 100};
-    let harper = {name: "Harper Memorial Library", raw_happy: 200, num_votes: 50};
-    let crerar = {name: "Crerar Library", raw_happy: 300, num_votes: -300};
-    let ryerson= {name: "Ryerson Hall", raw_happy: 0, num_votes: 100};
-    let nonsense = {};
-    let noname = {name: "", raw_happy: 1, num_votes: 1};
+	// tests for voteMapScript functions that are easily testable outside of Google Maps API
+	// Many of the interactive map functions rely extensivley on Google Maps API and be assumed
+	// to work, taking Google Maps API as a black-box
+	// These functions can still be tested using the Acceptance Testing scenarios
 
-    // example votes
-	let testvote1 = [{uid: 1, happiness_level: 5, location: "Regenstein Library"}];
-	let testvote2 = [{uid: -1, happiness_level: 1, location: "Harper Memorial Library"}];
-	let testvote3 = [{uid: 1, happiness_level: 10, location: "Regenstein Library"}];	
-	let testvote4 = [{uid: 1, happiness_level: -10, location: "Ryerson Hall"}];
-	let testvote5 = [{uid: 1, happiness_level: 3, location: ""}];
-	let testvote6 = [{uid: 1, happiness_level: 1, location: "asdf"}];
-
-
-	it("nameToMapObject tests", function()
-	{
-		expect(nameToMapObject("Regenstein Library")).toEqual(reg);
-			// name corresponds to a map object
-		expect(nameToMapObject("asdf")).toBeNull();
-			// there is no map object with that name
-		expect(nameToMapObject("")).toBeNull();
-			// must specify a name
-		expect(nameToMapObject("nonsense")).toBeNull();
-			// name corresponds to improperly formatted map object
+	/* Jasmine doesn't work well with asynchronous requests. Use Acceptance Tests to test isQuad and isOnCampus 
+	describe("isQuad tests", function(){
+		it("should resolve given latitude, longitude to UChicago Quad area", function(){
+			expect(isQuad({lat: 41.7881, lng: -87.599})).toEqual(true);
+				// true, lat and lng both in quad boundaries
+			expect(isQuad({lat: 41.7881, lng: -87.62})).toEqual(false);
+				// false, lng out of quad boundaries
+			expect(isQuad({lat: 42, lng: -87.599})).toEqual(false);
+				// false, lat out of quad boundaries
+			expect(isQuad({lat: 42, lng: -90})).toEqual(false);
+				// false, boht lat, lng outside of Quad boundaries
+		});
 	});
 
-	it("getLocAvg tests", function()
-	{
-		expect(getLocAvg(reg)).toEqual(1.0);
-			// provided properly formatted location object
-		expect(getLocAvg(harper)).toEqual(4.0);
-		expect(getLocAvg(ryerson)).toBeNull();
-			// improperly formatted location object: raw_happy must at least equal num_votes
-		expect(getLocAvg(crerar)).toBeNull();
-			// num_votes must be positive
-		expect(getLocAvg(noname)).toBeNull();
-			// locations must have specified names
-		expect(getLocAvg(nonsense)).toBeNull();
-			// expects properly formatted location object
+	describe("isOnCampus tests", function(){
+		it("should resolve given latitude, longitude to UChicago campus area", function(){
+			var coords = LatLng(lat: 41.7881, lng: -87.599);
+			expect(isQuad(coords)).toEqual(true);
+			/*
+			expect(isQuad({lat: 41.7881, lng: -87.599})).toEqual(true);
+				// true, lat and lng both in campus boundaries
+			expect(isQuad({lat: 41.7881, lng: -87.62})).toEqual(false);
+				// false, lng out of campus boundaries
+			expect(isQuad({lat: 42, lng: -87.599})).toEqual(false);
+				// false, lat out of campus boundaries
+			expect(isQuad({lat: 42, lng: -90})).toEqual(false);
+				// false, boht lat, lng outside of campus boundaries
+				
+		});
+	});	
+*/
+	describe("toLogicalLoc tests", function(){
+		it("should resolve address from Google Maps geolocating to" +
+			"HappinessMap App standardized location name", function(){
+			expect(toLogicalLoc('Rosenwald Hall')).toEqual('rosenwald');
+			expect(toLogicalLoc('5737 S University Ave')).toEqual('east');
+			expect(toLogicalLoc('')).toBeNull();
+			expect(toLogicalLoc('asdf')).toBeNull();
+		});
 	});
+	
 
-	it("addvote tests", function()
-	{
-		expect(addvote(testvote2)).toEqual(false);
-			// uid must be positive
-		expect(addvote(testvote4)).toEqual(false);
-			// happiness level must be between 1 and 5
-		expect(addvote(testvote5)).toEqual(false)
-			// must specify a location
-		expect(addvote(testvote6)).toEqual(false);
-			// must specify extant location
-
-		expect(addvote(testvote1)).toEqual(true);
-			// valid uid, happiness level, location
-		expect(getLocAvg(reg)).toBeEqual(1.04);
-			// building average updates
-		expect(addvote(testvote3)).toEqual(false);
-			// happiness level must be between 1 and 5 
-		expect(getLocAvg(reg)).toBeEqual(1.04);
-			// unchanged from testvote1
+	/* submitVote() submits data to the database via AJAX. Test submitVote() using Acceptance Tests
+	describe("submitVote tests", function(){
+		it("should submit votes with valid happiness leves and locations to database", function(){
+			expect(submitVote("reg", "3")).toEqual(true);
+				// valid vote
+			expect(submitVote("reg", 0)).toEqual(false);
+				// invalid vote, 0 < happy <= 5
+			expect(submitVote("reg",10)).toEqual(false);
+				// invalid vote, 0 < happy <= 5
+			expect(submitVote("",3)).toEqual(false);
+				// invalid vote, location must be nonempty
+		});
 	});
+	*/
 
 });
