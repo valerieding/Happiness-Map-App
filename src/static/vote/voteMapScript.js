@@ -170,8 +170,7 @@ function geocodeLatLng(geocoder, map, marker) {
     currentMapLoc = 'offcampus';
     window.alert("Not on Campus");
   }
-}   
-
+}  
 
 /* This function determines if a given click is within the boundaries of
  * the quad. It does not check whether the click is a buliding within the 
