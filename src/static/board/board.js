@@ -58,11 +58,6 @@ $(document).ready(function(){
         }
     }
 
-    //AA: make function for different welcome messages based on last vote:
-    //TODO:   pull most recent happinesslevel, parameter to welcomeText(X)
-    //right now it just takes happiness of the most recent post,
-    //which is not what we want in the end obviously
-    // document.body.onload = welcomeText(value['happiness_level']);
     function welcomeText(happy_lvl){
         var welcome = ""
         switch(happy_lvl){
@@ -87,7 +82,7 @@ $(document).ready(function(){
        document.getElementById("welcome").innerHTML = welcome;
       }
 
-      // REQUEST FOR HAPPYNESS FOR WELCOME TEXT
+      // REQUEST FOR WELCOME TEXT
       var happyL = 0;
       console.log("happy level is " + happyL);
       $(function() {
@@ -136,11 +131,13 @@ $(document).ready(function(){
           },
           error: function(msg) {
             alert(msg.responseText);
-          
+          }
 
           });
+
         });
       });
+
 
 
       $(function() {
@@ -159,34 +156,36 @@ $(document).ready(function(){
               }
           });
         });
+
+
       });
 
-function callReact(vote,postID){
-    switch(vote){
-      case "upvote":
-        $(function(){
-          $.ajax({
-           url: '/request/add_reaction',
-           type: 'post',
-           dataType: 'json',
-           data: {'post_id': postID, 'reaction': 'upvote'}
-      
+      function callReact(vote,postID){
+          switch(vote){
+            case "upvote":
+              $(function(){
+                $.ajax({
+                 url: '/request/add_reaction',
+                 type: 'post',
+                 dataType: 'json',
+                 data: {'post_id': postID, 'reaction': 'upvote'}
+            
 
-          });
-        });
+                });
+              });
 
-        break;
-      case "downvote":
-        $(function(){
-          $.ajax({
-           url: '/request/add_reaction',
-           type: 'post',
-           dataType: 'json',
-           data: {'post_id': postID, 'reaction': 'downvote'}
-          });
-        });
-        break;
-      default:
-        window.alert("hi!");
-    }
-  }
+              break;
+            case "downvote":
+              $(function(){
+                $.ajax({
+                 url: '/request/add_reaction',
+                 type: 'post',
+                 dataType: 'json',
+                 data: {'post_id': postID, 'reaction': 'downvote'}
+                });
+              });
+              break;
+            default:
+              window.alert("hi!");
+          }
+        }
