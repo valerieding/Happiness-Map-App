@@ -139,7 +139,7 @@ function geocodeLatLng(geocoder, map, marker) {
               currentMapLoc = 'quad';
               //window.alert("Quads");
             } else {
-              currentMapLoc = null;
+              currentMapLoc = 'offcampus';
               window.alert("Unknown Location: " + latlng);
             }
           } else {
@@ -156,7 +156,7 @@ function geocodeLatLng(geocoder, map, marker) {
       }
     });
   } else {
-    currentMapLoc = null;
+    currentMapLoc = 'offcampus';
     window.alert("Not on Campus");
   }  
 }

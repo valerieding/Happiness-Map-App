@@ -41,6 +41,12 @@ See above, section 3.a)
 Backend:
 - Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py).
 
+Voting:
+- added getLogicalLoc() which maps from a Google Maps provided address to standardized 'logical location' names
+- removed getLocAvg() to reduce redundancy
+- removed addVote() tests. addVote() functionality is moved to submitVote(), but is mainly a wrapper for AJAX posts to the database. 
+- added unit tests for getLogicalLoc()
+
 ### 4.) Acceptance tests to try
 ((i.e., what inputs to use, and what outputs are expected))
 Map:
@@ -48,10 +54,48 @@ Map:
 Message Board:
 
 Voting:
+	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. Off-campus users cannot post to the Message Board.
+
+	The following are valid requests:
+	1. Happiness level = 1-5
+	   Location = "Regenstein Library" (dropdown only)
+	2. Happiness level = 1-5 
+	   Location = "Regenstein Library" (map screen only)
+	3. Happiness level = 1-5
+	   Location = "South Campus Dining Commons" (dropdown)
+	   Location = "Regenstein Library" (map screen)
+	   		logged location should be "Regenstein Library"
+	4. Happiness level = 1-5
+	   Location = "Not on campus" (map screen only)
+	   		- off campus, will not be able to post messages
+	5. Happiness level = 1-5
+	   Location = "Off Campus" (dropdown only)
+	   		- off campus, will not be able to post messages
+	6. Happiness level = 1-5
+	   Location = "Not on campus" (map screen)
+	   Location = "Saieh Hall" (dropdown only)
+	   		- off campus, will not be able to post messages
+
+	Invalid requests are simply discarded.
+	The following are invalid requests:
+	1. Do not select a happiness level
+	   Location = "Regenstein Library" (dropdown only)
+	   		- invalid, must have a specified happiness level
+	2. Do not select a happiness level
+	   Location = "Regenstein Library" (mapscreen only)
+	   		- invalid, must have a specified happiness level
+	3. Select a happiness level 1-5
+	   Do not select a location on either the dropdown or the mapscreen.
+	   Leave the dropdown on "".
+	   		- invalid, must have a specified location
 
 ### 5.) What's been implemented:
 ((text description of what is implemented. You can refer to the use cases and user stories in your design document.))
 Voting:
+- Implemented interactive map using Google Maps API which runs in an iframe on vote page
+- Implemented form submission for happiness votes to database
+- Made UI for happiness voting page - can use either dropdown or the map to submit votes
+- Wrote unit tests for interactive map functions and acceptance tests for vote submission
 
 Message Board:
 
@@ -77,6 +121,8 @@ Claire and Keely made the maps page! Keely made the SVG/map design (mapBackgroun
 
 Mihai and Valerie worked on the backend. We pair-programmed the database (with Mihai driving), and pair-programmed unit tests. We both contributed to the database API (querying the database for specific requests). We pair-programmed the server. Mihai worked on form validation.
 
+Anthony and Mitch worked on the vote submission page. Anthony made the UI for vote submission (happiness level and dropdown menu) and form submission via the submit button (vote/index.html, vote.js, vote.css) and wrote unit tests (VoteSpec.js). Mitch made the interactive map with Google Maps API (clickMap.html, voteMapSpec.js).
+
 ### 7.) Design changes or unit test changes:
 
 Map:
@@ -94,5 +140,11 @@ Backend:
 - Because all voting/posting takes place on campus right now, for this iteration, get_recent_posts() returns all posts within a given time range, posted on campus, sorted by timestamp. get_trending_posts() returns all posts posted on campus, sorted by upvote count. In the next iteration, we will take location into consideration.
 - Because remove_post() is only used for admin functionality, and that is not implemented in this iteration, we have left out the implementation and unit tests for remove_post().
 - We have gotten rid of getPost(filter) altogether: currently, we have two methods of getting posts: getRecentPosts() and getTrendingPosts(). 
+
+Voting:
+- Removed getLocAvg() to remove redundancy. getHappinessAverage() does the same thing.
+- Removed nameToLocation(). This function would resolve a given name to a Location object, which the backend now handles.
+- Removed addvote(). Functionality has moved to submitVote(), which uses AJAX queries. Test submitVote() using the above acceptance tests
+- Added unit tests for getLogicalLoc(), function added in implementation of the interactive map.
 
 ### 8.) Anything else:
