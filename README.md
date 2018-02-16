@@ -1,10 +1,14 @@
 # Happiness-Map-App
-## Instructions to run on localhost
+## Instructions to run:
 
+On Localhost:
 1. Install python3, if you don't already have it installed
 2. Install flask, wtforms, and coverage (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage).
 3. Navigate to the src directory, and run: python3 main.py --debug
 4. Open a browser and navigate to "localhost:8000"
+
+On DNS:
+http://happymap.ddns.net
 
 # 3.a) Unit Testing:
 
@@ -39,20 +43,26 @@ See above, first section.
 2. TO RUN ON DNS:
 http://happymap.ddns.net
 
-Note: running locally will create a new instance of the database and server for you, so there will not be any data. Thus, your campus map and message board will be empty. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better.
+Note: running locally will create a new instance of the database and server for you, so there will not be any data. Thus, your campus map and message board will be empty. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better, and will be faster.
 
 ### 3.) How to run unit tests:
 See above, section 3.a)
 
 #### 3a.) Any changes to unit tests:
 Backend:
-- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), get_happiness_level() (located in message_api_test.py and voting_api_test.py).
+- Running tests is the same, but we added a few functions, so we added more unit tests as well: there are new tests for add_reaction(), and get_happiness_level() (located in message_api_test.py and voting_api_test.py).
 
 Voting:
 - added getLogicalLoc() which maps from a Google Maps provided address to standardized 'logical location' names
 - removed getLocAvg() to reduce redundancy
 - removed addVote() tests. addVote() functionality is moved to submitVote(), but is mainly a wrapper for AJAX posts to the database. 
 - added unit tests for getLogicalLoc()
+
+Board:
+- getposts() and removeposts() is not a thing. removed.
+- getrecentposts() and gettrendingposts() were never meant to do any other filtering, we can do that on front end if we want
+- added some and all in the test file
+
 
 ### 4.) Acceptance tests to try
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
@@ -62,6 +72,11 @@ After adding a vote, check the campus map to make sure the campus-wide average w
 
 
 Message Board:
+You cannot post if you did not already vote.
+Does not accept empty messages
+You cannot double upvote/downvote
+Switching vote subtracts from current and adds to new vote so not double counted
+When switching sort, that is visible to user.
 
 Voting:
 	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. Off-campus users cannot post to the Message Board.
@@ -108,6 +123,13 @@ Voting:
 - Wrote unit tests for interactive map functions and acceptance tests for vote submission
 
 Message Board:
+- wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
+- users can see all the posts and laugh and cry with their friends.
+- designed the message board page
+- dynamic welcome text
+- A post can be added after a vote 
+- This post can be up/down voted on
+- populates a table and can be sorted via buttons
 
 Map:
 - Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
@@ -133,6 +155,8 @@ Mihai and Valerie worked on the backend. We pair-programmed the database (with M
 
 Anthony and Mitch worked on the vote submission page. Anthony made the UI for vote submission (happiness level and dropdown menu) and form submission via the submit button (vote/index.html, vote.js, vote.css) and wrote unit tests (VoteSpec.js). Mitch made the interactive map with Google Maps API (clickMap.html, voteMapSpec.js).
 
+Annie and Xavier made the board! They did almost all of it together. Highlights include Annie figuring out dynamic loading and Xavi making an unruly table work right.
+
 ### 7.) Design changes or unit test changes:
 
 Map:
@@ -156,5 +180,10 @@ Voting:
 - Removed nameToLocation(). This function would resolve a given name to a Location object, which the backend now handles.
 - Removed addvote(). Functionality has moved to submitVote(), which uses AJAX queries. Test submitVote() using the above acceptance tests
 - Added unit tests for getLogicalLoc(), function added in implementation of the interactive map.
+
+Message Board:
+- design doc says there will be getposts() removeposts(). That is not in our iteration. Getposts() is done in trending and in recent posts.  removeposts() will be relevant when an Admin is included in iteration 2.
+- created a change to make up of post. Reactions is a class that contains upvotes and downvotes. just in case we make other reactions, easier to have it's own class. Classic code smell.
+
 
 ### 8.) Anything else:
