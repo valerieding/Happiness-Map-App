@@ -2,7 +2,8 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import Message, Location
+from constants import ALLOWED_REACTIONS_TO_POST
+from server.util import Message
 
 
 class MessageAPI:
@@ -46,34 +47,28 @@ class MessageAPI:
             self.logger.exception(e)
             return False
 
+    def _update_reaction_count(self, post_id, reaction, modifier):
+        reaction = ALLOWED_REACTIONS_TO_POST[reaction] + 's'  # TODO: improve this hack
+        self.database.execute(
+            "UPDATE posts SET {react} = {react} + ? WHERE id = ?".format(react=reaction), (modifier, post_id))
+
     def add_reaction(self, uid, post_id, reaction):
         """Adds a reaction to `post_id` by `uid`. """
-        duplicate_reaction = len(self.database.execute("SELECT * FROM post_votes WHERE postID = ? AND uid = ? and isUpvote = ? ORDER BY postID DESC LIMIT 1", (post_id, uid, reaction)))
-        # If a user has already done this reaction to this post, disallow
-        if duplicate_reaction != 0:
+        existent_reaction = self.database.execute("SELECT isUpvote FROM post_votes WHERE postID = ? AND uid = ? "
+                                                  "ORDER BY postID DESC LIMIT 1", (post_id, uid))
+        existent_reaction = existent_reaction[0][0] if len(existent_reaction) != 0 else None
+
+        # If the user has already posted this exact reaction before, disallow a new one.
+        if uid is None or reaction == existent_reaction:
             return False
 
         try:
-            opposite_reaction = len(self.database.execute("SELECT * FROM post_votes WHERE postID = ? AND uid = ? ORDER BY postID DESC LIMIT 1", (post_id, uid)))
-            # If a user has previously done the opposite reaction to this post, we need to switch the reaction:
-            if opposite_reaction != 0:
-                # Remove previous reaction by the same user from post_votes
+            # Delete the previous reaction
+            if existent_reaction is not None:
                 self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
-                # New reaction is a downvote, so we have to subtract one from upvotes, add one to downvotes in posts
-                if reaction == 1:
-                    self.database.execute("UPDATE posts SET upvotes = upvotes - 1 WHERE id = ?", (post_id,))
-                    self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
-                # New reaction is an upvote, so we have to subtract one from downvotes, add one to upvotes in posts
-                else:
-                    self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
-                    self.database.execute("UPDATE posts SET downvotes = downvotes - 1 WHERE id = ?", (post_id,))
-            # No previous opposite reaction, just increment the reaction to posts
-            else:
-                if reaction == 1:
-                    self.database.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
-                else:
-                    self.database.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
-            # No matter what, add the reaction to post_votes.
+                self._update_reaction_count(post_id, existent_reaction, -1)
+            # Add the new reaction
+            self._update_reaction_count(post_id, reaction, 1)
             self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
             self.database.commit()
             return True
