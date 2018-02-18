@@ -1,6 +1,6 @@
 //fillDB();
 
-let allScores = getAllBuildingScores();
+let allScores = getAllBuildingScores(null);
 let allPlaces = allMapObjects(allScores);
 let campus_avg = getCampusScore();
 
@@ -388,9 +388,9 @@ lab.push(
 );
 
 document.getElementById('region-header').innerHTML =
-	'Try hovering over a building!';
+	'Try hovering over a building!<br><br><br>';
 document.getElementById('campus-avg-text').innerHTML =
-	'campuswide happiness: ' + formatScore(campus_avg);
+	'Campus Happiness: ' + formatScore(campus_avg) + '';
 
 
 for (var i = 0; i < regions.length; i++){
@@ -408,5 +408,14 @@ for (var i = 0; i < regions.length; i++){
 		this.node.style.opacity = 1;
 		this.node.style.stroke = '#333333';
 	});
+
+}
+
+
+function changeTimeFrame(end_time) {
+	//allScores = getAllBuildingScores(end_time);
+	for (var i = 0; i < regions.length; i++){
+		console.log(regions[i]);
+	}
 
 }

@@ -5,8 +5,15 @@
 .card {
 	display: flex;
 	padding: 0.2em;
-	background-color: '#333333';
 	align-items: center;
+}
+
+.card-bg {
+	background-color: #333333;
+}
+
+.padded-container {
+	padding: 1em;
 }
 
 .list-group-item {
@@ -27,8 +34,14 @@ p {
 	color: white;
 }
 
+.card-block{
+	padding: 0.2em;
+}
 .card-text{
-	color: black;
+	color: white;
+}
+.card-title{
+  margin-bottom: .3rem;
 }
 
 .building {
@@ -40,4 +53,13 @@ p {
 
 .building:hover{
 	'stroke': 'red';
+}
+
+
+
+
+#map {
+	height:600px;
+  width:100%;
+  overflow:scroll;
 }

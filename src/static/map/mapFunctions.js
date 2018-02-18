@@ -59,7 +59,7 @@ var FullNameKey = Object.freeze({
 });
 
 
-const ColorNumKey = ['#f1eef6','#dd1c77','#df65b0','#dd1c77','#980043'];
+const ColorNumKey = ['#f1eef6','#d7b5d8','#df65b0','#dd1c77','#980043'];
 const nullColor = "#ADADAD";
 const HappinessTextKey = ["not at all happy", "only a little happy", "somewhat happy", "happy", "very happy"];
 
@@ -136,18 +136,32 @@ function getCampusScore() {
     return campus_avg;
 };
 
-function getAllBuildingScores() {
+function getAllBuildingScores(end_time) {
   var allScores;
-  $.ajax({
-    url: '/request/get_heatmap',
-    type: 'post',
-    dataType: 'json',
-    async: false,
-    data: {'start_time': 0},
-    success: function(data){
-      allScores = data;
-    }
-  });
+
+  if (end_time) {
+    $.ajax({
+      url: '/request/get_heatmap',
+      type: 'post',
+      dataType: 'json',
+      async: false,
+      data: {'start_time': 0, 'end_time': end_time},
+      success: function(data){
+        allScores = data;
+      }
+    });
+  } else {
+    $.ajax({
+      url: '/request/get_heatmap',
+      type: 'post',
+      dataType: 'json',
+      async: false,
+      data: {'start_time': 0},
+      success: function(data){
+        allScores = data;
+      }
+    });
+  }
   return allScores;
 };
 

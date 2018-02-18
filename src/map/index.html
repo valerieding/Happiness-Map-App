@@ -25,10 +25,49 @@
         <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Campus Map</h1>
-          <p>This is the campus map, where you can see average happinesses across buildings</p>
-		        <div id="map-container" class="card campus-bg">
-              <iframe height="500px" width="100%" frameborder="0" scrolling="yes" src="/static/map/mapsvg.html">
-		        </div>
+          <div class="row padded-container">
+            <div class="col-5">
+              <div class="card card-bg text-white border-light">
+                <div class="card-block">
+                  <h5 id="region-header" class="card-title"></h5>
+                  <p id="region-text" class="card-text"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="card card-bg text-white border-light">
+                <div class="card-block">
+                  <p id="campus-avg-text" class="card-text"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-light active">
+                  <input type="radio" name="options" id="optAll" autocomplete="off" checked> All
+                </label>
+                <label class="btn btn-outline-light">
+                  <input type="radio" name="options" id="optWeek" autocomplete="off"> Past Week
+                </label>
+                <label class="btn btn-outline-light">
+                  <input type="radio" name="options" id="optDay" autocomplete="off"> Past Day
+                </label>
+                <label class="btn btn-outline-light">
+                  <input type="radio" name="options" id="optHour" autocomplete="off"> Past 2 Hours
+                </label>
+              </div>
+            </div>
+          </div>
+          <!--<iframe height="500px" width="100%" frameborder="0" scrolling="yes" id="mapiframe" src="/static/map/mapsvg.html">-->
+          <div id="map" class="campus">
+            <!-- Raphaël JS Map Here -->
+          </div>
+          <script src="/static/map/raphael-min.js"></script>
+          <script src="/static/map/mapBackground.js"></script>
+          <script src="/static/map/mapFunctions.js"></script>
+          <!-- Only use fillDatabase for testing -->
+          <script src="/static/map/fillDatabase.js"></script>
+          <script src="/static/map/mapBuildings.js"></script>
         </main>
       </div>
     </div>
