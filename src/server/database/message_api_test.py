@@ -102,19 +102,23 @@ class MessageAPITest(unittest.TestCase):
                 dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
             ])
 
-        # post_id12 = (self.db.execute("SELECT * FROM posts WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (1,)))[0][0]
+        post_id12 = (self.db.execute("SELECT * FROM posts WHERE uid = ? ORDER BY timestamp DESC LIMIT 1", (1,)))[0][0]
         # Remove post
-        # self.assertTrue(self.messageApi.remove_post(post_id12))
-        # self.assertSequenceEqual(
-        #     list(map(filter_message, (self.messageApi.get_recent_posts(self.loc1, 0, time.time())))),
-        #     [dummy_message(3, 'This is USER 3, adding my first post', 1, 0, self.loc3),
-        #      dummy_message(2, 'This is USER 2, adding my first post', 5, 0, self.loc2),
-        #      dummy_message(1, 'This is USER 1, adding my first post', 3, 0, self.loc1)
-        #      ])
-        # # Trying to remove post that is no longer in the database
-        # self.assertFalse(self.messageApi.remove_post(post_id12))
-        # # Trying to remove post with null post_id:
-        # self.assertFalse(self.messageApi.remove_post(None))
+        self.messageApi.remove_post(post_id12)
+        self.assertSequenceEqual(
+            filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 2)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+            ])
+        # Make sure that nothing goes wrong if message is not existent present.
+        self.messageApi.remove_post(post_id12)
+        self.assertSequenceEqual(
+            filter_messages(self.messageApi.get_recent_posts(self.loc1, 0, time.time())), [
+                dummy_message(3, 'This is USER 3, adding my first post', 1, Reactions((1, 0)), self.loc3),
+                dummy_message(2, 'This is USER 2, adding my first post', 5, Reactions((0, 2)), self.loc2),
+                dummy_message(1, 'This is USER 1, adding my first post', 3, Reactions((0, 0)), self.loc1)
+            ])
 
 
 if __name__ == '__main__':
