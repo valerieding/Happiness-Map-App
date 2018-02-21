@@ -1,8 +1,11 @@
 //fillDB();
+const week = 604800;
+const day =  86400;
+const twoHr = 7200;
 
 let allScores = getAllBuildingScores(null);
 let allPlaces = allMapObjects(allScores);
-let campus_avg = getCampusScore();
+let campus_avg = getCampusScore(null);
 
 var crerar = rsr.rect(254.833, 383.835, 40.667, 75.602);
 crerar.attr({fill: allPlaces['crerar'].color, class: "building", id: 'crerar'});
@@ -391,6 +394,22 @@ document.getElementById('region-header').innerHTML =
 	'Try hovering over a building!<br><br><br>';
 document.getElementById('campus-avg-text').innerHTML =
 	'Campus Happiness: ' + formatScore(campus_avg) + '';
+$('#optAll').on('change', function () {
+	changeTimeFrame(null);
+});
+$('#optWeek').on('change', function () {
+	let now = Math.floor(Date.now() / 1000);
+	changeTimeFrame(now - week);
+});
+$('#optDay').on('change', function () {
+	let now = Math.floor(Date.now() / 1000);
+	changeTimeFrame(now - day);
+});
+$('#optHour').on('change', function () {
+	let now = Math.floor(Date.now() / 1000);
+	changeTimeFrame(now - twoHr);
+});
+
 
 
 for (var i = 0; i < regions.length; i++){
@@ -412,10 +431,25 @@ for (var i = 0; i < regions.length; i++){
 }
 
 
-function changeTimeFrame(end_time) {
-	//allScores = getAllBuildingScores(end_time);
+function changeTimeFrame(start_time) {
+	allScores = getAllBuildingScores(start_time);
+	allPlaces = allMapObjects(allScores);
+	campus_avg = getCampusScore(start_time);
 	for (var i = 0; i < regions.length; i++){
-		console.log(regions[i]);
+		let data = regions[i].data('info');
+		if (allPlaces[data.id]) {
+			regions[i].animate({fill: allPlaces[data.id].color},100);
+			regions[i].data({'info': allPlaces[data.id]});
+		} else {
+			let grouped = regions[i].items
+			for (var j = 0; j < grouped.length; j++) {
+				data = grouped[j].data('info')
+				regions[i].items[j].animate({fill: allPlaces[data.id].color},200);
+				regions[i].items[j].data({'info': allPlaces[data.id]});
+			}
+		}
 	}
+	document.getElementById('campus-avg-text').innerHTML =
+		'Campus Happiness: ' + formatScore(campus_avg) + '';
 
 }
