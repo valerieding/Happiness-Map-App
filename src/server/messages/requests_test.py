@@ -23,27 +23,56 @@ class MessageRequestsTest(TestCase):
     @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_posts_valid(self, mocked):
         response = self.client.post('/request/get_recent_posts',
-                                    data={'latitude': 45, 'longitude': 45, 'start_time': 4.3})
+                                    data={'logical_location': 'Mansueto', 'start_time': 4.3})
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
     @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_posts_invalid(self, mocked):
         response = self.client.post('/request/get_recent_posts',
-                                    data={'latitude': 45, 'longitude': 45, 'start_time': -1.3})
+                                    data={'logical_location': 'Mansueto', 'start_time': -1.3})
+        self.assertFalse(mocked.called)
+        self.assertEqual(response.data, FAILURE_RESPONSE)
+
+    @mock.patch.object(messageAPI, 'get_recent_personal_posts', return_value=DUMMY_RESPONSE)
+    def test_get_recent_personal_posts_valid(self, mocked):
+        response = self.client.post('/request/get_recent_personal_posts',
+                                    data={'logical_location': 'Mansueto', 'start_time': 4.3})
+        self.assertTrue(mocked.called)
+        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
+
+    @mock.patch.object(messageAPI, 'get_recent_personal_posts', return_value=DUMMY_RESPONSE)
+    def test_get_recent_personal_posts_invalid(self, mocked):
+        response = self.client.post('/request/get_recent_personal_posts',
+                                    data={'logical_location': 'Mansueto', 'start_time': -1.3})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
     @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_posts_valid(self, mocked):
         response = self.client.post('/request/get_trending_posts',
-                                    data={'latitude': 45, 'longitude': 45, 'start_time': 4.3})
+                                    data={'logical_location': 'Mansueto', 'start_time': 4.3})
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
     @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_posts_invalid(self, mocked):
-        response = self.client.post('/request/get_trending_posts', data={'latitude': 45})
+        response = self.client.post('/request/get_trending_posts',
+                                    data={'logical_location': 'Mansueto', 'start_time': -5.3})
+        self.assertFalse(mocked.called)
+        self.assertEqual(response.data, FAILURE_RESPONSE)
+
+    @mock.patch.object(messageAPI, 'get_trending_personal_posts', return_value=DUMMY_RESPONSE)
+    def test_get_recent_trending_posts_valid(self, mocked):
+        response = self.client.post('/request/get_trending_personal_posts',
+                                    data={'logical_location': 'Mansueto', 'start_time': 4.3})
+        self.assertTrue(mocked.called)
+        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
+
+    @mock.patch.object(messageAPI, 'get_trending_personal_posts', return_value=DUMMY_RESPONSE)
+    def test_get_trending_personal_posts_invalid(self, mocked):
+        response = self.client.post('/request/get_trending_personal_posts',
+                                    data={'logical_location': 'not a logical location', 'start_time': -1.3})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
