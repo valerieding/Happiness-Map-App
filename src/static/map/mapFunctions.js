@@ -89,9 +89,11 @@ function allMapObjects(ns) {
   for (var prop in FullNameKey){
     allObjs[prop] = emptyMapObj(prop);
   }
-  ns.forEach(function(n) {
-    allObjs[n.logical_location] = databaseToMapObj(n);
-  });
+  if (ns) {
+    ns.forEach(function(n) {
+      allObjs[n.logical_location] = databaseToMapObj(n);
+    });
+  }
   return allObjs;
 };
 
