@@ -17,7 +17,7 @@ logger = logging.getLogger('messages_requests')
 @message_requests.route('/request/get_recent_posts', methods=['POST'])
 def get_recent_posts():
     def response(form):
-        return messageAPI.get_recent_posts(ResultFilter(form))
+        return messageAPI.get_recent_posts(ResultFilter(form).add("logical_loc", form.logical_location.data))
 
     return generate_response(GetRecentPostsForm, response, logger)
 
@@ -25,14 +25,15 @@ def get_recent_posts():
 @message_requests.route('/request/get_trending_posts', methods=['POST'])
 def get_trending_posts():
     def response(form):
-        return messageAPI.get_trending_posts(ResultFilter(form))
+        return messageAPI.get_trending_posts(ResultFilter(form).add("logical_loc", form.logical_location.data))
 
     return generate_response(GetTrendingPostsForm, response, logger)
+
 
 @message_requests.route('/request/get_recent_personal_posts', methods=['POST'])
 def get_recent_personal_posts():
     def response(form, user_id):
-        return messageAPI.get_recent_posts(ResultFilter(form).add("uid", user_id))
+        return messageAPI.get_recent_posts(ResultFilter(form).add("uid", user_id).add("logical_loc", form.logical_location.data))
 
     return generate_response(GetRecentPostsForm, response, logger, requires_valid_user_id=True)
 
@@ -40,7 +41,7 @@ def get_recent_personal_posts():
 @message_requests.route('/request/get_trending_personal_posts', methods=['POST'])
 def get_trending_personal_posts():
     def response(form, user_id):
-        return messageAPI.get_trending_posts(ResultFilter(form).add("uid", user_id))
+        return messageAPI.get_trending_posts(ResultFilter(form).add("uid", user_id).add("logical_loc", form.logical_location.data))
 
     return generate_response(GetTrendingPostsForm, response, logger, requires_valid_user_id=True)
 

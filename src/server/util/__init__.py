@@ -100,7 +100,6 @@ class ResultFilter:
     def __init__(self, form):
         self.conditions = "timestamp BETWEEN ? AND ?"
         self.arguments = [form.start_time.data, form.end_time.data]
-        self.add('logical_loc', form.logical_location.data)
 
     def add(self, key, value):
         if value is not None:

@@ -4,7 +4,7 @@ from flask import Blueprint
 
 from server import DATABASE_MANAGER
 from server.database.voting_api import VotingAPI
-from server.util import Location
+from server.util import Location, ResultFilter
 from server.util.response import generate_response
 from server.voting.forms import *
 
@@ -12,6 +12,14 @@ voting_requests = Blueprint('voting_requests', __name__)
 
 votingAPI = VotingAPI(DATABASE_MANAGER)
 logger = logging.getLogger('voting_requests')
+
+
+@voting_requests.route('/request/get_recent_votes', methods=['POST'])
+def get_recent_votes():
+    def response(form, user_id):
+        return votingAPI.get_recent_votes(ResultFilter(form).add("uid", user_id).add("logical_loc", form.logical_location.data))
+
+    return generate_response(GetRecentVotesForm, response, logger, requires_valid_user_id=True)
 
 
 @voting_requests.route('/request/add_vote', methods=['POST'])

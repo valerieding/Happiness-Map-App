@@ -1,6 +1,10 @@
 from wtforms import Form, validators, StringField
 
-from server.util.forms import LocationForm, HappinessForm, TimeIntervalForm, LOGICAL_LOCATION_VALIDATOR
+from server.util.forms import LocationForm, HappinessForm, TimeIntervalForm, ResultFilterForm, LOGICAL_LOCATION_VALIDATOR
+
+
+class GetMostRecentVotesForm(Form, ResultFilterForm):
+    """Validates the get_recent_votes request form. """
 
 
 class GetHappinessLevelForm(Form):
