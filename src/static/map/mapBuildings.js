@@ -1,5 +1,3 @@
-//fillDB();
-
 let allPlaces = allMapObjects(null);
 let campus_avg = getCampusScore(null);
 
