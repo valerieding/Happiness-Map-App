@@ -1,11 +1,9 @@
 import pickle
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from os.path import isfile
-from pickle import PickleError
 from random import randint
 
 from ecdsa import SigningKey, NIST256p
-from flask import request, jsonify
 
 from constants import SIGNATURE_KEY_FILE
 
@@ -25,7 +23,8 @@ def _get_sign_key():
     return key
 
 
-class _UserID:
+class UserID:
+
     _SIGN_KEY = _get_sign_key()
 
     _VERIFY_KEY = _SIGN_KEY.get_verifying_key()
@@ -50,16 +49,16 @@ class _UserID:
 
         # TODO: make this serial with a persistent atomic integer
         user_id = randint(0, 2 ** 32)
-        return _UserID(user_id, _UserID._SIGN_KEY.sign(bytes(user_id)))
+        return UserID(user_id, UserID._SIGN_KEY.sign(bytes(user_id)))
 
     @staticmethod
-    def from_request():
+    def from_cookie(cookies):
         """Returns the `UserID` described by the `user_id` cookie or None if the cookie is missing or invalid. """
 
-        data = _UserID._safely_get_dict(request.cookies.get('user_id'))
+        data = UserID._safely_get_dict(cookies.get('user_id'))
         if data is None:
             return None
-        result = _UserID(user_id=data['user_id'], signature=data['signature'])
+        result = UserID(user_id=data['user_id'], signature=data['signature'])
         return result if result._validate() else None
 
     @staticmethod
@@ -76,33 +75,3 @@ class _UserID:
         if type(decoded) is not dict or 'user_id' not in decoded or 'signature' not in decoded:
             return None
         return decoded
-
-
-def generate_response(FormValidator, response_generator, logger, requires_valid_user_id=False):
-    """
-    Validates the flask request form with `FormValidator` and returns 'Invalid request' if invalid or JSONifies the
-    output of `response_generator`. If `requires_valid_uer_id` is set to True and a user_id cookie is not set, then it
-    will generate a new user cookie.
-    """
-    form = FormValidator(request.form)
-
-    kwargs = {'form': form}
-    user = _UserID.from_request()
-    need_to_send_new_id = False
-    if requires_valid_user_id:
-        if user is None:
-            need_to_send_new_id = True
-            user = _UserID.issue()
-        kwargs['user_id'] = user.user_id
-
-    request_form_rep = '{}{}'.format(FormValidator.__name__, list(request.form.items()))
-
-    logger.info('User {} requested {}'.format(user, request_form_rep))
-    if not form.validate():
-        logger.warning('Invalid request from user {}: {}:\n\t{}'.format(user, request_form_rep, form.errors))
-        return jsonify('Invalid request')
-
-    response = jsonify(response_generator(**kwargs))
-    if need_to_send_new_id:
-        user.save_cookie(response)
-    return response

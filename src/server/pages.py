@@ -22,3 +22,7 @@ HOMEPAGE = {'route': 'map', 'path': 'index.html'}
 @page_server.route('/vote/<path:path>', defaults={'route': 'vote'})
 def serve_pages(route, path='index.html'):
     return render_template(route + '/' + path)
+
+
+def get_pages_blueprint(has_admin_privileges):
+    return page_server

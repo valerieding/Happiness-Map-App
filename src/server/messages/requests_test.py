@@ -2,10 +2,9 @@ import json
 from unittest import mock, TestCase, main
 
 from server import DatabaseManager
-from server.run import get_flask_app
-from server.messages.requests import messageAPI
+from server.run import get_flask_app, messageAPI
 
-app = get_flask_app()
+app = get_flask_app(has_admin_privileges=True)
 app.testing = True
 
 # Replace the database with an in-memory one to eliminate the risk of database corruption during testing.
@@ -34,14 +33,14 @@ class MessageRequestsTest(TestCase):
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
-    @mock.patch.object(messageAPI, 'get_recent_personal_posts', return_value=DUMMY_RESPONSE)
+    @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_personal_posts_valid(self, mocked):
         response = self.client.post('/request/get_recent_personal_posts',
                                     data={'logical_location': 'Mansueto', 'start_time': 4.3})
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
-    @mock.patch.object(messageAPI, 'get_recent_personal_posts', return_value=DUMMY_RESPONSE)
+    @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_personal_posts_invalid(self, mocked):
         response = self.client.post('/request/get_recent_personal_posts',
                                     data={'logical_location': 'Mansueto', 'start_time': -1.3})
@@ -62,14 +61,14 @@ class MessageRequestsTest(TestCase):
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
-    @mock.patch.object(messageAPI, 'get_trending_personal_posts', return_value=DUMMY_RESPONSE)
+    @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_trending_posts_valid(self, mocked):
         response = self.client.post('/request/get_trending_personal_posts',
                                     data={'logical_location': 'Mansueto', 'start_time': 4.3})
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
-    @mock.patch.object(messageAPI, 'get_trending_personal_posts', return_value=DUMMY_RESPONSE)
+    @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_personal_posts_invalid(self, mocked):
         response = self.client.post('/request/get_trending_personal_posts',
                                     data={'logical_location': 'not a logical location', 'start_time': -1.3})
@@ -112,6 +111,16 @@ class MessageRequestsTest(TestCase):
         response = self.client.post('/request/add_reaction', data={'post_id': 10, 'reaction': 'not_a_react'})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
+
+    @mock.patch.object(messageAPI, 'remove_post')
+    def test_remove_post_valid(self, mocked):
+        self.client.post('/request/remove_post', data={'post_id': 10})
+        self.assertTrue(mocked.called)
+
+    @mock.patch.object(messageAPI, 'remove_post')
+    def test_remove_post_invalid(self, mocked):
+        self.client.post('/request/remove_post', data={})
+        self.assertFalse(mocked.called)
 
 
 if __name__ == '__main__':

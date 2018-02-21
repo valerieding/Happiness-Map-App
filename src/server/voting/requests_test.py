@@ -2,8 +2,7 @@ import json
 from unittest import mock, TestCase, main
 
 from server import DatabaseManager
-from server.run import get_flask_app
-from server.voting.requests import votingAPI
+from server.run import get_flask_app, votingAPI
 
 app = get_flask_app()
 app.testing = True
@@ -12,6 +11,7 @@ app.testing = True
 votingAPI.database = DatabaseManager(':memory:')
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
+JSON_DUMMY_RESPONSE = (json.dumps(DUMMY_RESPONSE, indent=2) + '\n').encode('ascii')
 SUCCESS_RESPONSE = (json.dumps('Success') + '\n').encode('ascii')
 FAILURE_RESPONSE = (json.dumps('Invalid request') + '\n').encode('ascii')
 
@@ -49,7 +49,7 @@ class VotingRequestsTest(TestCase):
         response = self.client.post('/request/get_recent_votes',
                                     data={'logical_location': 'Mansueto', 'start_time': 4.3})
         self.assertTrue(mocked.called)
-        self.assertEqual(response.data, SUCCESS_RESPONSE)
+        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
     @mock.patch.object(votingAPI, 'get_recent_votes', return_value=DUMMY_RESPONSE)
     def test_get_recent_votes_invalid(self, mocked):

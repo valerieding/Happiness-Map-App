@@ -29,6 +29,3 @@ class DownvoteForm(Form, PostIDForm):
 class AddReactionForm(Form, PostIDForm, ReactionForm):
     """Validates the downvote request form. """
 
-
-class RemovePostForm(Form, PostIDForm):
-    """Validates the remove_post request form. """
