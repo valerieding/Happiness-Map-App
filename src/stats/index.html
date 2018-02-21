@@ -8,6 +8,7 @@
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link href="/static/main.css" rel="stylesheet">
+  <link href="/static/stats/stats.css" rel="stylesheet">
   <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
   <script type="application/javascript" src="/static/popper.min.js"></script>
   <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
@@ -39,7 +40,23 @@
           <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
           <div class="card-body">
             <h5 class="card-title">My Map</h5>
-            <p class="card-text">Map goes here</p>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-outline-dark active">
+                <input type="radio" name="options" id="optAll" autocomplete="off" checked> All
+              </label>
+              <label class="btn btn-outline-dark">
+                <input type="radio" name="options" id="optWeek" autocomplete="off"> Past Week
+              </label>
+              <label class="btn btn-outline-dark">
+                <input type="radio" name="options" id="optDay" autocomplete="off"> Past Day
+              </label>
+              <label class="btn btn-outline-dark">
+                <input type="radio" name="options" id="optHour" autocomplete="off"> Past 2 Hours
+              </label>
+            </div>
+            <div id="map" class="campus">
+              <!-- Raphaël JS Map Here -->
+            </div>
           </div>
         </div>
       </div>
@@ -62,7 +79,11 @@
     </div>
 
   </div>
-
+  <script src="/static/map/raphael-min.js"></script>
+  <script src="/static/map/mapBackground.js"></script>
+  <script src="/static/map/mapFunctions.js"></script>
+  <!-- Only use fillDatabase for testing -->
+  <script src="/static/map/mapBuildings.js"></script>
 </div>
 </body>
 </html>
