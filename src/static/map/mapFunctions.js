@@ -123,29 +123,36 @@ function formatScore(n) {
 
 
 //querying database functions
-function getCampusScore() {
+function getCampusScore(start_time) {
+    if (!start_time) {
+      start_time = 0;
+    }
     var campus_avg;
     $.ajax({
       url: '/request/get_campus_average',
       type: 'post',
       async: false,
+      data: {'start_time': start_time},
       success: function(data){
         campus_avg = data;
       }
     });
-    return campus_avg;
+    if (campus_avg){
+      return campus_avg;
+    }
+    return "n/a";
 };
 
-function getAllBuildingScores(end_time) {
+function getAllBuildingScores(start_time) {
   var allScores;
 
-  if (end_time) {
+  if (start_time) {
     $.ajax({
       url: '/request/get_heatmap',
       type: 'post',
       dataType: 'json',
       async: false,
-      data: {'start_time': 0, 'end_time': end_time},
+      data: {'start_time': start_time},
       success: function(data){
         allScores = data;
       }
