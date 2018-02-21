@@ -17,15 +17,16 @@ class MessageAPI:
         self.database = database
         self.logger = logging.getLogger('MessageAPI')
 
-    def get_recent_posts(self, location, start_time, end_time):
+    def get_recent_posts(self, filter):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC", (start_time, end_time)))
+            "SELECT * FROM posts WHERE {} ORDER BY timestamp DESC".format(filter.conditions), (*filter.arguments,)))
 
-    def get_trending_posts(self, location):
+    def get_trending_posts(self, filter):
         """Retrieves the trending messages posted around `location`. """
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
+            "SELECT * FROM posts WHERE {} ORDER BY (upvotes - downvotes) DESC, timestamp DESC".format(filter.conditions),
+            (*filter.arguments,)))
 
     def add_post(self, uid, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """

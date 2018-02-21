@@ -5,7 +5,7 @@ from flask import Blueprint
 from server import DATABASE_MANAGER
 from server.database.message_api import MessageAPI
 from server.messages.forms import *
-from server.util import Location, Reactions
+from server.util import Location, Reactions, ResultFilter
 from server.util.response import generate_response
 
 message_requests = Blueprint('message_requests', __name__)
@@ -17,7 +17,7 @@ logger = logging.getLogger('messages_requests')
 @message_requests.route('/request/get_recent_posts', methods=['POST'])
 def get_recent_posts():
     def response(form):
-        return messageAPI.get_recent_posts(Location.from_request(form), form.start_time.data, form.end_time.data)
+        return messageAPI.get_recent_posts(ResultFilter(form))
 
     return generate_response(GetRecentPostsForm, response, logger)
 
@@ -25,9 +25,24 @@ def get_recent_posts():
 @message_requests.route('/request/get_trending_posts', methods=['POST'])
 def get_trending_posts():
     def response(form):
-        return messageAPI.get_trending_posts(Location.from_request(form))
+        return messageAPI.get_trending_posts(ResultFilter(form))
 
     return generate_response(GetTrendingPostsForm, response, logger)
+
+@message_requests.route('/request/get_recent_personal_posts', methods=['POST'])
+def get_recent_personal_posts():
+    def response(form, user_id):
+        return messageAPI.get_recent_posts(ResultFilter(form).add("uid", user_id))
+
+    return generate_response(GetRecentPostsForm, response, logger, requires_valid_user_id=True)
+
+
+@message_requests.route('/request/get_trending_personal_posts', methods=['POST'])
+def get_trending_personal_posts():
+    def response(form, user_id):
+        return messageAPI.get_trending_posts(ResultFilter(form).add("uid", user_id))
+
+    return generate_response(GetTrendingPostsForm, response, logger, requires_valid_user_id=True)
 
 
 @message_requests.route('/request/add_post', methods=['POST'])

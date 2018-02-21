@@ -84,6 +84,8 @@ class MessageAPITest(unittest.TestCase):
         self.assertTrue(self.messageApi.add_reaction(1, post_id2, 1))
         # User 3 downvotes user 2's post:
         self.assertTrue(self.messageApi.add_reaction(3, post_id2, 1))
+        # Fail to downvote again:
+        # self.assertFalse(self.messageApi.add_reaction(3, post_id2, 1))
         # Trending posts should be: user 3 (1 upvotes), user 2 (2 upvotes 2 downtoves) or user 1 (0 upvotes)
         self.assertSequenceEqual(
             filter_messages(self.messageApi.get_trending_posts(self.loc1)), [
