@@ -8,6 +8,7 @@ from server.admin import AdminRequests
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.messages.requests import MessageRequests
+from server.pages import page_server
 from server.voting.requests import VotingRequests
 
 _db = DatabaseManager(DATABASE_FILE)
@@ -25,6 +26,7 @@ def get_flask_app(has_admin_privileges=False):
     app = flask.Flask(__name__, static_folder=STATIC_FOLDER)
     app.register_blueprint(MessageRequests(messageAPI).get_blueprint())
     app.register_blueprint(VotingRequests(votingAPI).get_blueprint())
+    app.register_blueprint(page_server)
     if has_admin_privileges:
         app.register_blueprint(AdminRequests(messageAPI).get_blueprint())
     # Allow the smooth JSONification of objects
