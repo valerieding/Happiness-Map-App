@@ -1,4 +1,4 @@
-from wtforms import IntegerField, FloatField, validators, StringField, SelectField
+from wtforms import IntegerField, FloatField, validators, StringField, SelectField, BooleanField
 
 from constants import ALLOWED_REACTIONS_TO_POST
 
@@ -7,7 +7,6 @@ Defines several form stubs that should be used via inheritance by the end-user F
 """
 
 LOGICAL_LOCATION_VALIDATOR = validators.Regexp(r'[a-zA-Z0-9_]*')
-
 
 class LocationForm:
     """Defines the validations required for a form that describes a location. """
@@ -31,6 +30,8 @@ class TimeIntervalForm:
     start_time = FloatField('start_time', [validators.NumberRange(min=0)], default=0)
     end_time = FloatField('end_time', [validators.NumberRange(min=0)], default=float('inf'))
 
+class ResultFilterForm(TimeIntervalForm):
+    logical_location = StringField('logical_location', [LOGICAL_LOCATION_VALIDATOR])
 
 class PostIDForm:
     post_id = IntegerField('post_id', [validators.InputRequired()])

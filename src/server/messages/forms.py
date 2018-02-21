@@ -1,13 +1,13 @@
 from wtforms import Form, validators, StringField, IntegerField
 
-from server.util.forms import LocationForm, PostIDForm, TimeIntervalForm, ReactionForm
+from server.util.forms import LocationForm, PostIDForm, TimeIntervalForm, ReactionForm, ResultFilterForm
 
 
-class GetRecentPostsForm(Form, LocationForm, TimeIntervalForm):
+class GetRecentPostsForm(Form, ResultFilterForm):
     """Validates the get_recent_posts request form. """
 
 
-class GetTrendingPostsForm(Form, LocationForm):
+class GetTrendingPostsForm(Form, ResultFilterForm):
     """Validates the get_trending_posts request form. """
 
 

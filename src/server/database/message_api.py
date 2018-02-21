@@ -17,15 +17,16 @@ class MessageAPI:
         self.database = database
         self.logger = logging.getLogger('MessageAPI')
 
-    def get_recent_posts(self, location, start_time, end_time):
+    def get_recent_posts(self, filter):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC", (start_time, end_time)))
+            "SELECT * FROM posts WHERE {} ORDER BY timestamp DESC".format(filter.conditions), (*filter.arguments,)))
 
-    def get_trending_posts(self, location):
+    def get_trending_posts(self, filter):
         """Retrieves the trending messages posted around `location`. """
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE timestamp ORDER BY (upvotes - downvotes) DESC, timestamp DESC"))
+            "SELECT * FROM posts WHERE {} ORDER BY (upvotes - downvotes) DESC, timestamp DESC".format(filter.conditions),
+            (*filter.arguments,)))
 
     def add_post(self, uid, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
@@ -76,24 +77,8 @@ class MessageAPI:
             self.logger.exception(e)
             return False
 
-    # TODO: activate this
-    '''
     def remove_post(self, post_id):
         """Removes the post with `post_id`. Should only be accessible to admins. """
-            self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
-            self.database.commit()
-    '''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.database.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+        self.database.execute("DELETE FROM post_votes WHERE postID = ?", (post_id,))
+        self.database.commit()
