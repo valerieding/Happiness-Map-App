@@ -69,7 +69,7 @@ function timeConverter(UNIX_timestamp){
             }
             return '~' + Math.round(elapsed/msPerYear ) + ' years ago';   
         }
-    }
+    };
 
 function welcomeText(happy_lvl){
   var welcome = ""
@@ -98,6 +98,11 @@ function welcomeText(happy_lvl){
       welcome.append("Vote first, then post!");
       return welcome;
   }
+};
+
+function get_recent_posts(location){
+  var posts = "will be implemented in iteration 2";
+  return posts;
 };
 
 
