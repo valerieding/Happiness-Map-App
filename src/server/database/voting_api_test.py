@@ -1,7 +1,7 @@
 import time
 import unittest
 
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 from server.database.voting_api import VotingAPI
 from server.util import Location, HeatMapPoint
 

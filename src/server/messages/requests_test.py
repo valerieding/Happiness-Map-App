@@ -1,7 +1,7 @@
 import json
 from unittest import mock, TestCase, main
 
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 from server.run import get_flask_app, messageAPI
 
 app = get_flask_app(has_admin_privileges=True)

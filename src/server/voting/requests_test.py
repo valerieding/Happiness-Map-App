@@ -1,7 +1,7 @@
 import json
 from unittest import mock, TestCase, main
 
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 from server.run import get_flask_app, votingAPI
 
 app = get_flask_app()

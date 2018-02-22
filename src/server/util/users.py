@@ -47,9 +47,10 @@ class UserID:
     def issue():
         """Returns a fresh user_id. """
 
+        # TODO[SECURITY]: activate validation once it is no longer so expensive to validate
         # TODO: make this serial with a persistent atomic integer
         user_id = randint(0, 2 ** 32)
-        return UserID(user_id, UserID._SIGN_KEY.sign(bytes(user_id)))
+        return UserID(user_id, "dummy key")  # UserID._SIGN_KEY.sign(bytes(user_id)))
 
     @staticmethod
     def from_cookie(cookies):

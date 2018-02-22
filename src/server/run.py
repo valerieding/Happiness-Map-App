@@ -3,7 +3,7 @@ import logging
 import flask
 
 from constants import STATIC_FOLDER, DATABASE_FILE
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 from server.admin import AdminRequests
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI

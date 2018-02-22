@@ -1,9 +1,8 @@
-import json
 import time
 import unittest
 from unittest.mock import Mock
 
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.util import Location, Reactions, ResultFilter

@@ -3,7 +3,7 @@ from multiprocessing.pool import ThreadPool
 from sqlite3 import IntegrityError
 from tempfile import NamedTemporaryFile
 
-from server import DatabaseManager
+from server.database.database import DatabaseManager
 
 
 class DatabaseManagerTest(unittest.TestCase):
