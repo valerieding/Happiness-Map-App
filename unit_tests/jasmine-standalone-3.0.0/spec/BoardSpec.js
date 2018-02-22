@@ -42,16 +42,39 @@ describe("Message Board", function(){
   });
 
 
+   let testpost1 = [];
+   let testpost2 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 1000, message: "test post",location:{logical_location: "Baker"}  }];
+   let testpost3 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 0, message: "dup", location:{logical_location: "Baker"} },
+    {post_id: 1,vote_id: 2, reply_to: 0, uid: 123, message: "dup", location:{logical_location: "Baker"} }];
+   let testpost4 = [{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post", location:{logical_location: "REG"} }];
+   let testpost5 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 2, message: "test post",location:{logical_location: "Baker"}}];
 
-   // it("should Return Hello world",function(){
+
+ it("Iteration 2 unit test for filtering recent posts by logical location (more tests on backend):", function(){
+
+     //will return only testpost4
+     expect(get_recent_posts("REG")).toEqual([{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post", location:{logical_location: "REG"} }]);
+     //will return only testpost 2 (testpost3 is at "Baker", but is an invalid post)
+     expect(get_recent_posts("BAKER")).toEqual([{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 1000, message: "test post",location:{logical_location: "Baker"}},{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 2, message: "test post",location:{logical_location: "Baker"}}]);
+     //will return no posts; none have been made at CSIL
+     expect(get_recent_posts("CSIL")).toEqual("");
+   });
+
+
+  it("Iteration 2 unit test for filtering recent posts by timestamp:", function(){
+
+     //show testpost 4 and 5
+     expect(get_recent_posts(0,2)).toEqual([{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post", location:{logical_location: "REG"} },{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 2, message: "test post",location:{logical_location: "Baker"}}]);
+     //only show testpost2 (time=1000)
+     expect(get_recent_posts(500,1500)).toEqual([{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 1000, message: "test post",location:{logical_location: "Baker"}  }]);
+     //no posts fall in this this time range
+     expect(get_recent_posts(5000,5001)).toEqual("");
+
+   });
+
+   //    it("should Return Hello world",function(){
    //    expect(helloworld()).toEqual('Hello World');
    // });
-
-   // let testpost1 = [];
-   // let testpost2 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time: 1000, message: "test post"}];
-   // let testpost3 = [{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 0, message: "dup"},
-   //  {post_id: 1,vote_id: 2, reply_to: 0, uid: 123, message: "dup"}];
-   // let testpost4 = [{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post"}];
 
    // it("addpost tests", function(){
    //    expect(addpost(testpost2)).toEqual(true);
@@ -75,19 +98,7 @@ describe("Message Board", function(){
 
    // });
 
-   // it("get recent posts tests", function(){
-   //   addpost(testpost2);
-   //   addpost(testpost4);
-
-   //   expect(get_recent_posts()).toEqual([{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post"},
-   //    {post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 1000, message: "test post"}]);
-   //   // if clicked again will sort in reverse so that oldest is on top
-   //   expect(get_recent_posts()).toEqual([{post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 1000, message: "test post"},
-   //    {post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post"}]);
-   //   // go back to newest on top
-   //   expect(get_recent_posts()).toEqual([{post_id: 2,vote_id: 4, reply_to: 1, uid: 789, time: 1, message: "newer test post"},
-   //    {post_id: 1,vote_id: 2, reply_to: 0, uid: 123, time = 1000, message: "test post"}]);
-   // });
+  
    // it("get trending posts tests", function(){
    //   addpost(testpost2);
    //   addpost(testpost4);
