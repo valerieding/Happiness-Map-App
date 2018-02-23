@@ -1,4 +1,5 @@
 import json
+import time
 from unittest import mock, TestCase, main
 
 from server.database.database import DatabaseManager
@@ -26,6 +27,12 @@ class VotingRequestsTest(TestCase):
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertCountEqual(initial_cookies, list(self.client.cookie_jar))
 
+    @mock.patch.object(votingAPI, 'get_happiness_level', return_value=DUMMY_RESPONSE)
+    def test_get_happiness_level_none(self, mocked):
+        response = self.client.post('/request/get_happiness_level')
+        self.assertTrue(mocked.called)
+        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
+
     @mock.patch.object(votingAPI, 'add_vote', return_value=True)
     def test_add_vote_valid(self, mocked):
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
@@ -51,6 +58,12 @@ class VotingRequestsTest(TestCase):
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
+    @mock.patch.object(votingAPI, 'get_recent_votes')
+    def test_get_recent_votes_last_minute(self, mocked):
+        self.client.post('/request/get_recent_votes', data={'end_time': -60})
+        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
+        self.assertTrue(mocked.called)
+
     @mock.patch.object(votingAPI, 'get_recent_votes', return_value=DUMMY_RESPONSE)
     def test_get_recent_votes_invalid(self, mocked):
         response = self.client.post('/request/get_recent_votes',
@@ -62,6 +75,12 @@ class VotingRequestsTest(TestCase):
     def test_get_campus_average_valid(self, mocked):
         response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'end_time': 100})
         self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
+        self.assertTrue(mocked.called)
+
+    @mock.patch.object(votingAPI, 'get_campus_average')
+    def test_get_campus_average_last_minute(self, mocked):
+        self.client.post('/request/get_campus_average', data={'end_time': -60})
+        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
         self.assertTrue(mocked.called)
 
     @mock.patch.object(votingAPI, 'get_campus_average')
@@ -93,6 +112,12 @@ class VotingRequestsTest(TestCase):
         response = self.client.post('/request/get_heatmap', data={'end_time': -1})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
+
+    @mock.patch.object(votingAPI, 'get_happiness_level', return_value=3.0)
+    def test_get_happiness_level_valid(self, mocked):
+        response = self.client.post('/request/get_happiness_level')
+        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
+        self.assertTrue(mocked.called)
 
 
 if __name__ == '__main__':

@@ -58,6 +58,7 @@ class VotingAPITest(unittest.TestCase):
 
         self._populate(USERS_B)  # Average should be (0 + 1 + 2 + 3 + 4 + 5 * 5) / 10 = 3.5
         self.assertEqual(self.votingApi.get_campus_average(0, time.time()), 3.5)
+        self.assertAlmostEqual(self.votingApi.get_campus_average(0, -60), 3.5)  # Should be votes from last minute
 
         # Interval with no people should still be None:
         self.assertIsNone(self.votingApi.get_campus_average(0, 1))
@@ -68,11 +69,15 @@ class VotingAPITest(unittest.TestCase):
 
         self._populate(USERS_A)  # Average should be (0 + 1 + 2 + 3 + 4) / 5 = 2
         self.assertEqual(self.votingApi.get_building_average(LOC_A.logical_location, 0, time.time()), 2)
+        # Should be building votes from last minute
+        self.assertAlmostEqual(self.votingApi.get_building_average(LOC_A.logical_location, 0, -60), 2)
+
         # LOC_B is still empty
         self.assertIsNone(self.votingApi.get_building_average(LOC_B.logical_location, 0, time.time()))
 
         self._populate(USERS_B)  # Average should be 5 since everyone has happiness_level = 5.
         self.assertEqual(self.votingApi.get_building_average(LOC_B.logical_location, 0, time.time()), 5)
+        self.assertAlmostEqual(self.votingApi.get_building_average(LOC_B.logical_location, 0, -60), 5)
         # LOC_A should remain unchanged
         self.assertEqual(self.votingApi.get_building_average(LOC_A.logical_location, 0, time.time()), 2)
 
@@ -85,10 +90,12 @@ class VotingAPITest(unittest.TestCase):
 
         self._populate(USERS_A)
         self.assertCountEqual(self.votingApi.get_heat_map(0, time.time()), [HeatMapPoint("A", 2)])
+        self.assertCountEqual(self.votingApi.get_heat_map(0, -60), [HeatMapPoint("A", 2)])
 
         self._populate(USERS_B)
         self.assertCountEqual(self.votingApi.get_heat_map(0, time.time()),
                               [HeatMapPoint("A", 2), HeatMapPoint("B", 5)])
+        self.assertCountEqual(self.votingApi.get_heat_map(0, -60), [HeatMapPoint("A", 2), HeatMapPoint("B", 5)])
 
     def test_get_happiness_level(self):
         self.assertIsNone(self.votingApi.get_happiness_level(1))

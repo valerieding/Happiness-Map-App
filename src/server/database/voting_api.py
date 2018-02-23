@@ -2,7 +2,7 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import HeatMapPoint, Message
+from server.util import HeatMapPoint, Message, Voting
 
 
 class VotingAPI:
@@ -17,7 +17,7 @@ class VotingAPI:
 
     def get_recent_votes(self, filter):
         """Retrieves the user's most recent votes at the logical location, between start and endtime. """
-        return Message.from_tuple_array(self.database.execute(
+        return Voting.from_tuple_array(self.database.execute(
             """SELECT timestamp, score, latitude, longitude, logical_loc, address FROM votes
                WHERE {} ORDER BY timestamp DESC""".format(filter.conditions),
             (*filter.arguments,)))
