@@ -4,7 +4,7 @@ import unittest
 from server.database.database import DatabaseManager
 from server.database.message_api_test import MockFilter
 from server.database.voting_api import VotingAPI
-from server.util import Location, HeatMapPoint, Voting
+from server.util import Location, HeatMapPoint
 
 LOC_A = Location(1, 2, "A")
 LOC_B = Location(2, 4, "B")
@@ -21,6 +21,7 @@ class VotingAPITest(unittest.TestCase):
     def _populate(self, users):
         for user in users:
             self.votingApi.add_vote(*user)
+            time.sleep(0.01)
 
     def test_add_vote_valid(self):
         for user in USERS_A + USERS_B:

@@ -16,7 +16,7 @@ class VotingAPI:
         self.logger = logging.getLogger('VotingAPI')
 
     def get_recent_votes(self, filter):
-        """Retrieves the user's most recent votes at the logical location, between start and endtime. """
+        """Retrieves the user's most recent votes at the logical location, between start and end time. """
         return Voting.from_tuple_array(self.database.execute(
             """SELECT timestamp, score, latitude, longitude, logical_loc, address FROM votes
                WHERE {} ORDER BY timestamp DESC""".format(filter.conditions),

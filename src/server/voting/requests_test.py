@@ -1,9 +1,11 @@
 import json
 import time
+from base64 import urlsafe_b64encode
 from unittest import mock, TestCase, main
 
+import pickle
+
 from server.database.database import DatabaseManager
-from server.database.message_api_test import MockFilter
 from server.run import get_flask_app, votingAPI
 from server.util.users import UserManager
 
@@ -26,23 +28,26 @@ class VotingRequestsTest(TestCase):
     def _get_cookie(self):
         return next(iter(c.value for c in list(self.client.cookie_jar) if c.name == 'user_id'), None)
 
+    def _test_wrong_cookie(self, cookie):
+        self.client.set_cookie('localhost', 'user_id', cookie)
+        cookie = self._get_cookie()
+        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
+        self.assertNotEqual(cookie, self._get_cookie())
+
     def test_user_id_does_not_change(self):
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         initial_cookie = self._get_cookie()
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertEqual(initial_cookie, self._get_cookie())
 
+    def test_arbitrary_cookie(self):
+        self._test_wrong_cookie('arbitrary cookie value')
+
     def test_corrupted_cookie(self):
-        self.client.set_cookie('user_id', 'corrupted_cookie')
-        cookie = self._get_cookie()
-        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        self.assertNotEqual(cookie, self._get_cookie())
+        self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps('corrupted_cookie_value')))
 
     def test_malicious_cookie(self):
-        self.client.set_cookie('user_id', UserManager._encode(123, 'definitely not a user signature'))
-        cookie = self._get_cookie()
-        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        self.assertNotEqual(cookie, self._get_cookie())
+        self._test_wrong_cookie(UserManager._encode(123, 'definitely not a user signature'))
 
     @mock.patch.object(votingAPI, 'get_happiness_level', return_value=DUMMY_RESPONSE)
     def test_get_happiness_level_none(self, mocked):
