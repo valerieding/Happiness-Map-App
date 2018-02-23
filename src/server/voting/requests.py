@@ -5,8 +5,8 @@ from server.voting.forms import *
 
 class VotingRequests(RequestHandler):
 
-    def __init__(self, votingAPI):
-        super().__init__()
+    def __init__(self, votingAPI, request_manager):
+        super().__init__(request_manager)
         self.votingAPI = votingAPI
 
     def get_recent_votes(self, form, user_id):

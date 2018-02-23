@@ -10,8 +10,8 @@ class RemovePostForm(Form, PostIDForm):
 
 class AdminRequests(RequestHandler):
 
-    def __init__(self, messageAPI):
-        super().__init__()
+    def __init__(self, messageAPI, user_manager):
+        super().__init__(user_manager)
         self.messageAPI = messageAPI
 
     def remove_post(self, form, user_id):

@@ -38,15 +38,11 @@ class MessageAPI:
             return False
         vote_id, happiness_level = vote[0][:2]
 
-        try:
-            self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                                  (vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
-                                   *vote[0][2:]))
-            self.database.commit()
-            return True
-        except IntegrityError as e:
-            self.logger.exception(e)
-            return False
+        self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                              (vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
+                               *vote[0][2:]))
+        self.database.commit()
+        return True
 
     def _update_reaction_count(self, post_id, reaction, modifier):
         reaction = ALLOWED_REACTIONS_TO_POST[reaction] + 's'  # TODO: improve this hack
@@ -63,19 +59,15 @@ class MessageAPI:
         if uid is None or reaction == existent_reaction:
             return False
 
-        try:
-            # Delete the previous reaction
-            if existent_reaction is not None:
-                self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
-                self._update_reaction_count(post_id, existent_reaction, -1)
-            # Add the new reaction
-            self._update_reaction_count(post_id, reaction, 1)
-            self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
-            self.database.commit()
-            return True
-        except IntegrityError as e:
-            self.logger.exception(e)
-            return False
+        # Delete the previous reaction
+        if existent_reaction is not None:
+            self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
+            self._update_reaction_count(post_id, existent_reaction, -1)
+        # Add the new reaction
+        self._update_reaction_count(post_id, reaction, 1)
+        self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
+        self.database.commit()
+        return True
 
     def remove_post(self, post_id):
         """Removes the post with `post_id`. Should only be accessible to admins. """

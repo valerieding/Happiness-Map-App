@@ -3,7 +3,9 @@ import time
 from unittest import mock, TestCase, main
 
 from server.database.database import DatabaseManager
+from server.database.message_api_test import MockFilter
 from server.run import get_flask_app, votingAPI
+from server.util.users import UserManager
 
 app = get_flask_app()
 app.testing = True
@@ -21,11 +23,26 @@ class VotingRequestsTest(TestCase):
     def setUp(self):
         self.client = app.test_client()
 
+    def _get_cookie(self):
+        return next(iter(c.value for c in list(self.client.cookie_jar) if c.name == 'user_id'), None)
+
     def test_user_id_does_not_change(self):
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        initial_cookies = list(self.client.cookie_jar)
+        initial_cookie = self._get_cookie()
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        self.assertCountEqual(initial_cookies, list(self.client.cookie_jar))
+        self.assertEqual(initial_cookie, self._get_cookie())
+
+    def test_corrupted_cookie(self):
+        self.client.set_cookie('user_id', 'corrupted_cookie')
+        cookie = self._get_cookie()
+        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
+        self.assertNotEqual(cookie, self._get_cookie())
+
+    def test_malicious_cookie(self):
+        self.client.set_cookie('user_id', UserManager._encode(123, 'definitely not a user signature'))
+        cookie = self._get_cookie()
+        self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
+        self.assertNotEqual(cookie, self._get_cookie())
 
     @mock.patch.object(votingAPI, 'get_happiness_level', return_value=DUMMY_RESPONSE)
     def test_get_happiness_level_none(self, mocked):
@@ -58,16 +75,15 @@ class VotingRequestsTest(TestCase):
         self.assertTrue(mocked.called)
         self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
 
-    @mock.patch.object(votingAPI, 'get_recent_votes')
+    @mock.patch.object(votingAPI, 'get_recent_votes', return_value=DUMMY_RESPONSE)
     def test_get_recent_votes_last_minute(self, mocked):
         self.client.post('/request/get_recent_votes', data={'end_time': -60})
-        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
         self.assertTrue(mocked.called)
+        self.assertAlmostEqual(mocked.call_args[0][0].arguments[1], time.time() - 60, 1)
 
     @mock.patch.object(votingAPI, 'get_recent_votes', return_value=DUMMY_RESPONSE)
     def test_get_recent_votes_invalid(self, mocked):
-        response = self.client.post('/request/get_recent_votes',
-                                    data={'logical_location': 'Mansueto', 'start_time': -1.3})
+        response = self.client.post('/request/get_recent_votes', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
@@ -80,8 +96,8 @@ class VotingRequestsTest(TestCase):
     @mock.patch.object(votingAPI, 'get_campus_average')
     def test_get_campus_average_last_minute(self, mocked):
         self.client.post('/request/get_campus_average', data={'end_time': -60})
-        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
         self.assertTrue(mocked.called)
+        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
 
     @mock.patch.object(votingAPI, 'get_campus_average')
     def test_get_campus_average_invalid(self, mocked):

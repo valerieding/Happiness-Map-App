@@ -2,7 +2,7 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import HeatMapPoint, Message, Voting
+from server.util import HeatMapPoint, Voting
 
 
 class VotingAPI:
@@ -49,11 +49,13 @@ class VotingAPI:
                GROUP BY logical_loc""", (start_time, end_time)))
 
     def get_campus_average(self, start_time, end_time):
+        # TODO: implement filter instead of explicit time interval here.
         """Returns the average happiness value registered on campus between the `start_time` and the `end_time`."""
         return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ?",
                                      (start_time, end_time))[0][0]
 
     def get_building_average(self, building_label, start_time, end_time):
+        # TODO: deprecate this in favor of calling `get_campus_average with a logical_location filter`
         """
         Returns the average happiness value registered inside `building_label` between the `start_time` and the
         `end_time`.
