@@ -80,6 +80,10 @@ class Voting(DictObject):
     def from_tuple(args):
         return Voting(timestamp=args[0], happiness_level=args[1], location=Location(args[2:]))
 
+    @staticmethod
+    def from_tuple_array(array):
+        return [Voting.from_tuple(element) for element in array]
+
 
 class HeatMapPoint(DictObject):
     def __init__(self, logical_location, happiness_level):
