@@ -128,10 +128,10 @@ function formatScore(n) {
 
 //querying database functions
 function getCampusScore(start_time) {
+    var campus_avg;
     if (!start_time) {
       start_time = 0;
     }
-    var campus_avg;
     $.ajax({
       url: '/request/get_campus_average',
       type: 'post',
@@ -149,32 +149,43 @@ function getCampusScore(start_time) {
 
 function getAllBuildingScores(start_time) {
   var allScores;
-
-  if (start_time) {
-    $.ajax({
-      url: '/request/get_heatmap',
-      type: 'post',
-      dataType: 'json',
-      async: false,
-      data: {'start_time': start_time},
-      success: function(data){
-        allScores = data;
-      }
-    });
-  } else {
-    $.ajax({
-      url: '/request/get_heatmap',
-      type: 'post',
-      dataType: 'json',
-      async: false,
-      data: {'start_time': 0},
-      success: function(data){
-        allScores = data;
-      }
-    });
+  if (!start_time) {
+    start_time = 0;
   }
+  $.ajax({
+    url: '/request/get_heatmap',
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    data: {'start_time': start_time},
+    success: function(data){
+      allScores = data;
+    }
+  });
   return allScores;
 };
+
+function getAllBuildingScoresByUser(start_time) {
+  return {};
+};
+
+function getUsersVotes(start_time) {
+  var myScores;
+  if (!start_time) {
+    start_time = 0;
+  }
+  $.ajax({
+    url: '/request/get_recent_votes',
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    ata: {'start_time': start_time},
+    success: function(data){
+      myScores = data;
+    }
+  });
+  return myScores;
+}
 
 function getBuildingScore(logloc) {
   var score;
@@ -192,10 +203,9 @@ function getBuildingScore(logloc) {
 
 
 //modifying map html functions
-function changeTimeFrame(start_time, regions) {
-	let allScores = getAllBuildingScores(start_time);
+function changeTimeFrame(start_time, regions, query_func) {
+	let allScores = query_func(start_time);
 	let allPlaces = allMapObjects(allScores);
-	let campus_avg = getCampusScore(start_time);
 	for (var i = 0; i < regions.length; i++){
 		let data = regions[i].data('info');
 		if (allPlaces[data.id]) {
@@ -210,10 +220,13 @@ function changeTimeFrame(start_time, regions) {
 			}
 		}
 	}
-  setMapFeaturesDefault();
+  if (query_func == getAllBuildingScores) {
+    setMapFeatures(start_time);
+  }
 };
 
-function setMapFeaturesDefault() {
+function setMapFeatures(start_time) {
+  let campus_avg = getCampusScore(start_time);
 	document.getElementById('region-header').innerHTML =
 		'Try hovering over a building!<br><br><br>';
 	document.getElementById('region-text').innerHTML = '';
@@ -221,8 +234,27 @@ function setMapFeaturesDefault() {
 		'Campus Happiness: ' + formatScore(campus_avg) + '';
 };
 
+function setButtonFunctions(query_func) {
+  $('#optAll').on('change', function () {
+    changeTimeFrame(null, regions, query_func);
+  });
+  $('#optWeek').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    changeTimeFrame(now - week, regions, query_func);
+  });
+  $('#optDay').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    changeTimeFrame(now - day, regions, query_func);
+  });
+  $('#optHour').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    changeTimeFrame(now - twoHr, regions, query_func);
+  });
+}
+
+
 function setUpMapGeneral() {
-  changeTimeFrame(null, regions);
+  changeTimeFrame(null, regions, getAllBuildingScores);
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
@@ -239,19 +271,20 @@ function setUpMapGeneral() {
       this.node.style.stroke = '#333333';
     });
   }
-  $('#optAll').on('change', function () {
-    changeTimeFrame(null, regions);
-  });
-  $('#optWeek').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - week, regions);
-  });
-  $('#optDay').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - day, regions);
-  });
-  $('#optHour').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - twoHr, regions);
-  });
+}
+
+function setUpMapPersonal() {
+  //changeTimeFrame(null, regions, getAllBuildingScores);
+  for (var i = 0; i < regions.length; i++){
+
+    regions[i].mouseover(function(e){
+      this.node.style.opacity = 0.7;
+      this.node.style.stroke = 'yellow';
+    });
+
+    regions[i].mouseout(function(e){
+      this.node.style.opacity = 1;
+      this.node.style.stroke = '#333333';
+    });
+  }
 }

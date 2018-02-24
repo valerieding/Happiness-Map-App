@@ -1,2 +1,2 @@
-setMapFeaturesDefault();
 setUpMapGeneral();
+setButtonFunctions(getAllBuildingScores);

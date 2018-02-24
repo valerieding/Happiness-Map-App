@@ -1,0 +1,2 @@
+setUpMapPersonal();
+//setButtonFunctions(getAllBuildingScores);
