@@ -5,8 +5,8 @@ from server.util.request_handler import RequestHandler
 
 class MessageRequests(RequestHandler):
 
-    def __init__(self, messageAPI):
-        super().__init__()
+    def __init__(self, messageAPI, request_manager):
+        super().__init__(request_manager)
         self.messageAPI = messageAPI
 
     def get_recent_posts(self, form):

@@ -1,0 +1,40 @@
+1. Plan of iteration 2:
+
+What we plan to accomplish in iteration 2:
+
+Admin: We will implement admin functionality in this iteration. Users can only access the admin functionality when running on localhost (regular users would only have access to the DNS website, and thus wouldn’t be able to access the admin functionality). Admins will be able to navigate to an admin page, which shows all the posts currently on the message board, with the ability to delete posts that are inappropriate.
+
+Personal Stats: We plan to add a page to our site called “User Stats”, which should be accessible from the navigation bar. The stats page will be divided up into several cards with data from the user’s vote/post history. 
+For the personal campus map, users can click on one of 4 time frames (all, last week, last day, last 2 hours) and see only their votes visualized on the map. This involves adding the map files to the user stats page, because we have good code reusability, and running different backend queries to populate that map with personal, rather than aggregate data. We won’t write any tests for this section, because the maps functions are already tested in the MapSpec and queries are being tested by the backend section. 
+We plan to add several vote visualizations for a user to see information about their vote histories. One of these will be a line plot of a user’s votes over time. We will need to query the database by user id and receive an array of votes and timestamps to plot. 
+For another visualization, we will show two composite graphs showing the user’s votes by day of week (this will be more useful over several weeks, when trends begin to appear), and by time of day (this will be useful after several days worth of data). 
+On the personal stats page, users will also be able to see the past messages they have posted, and can sort them by recent posts and trending posts.
+ 
+Combining voting and map: We will combine the happiness voting and campus map features. The two pages will be combined, allowing a user to vote, and see the vote update the campus map on the same page.
+
+Voting: we will implement off-campus voting. We will also use the Google Maps API to auto-sense a user’s location when voting.
+
+Map: we will expand the map to visualize off campus votes, and add the midway and quad to building groups. We will also add a feature to allow the user to toggle the time frame when viewing the map (ie. view the campus map visualization with votes from the last week, versus the last month). The map will also highlight individual buildings in a building group when a user hovers over a building.
+Message board: the message board will also integrate off-campus posting, so a user that votes off-campus can post off-campus as well. We will add the ability to filter messages by location (ie. view all posts from the Reg). Finally, we will add the ability to view posts within specific time frames (ie. view all posts from the last hour, or the last week). 
+
+What we do not plan to accomplish in iteration 2: 
+
+We don’t plan to accomplish setting up HTTPS. HTTPS will be difficult given we are running the server on Mihai’s PC laptop, and would require using Nginx or Apache, which would be complicated on a Windows machine. Also, it would make our git repository not portable. We have decided to focus on other features instead. We don’t plan on visualizing some of the fun data mentioned in the design doc, such as how temperature or weather affect happiness. All of the visualizations that will be included have been described above. We also will not implement desktop notifications, or verified alerts.
+ 
+2. A brief description about how the work will be divided among all pairs of people in your team.
+	We’re going to keep the basic pairs from iteration 1 the same, improving each area of the site separately for the next iteration as each team sees fit. For the new “User Stats” page, each team will contribute the corresponding functionality. For example the message board team will implement viewing the user’s past posts, and the vote team will implement showing the user’s past votes. 
+ 
+3. Unit test cases
+Maps
+	There are no new test cases for the maps page since all of the changes are either visual/aesthetic or changes to database queries, which are tested by the backend team. We will instead conduct acceptance tests extensively through the page.
+
+User Stats
+	For the user stats page, the time visualizations also do not involve many tests because we are simply linking database queries, which are tested by the backend team, to charts/visual components which we will test with acceptance tests. We have tests to convert from integers 0:6 to day of the week strings, for labeling the composite day of week chart.
+
+Backend
+New unit tests located in:
+server/database/voting_api_test.py
+server/database/message_api_test.py
+server/messages/requests_test.py
+server/voting/requests_test.py
+	The backend has added new unit test cases. We will re-implement get_recent_votes() and get_recent_posts(), to allow for more flexible queries. Someone can request either function with any combination of a start time, end time, and/or logical location. If a parameter is not specified, it will not be calculated into the query. We will also add the remove_post() function for admin functionality, so a user can remove a post with a given post ID. Finally, we will refactor requests to allow someone to get posts or votes within the past time period more concisely (for example, requesting get_recent_posts() with an end_time = -60 will return all the posts from the last 60 seconds, or the past minute). The unit test cases for these added functions are in the 4 locations listed above.

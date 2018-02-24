@@ -143,6 +143,21 @@ class MessageAPITest(unittest.TestCase):
             dummy_message(3, 'message_3', 3, Reactions((0, 0)), LOCATIONS[3]),
         ])
 
+    def test_filter_timestamp_negative(self):
+        self._populate()
+        lim = self.db.execute('SELECT timestamp from posts WHERE uid = 2')[0][0]
+        time.sleep(0.01)
+        self.assertSequenceEqual(self._get_recent_posts(MockFilter(end_time=lim - time.time())), [
+            dummy_message(2, 'message_2', 2, Reactions((2, 1)), LOCATIONS[2]),
+            dummy_message(1, 'message_1', 1, Reactions((0, 1)), LOCATIONS[1]),
+            dummy_message(0, 'message_0', 0, Reactions((1, 0)), LOCATIONS[0])
+        ])
+        self.assertSequenceEqual(self._get_recent_posts(MockFilter(start_time=lim - time.time())), [
+            dummy_message(4, 'message_4', 4, Reactions((0, 0)), LOCATIONS[4]),
+            dummy_message(3, 'message_3', 3, Reactions((0, 0)), LOCATIONS[3]),
+            dummy_message(2, 'message_2', 2, Reactions((2, 1)), LOCATIONS[2]),
+        ])
+
     def test_filter_location(self):
         self._populate()
         self.assertSequenceEqual(self._get_recent_posts(MockFilter(logical_loc='LABEL_0')), [

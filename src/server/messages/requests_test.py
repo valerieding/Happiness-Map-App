@@ -28,8 +28,7 @@ class MessageRequestsTest(TestCase):
 
     @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_posts_invalid(self, mocked):
-        response = self.client.post('/request/get_recent_posts',
-                                    data={'logical_location': 'Mansueto', 'start_time': -1.3})
+        response = self.client.post('/request/get_recent_posts', data={'logical_location': '*'})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
@@ -43,7 +42,7 @@ class MessageRequestsTest(TestCase):
     @mock.patch.object(messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_personal_posts_invalid(self, mocked):
         response = self.client.post('/request/get_recent_personal_posts',
-                                    data={'logical_location': 'Mansueto', 'start_time': -1.3})
+                                    data={'logical_location': '"', 'start_time': -1.3})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
@@ -56,8 +55,7 @@ class MessageRequestsTest(TestCase):
 
     @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_posts_invalid(self, mocked):
-        response = self.client.post('/request/get_trending_posts',
-                                    data={'logical_location': 'Mansueto', 'start_time': -5.3})
+        response = self.client.post('/request/get_trending_posts', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
@@ -70,8 +68,7 @@ class MessageRequestsTest(TestCase):
 
     @mock.patch.object(messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_personal_posts_invalid(self, mocked):
-        response = self.client.post('/request/get_trending_personal_posts',
-                                    data={'logical_location': 'not a logical location', 'start_time': -1.3})
+        response = self.client.post('/request/get_trending_personal_posts', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 

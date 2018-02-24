@@ -25,10 +25,6 @@ class Location(DictObject):
         return Location(*args)
 
     @staticmethod
-    def from_tuple_array(array):
-        return [Location.from_tuple(element) for element in array]
-
-    @staticmethod
     def from_request(form):
         return Location(form.latitude.data, form.longitude.data, form.logical_location.data, form.address.data)
 
@@ -78,7 +74,11 @@ class Voting(DictObject):
 
     @staticmethod
     def from_tuple(args):
-        return Voting(timestamp=args[0], happiness_level=args[1], location=Location(args[2:]))
+        return Voting(timestamp=args[0], happiness_level=args[1], location=Location.from_tuple(args[2:]))
+
+    @staticmethod
+    def from_tuple_array(array):
+        return [Voting.from_tuple(element) for element in array]
 
 
 class HeatMapPoint(DictObject):
@@ -95,10 +95,10 @@ class HeatMapPoint(DictObject):
         return [HeatMapPoint.from_tuple(element) for element in array]
 
 
-class ResultFilter:
+class ResultFilter(DictObject):
     def __init__(self, form):
         self.conditions = "timestamp BETWEEN ? AND ?"
-        self.arguments = [form.start_time.data, form.end_time.data]
+        self.arguments = [ResultFilter._get_time(form.start_time), ResultFilter._get_time(form.end_time)]
 
     def add(self, key, value):
         if value is not None:

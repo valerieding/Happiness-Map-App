@@ -2,13 +2,12 @@ import logging
 
 from flask import Blueprint, request, jsonify
 
-from server.util.users import UserID
-
 
 class RequestHandler:
 
-    def __init__(self):
+    def __init__(self, user_manager):
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.user_manager = user_manager
 
     def view_builder(self, FormValidator, handle):
         requires_valid_user_id = 'user_id' in handle.__code__.co_varnames
@@ -32,15 +31,14 @@ class RequestHandler:
         it will generate a new user cookie.
         """
         form = FormValidator(request.form)
+        cookie = None
 
         kwargs = {'form': form}
-        user = UserID.from_cookie(request.cookies)
-        need_to_send_new_id = False
+        user = self.user_manager.get_user(request.cookies)
         if requires_valid_user_id:
             if user is None:
-                need_to_send_new_id = True
-                user = UserID.issue()
-            kwargs['user_id'] = user.user_id
+                user, cookie = self.user_manager.new_user()
+            kwargs['user_id'] = user
 
         request_form_rep = '{}{}'.format(FormValidator.__name__, list(request.form.items()))
 
@@ -50,6 +48,6 @@ class RequestHandler:
             return jsonify('Invalid request')
 
         response = jsonify(response_generator(**kwargs))
-        if need_to_send_new_id:
-            user.save_cookie(response)
+        if cookie:
+            response.set_cookie(*cookie)
         return response

@@ -2,18 +2,20 @@ import logging
 
 import flask
 
-from constants import STATIC_FOLDER, DATABASE_FILE
+from constants import STATIC_FOLDER, DATABASE_FILE, SIGNATURE_KEY_FILE
 from server.database.database import DatabaseManager
 from server.admin import AdminRequests
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.messages.requests import MessageRequests
 from server.pages import page_server
+from server.util.users import UserManager
 from server.voting.requests import VotingRequests
 
 _db = DatabaseManager(DATABASE_FILE)
 messageAPI = MessageAPI(_db)
 votingAPI = VotingAPI(_db)
+user_manager = UserManager(SIGNATURE_KEY_FILE)
 
 
 def get_flask_app(has_admin_privileges=False):
@@ -24,11 +26,11 @@ def get_flask_app(has_admin_privileges=False):
             return o.__dict__
 
     app = flask.Flask(__name__, static_folder=STATIC_FOLDER)
-    app.register_blueprint(MessageRequests(messageAPI).get_blueprint())
-    app.register_blueprint(VotingRequests(votingAPI).get_blueprint())
+    app.register_blueprint(MessageRequests(messageAPI, user_manager).get_blueprint())
+    app.register_blueprint(VotingRequests(votingAPI, user_manager).get_blueprint())
     app.register_blueprint(page_server)
     if has_admin_privileges:
-        app.register_blueprint(AdminRequests(messageAPI).get_blueprint())
+        app.register_blueprint(AdminRequests(messageAPI, user_manager).get_blueprint())
     # Allow the smooth JSONification of objects
     app.json_encoder = DictBasedJSONEncoder
     # Allow trailing slashes in all URLs.
