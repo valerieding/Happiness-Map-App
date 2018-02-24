@@ -1,1 +1,2 @@
-setUpMapCampus();
+setMapFeaturesDefault();
+setUpMapGeneral();

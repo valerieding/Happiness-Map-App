@@ -1,5 +1,4 @@
 //where map stuff goes
-
 var helloworld = function(){
   return 'Hello World';
 };
@@ -8,6 +7,10 @@ var helloworld = function(){
 const week = 604800;
 const day =  86400;
 const twoHr = 7200;
+
+const ColorNumKey = ['#f1eef6','#d7b5d8','#df65b0','#dd1c77','#980043'];
+const nullColor = "#ADADAD";
+const HappinessTextKey = ["not at all happy", "only a little happy", "somewhat happy", "happy", "very happy"];
 
 var regions = [];
 
@@ -61,10 +64,6 @@ var FullNameKey = Object.freeze({
   southeast : "South East Quad Buildings",
 });
 
-
-const ColorNumKey = ['#f1eef6','#d7b5d8','#df65b0','#dd1c77','#980043'];
-const nullColor = "#ADADAD";
-const HappinessTextKey = ["not at all happy", "only a little happy", "somewhat happy", "happy", "very happy"];
 
 //map page functions
 function databaseToMapObj(n) {
@@ -200,7 +199,7 @@ function changeTimeFrame(start_time, regions) {
 	for (var i = 0; i < regions.length; i++){
 		let data = regions[i].data('info');
 		if (allPlaces[data.id]) {
-			regions[i].animate({fill: allPlaces[data.id].color},100);
+			regions[i].animate({fill: allPlaces[data.id].color},200);
 			regions[i].data({'info': allPlaces[data.id]});
 		} else {
 			let grouped = regions[i].items
@@ -211,20 +210,15 @@ function changeTimeFrame(start_time, regions) {
 			}
 		}
 	}
-	document.getElementById('region-header').innerHTML =
-		'Try hovering over a building!<br><br><br>';
-	document.getElementById('campus-avg-text').innerHTML =
-		'Campus Happiness: ' + formatScore(campus_avg) + '';
-	document.getElementById('region-text').innerHTML = '';
+  setMapFeaturesDefault();
 };
 
-function setUpMapCampus() {
+function setMapFeaturesDefault() {
 	document.getElementById('region-header').innerHTML =
 		'Try hovering over a building!<br><br><br>';
 	document.getElementById('region-text').innerHTML = '';
 	document.getElementById('campus-avg-text').innerHTML =
 		'Campus Happiness: ' + formatScore(campus_avg) + '';
-  setUpMapGeneral();
 };
 
 function setUpMapGeneral() {
