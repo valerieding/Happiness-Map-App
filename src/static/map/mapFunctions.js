@@ -169,24 +169,6 @@ function getAllBuildingScoresByUser(start_time) {
   return {};
 };
 
-function getUsersVotes(start_time) {
-  var myScores;
-  if (!start_time) {
-    start_time = 0;
-  }
-  $.ajax({
-    url: '/request/get_recent_votes',
-    type: 'post',
-    dataType: 'json',
-    async: false,
-    ata: {'start_time': start_time},
-    success: function(data){
-      myScores = data;
-    }
-  });
-  return myScores;
-}
-
 function getBuildingScore(logloc) {
   var score;
   $.ajax({
