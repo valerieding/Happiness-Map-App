@@ -12,7 +12,7 @@ messageAPI.database = DatabaseManager(':memory:')
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = (json.dumps(DUMMY_RESPONSE, indent=2) + '\n').encode('ascii')
-FAILURE_RESPONSE = (json.dumps('Invalid request') + '\n').encode('ascii')
+FAILURE_RESPONSE = b'[\n  "Invalid request", \n  400\n]\n'
 
 
 class MessageRequestsTest(TestCase):

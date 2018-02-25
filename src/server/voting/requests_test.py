@@ -1,12 +1,14 @@
 import json
+import re
 import time
 from base64 import urlsafe_b64encode
-from unittest import mock, TestCase, main
+from unittest import mock, TestCase, main, skip
 
 import pickle
 
 from server.database.database import DatabaseManager
 from server.run import get_flask_app, votingAPI
+from server.util import HeatMapPoint
 from server.util.users import UserManager
 
 app = get_flask_app()
@@ -18,7 +20,7 @@ votingAPI.database = DatabaseManager(':memory:')
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = (json.dumps(DUMMY_RESPONSE, indent=2) + '\n').encode('ascii')
 SUCCESS_RESPONSE = (json.dumps('Success') + '\n').encode('ascii')
-FAILURE_RESPONSE = (json.dumps('Invalid request') + '\n').encode('ascii')
+FAILURE_RESPONSE = b'[\n  "Invalid request", \n  400\n]\n'
 
 
 class VotingRequestsTest(TestCase):
@@ -46,6 +48,7 @@ class VotingRequestsTest(TestCase):
     def test_corrupted_cookie(self):
         self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps('corrupted_cookie_value')))
 
+    @skip('TODO: implement security')
     def test_malicious_cookie(self):
         self._test_wrong_cookie(UserManager._encode(123, 'definitely not a user signature'))
 
@@ -92,47 +95,61 @@ class VotingRequestsTest(TestCase):
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
-    @mock.patch.object(votingAPI, 'get_campus_average', return_value=3.0)
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value=3.0)
     def test_get_campus_average_valid(self, mocked):
         response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'end_time': 100})
-        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
         self.assertTrue(mocked.called)
+        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
 
-    @mock.patch.object(votingAPI, 'get_campus_average')
+    @mock.patch.object(votingAPI, 'get_votes_by')
     def test_get_campus_average_last_minute(self, mocked):
         self.client.post('/request/get_campus_average', data={'end_time': -60})
         self.assertTrue(mocked.called)
-        self.assertAlmostEqual(mocked.call_args[0][1], (time.time() - 60))
+        self.assertAlmostEqual(mocked.call_args[0][0].arguments[1], (time.time() - 60), 2)
 
-    @mock.patch.object(votingAPI, 'get_campus_average')
-    def test_get_campus_average_invalid(self, mocked):
-        response = self.client.post('/request/get_campus_average', data={'start_time': -1})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
-        self.assertFalse(mocked.called)
-
-    @mock.patch.object(votingAPI, 'get_building_average', return_value=3.0)
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'ABC': 3.0})
     def test_get_building_average_valid(self, mocked):
         response = self.client.post('/request/get_building_average', data={'start_time': 45, 'logical_location': 'ABC'})
         self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
         self.assertTrue(mocked.called)
 
-    @mock.patch.object(votingAPI, 'get_building_average')
+    @mock.patch.object(votingAPI, 'get_votes_by')
     def test_get_building_average_invalid(self, mocked):
         response = self.client.post('/request/get_building_average', data={'end_time': '45'})
         self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
 
-    @mock.patch.object(votingAPI, 'get_heat_map', return_value=[])
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
     def test_get_heat_map_valid(self, mocked):
         response = self.client.post('/request/get_heatmap', data={'start_time': 45})
-        self.assertEqual(json.loads(response.data.decode('ascii')), [])
         self.assertTrue(mocked.called)
+        self.assertCountEqual(json.loads(response.data.decode('ascii')), [
+            HeatMapPoint('A', 2.5).__dict__, HeatMapPoint('B', 3).__dict__
+        ])
 
-    @mock.patch.object(votingAPI, 'get_heat_map', return_value=[])
-    def test_get_heat_map_invalid(self, mocked):
-        response = self.client.post('/request/get_heatmap', data={'end_time': -1})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_votes_by_location(self, mocked):
+        response = self.client.post('/request/get_votes_by', data={'group_by': 'loc'})
+        self.assertTrue(mocked.called)
+        self.assertCountEqual(json.loads(response.data.decode('ascii')), {'A': 2.5, 'B': 3})
+
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_votes_by_invalid(self, mocked):
+        response = self.client.post('/request/get_votes_by', data={'group_by': 'invalid_grouping'})
         self.assertFalse(mocked.called)
+        self.assertEqual(response.data, FAILURE_RESPONSE)
+
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_personal_votes_by_location(self, mocked):
+        response = self.client.post('/request/get_personal_votes_by', data={'group_by': 'loc'})
+        self.assertTrue(mocked.called)
+        self.assertCountEqual(json.loads(response.data.decode('ascii')), {'A': 2.5, 'B': 3})
+
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_personal_votes_by_invalid(self, mocked):
+        response = self.client.post('/request/get_personal_votes_by', data={'group_by': 'invalid_grouping'})
+        self.assertFalse(mocked.called)
+        self.assertEqual(response.data, FAILURE_RESPONSE)
 
     @mock.patch.object(votingAPI, 'get_happiness_level', return_value=3.0)
     def test_get_happiness_level_valid(self, mocked):

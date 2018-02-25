@@ -1,12 +1,14 @@
-from wtforms import IntegerField, FloatField, validators, StringField, SelectField, BooleanField
+from wtforms import IntegerField, FloatField, validators, StringField, SelectField
 
 from constants import ALLOWED_REACTIONS_TO_POST
+from server.util import VoteAggregator
 
 """
 Defines several form stubs that should be used via inheritance by the end-user Form validators.
 """
 
 LOGICAL_LOCATION_VALIDATOR = validators.Regexp(r'^[a-zA-Z0-9_]*$')
+
 
 class LocationForm:
     """Defines the validations required for a form that describes a location. """
@@ -24,14 +26,6 @@ class HappinessForm:
                                    [validators.InputRequired(), validators.NumberRange(min=0, max=5)])
 
 
-class TimeIntervalForm:
-    """Defines the validations required for a form containing a time interval. """
-
-    start_time = FloatField('start_time', [validators.NumberRange(min=0)], default=0)
-    end_time = FloatField('end_time', [validators.NumberRange(min=0)], default=float('inf'))
-    # TODO: deprecate this in favor of ResultFilterForm
-
-
 class ResultFilterForm:
     start_time = FloatField('start_time', default=0)
     end_time = FloatField('end_time', default=float('inf'))
@@ -43,7 +37,10 @@ class PostIDForm:
 
 
 class ReactionForm:
+    reaction = SelectField('reaction', [validators.InputRequired()],
+                           choices=[(val, index) for index, val in enumerate(ALLOWED_REACTIONS_TO_POST)])
 
-    ALLOWED_REACTIONS = [(val, index) for index, val in enumerate(ALLOWED_REACTIONS_TO_POST)]
-    reaction = SelectField('reaction', [validators.InputRequired()], choices=ALLOWED_REACTIONS)
 
+class AggregatorForm:
+    AGGREGATORS = [(k, v) for k, v in VoteAggregator.AGGREGATORS.items()]
+    group_by = SelectField('group_by', choices=AGGREGATORS)

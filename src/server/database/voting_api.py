@@ -2,7 +2,7 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import HeatMapPoint, Voting
+from server.util import Voting
 
 
 class VotingAPI:
@@ -19,8 +19,15 @@ class VotingAPI:
         """Retrieves the user's most recent votes at the logical location, between start and end time. """
         return Voting.from_tuple_array(self.database.execute(
             """SELECT timestamp, score, latitude, longitude, logical_loc, address FROM votes
-               WHERE {} ORDER BY timestamp DESC""".format(filter.conditions),
-            (*filter.arguments,)))
+               WHERE {} ORDER BY timestamp DESC""".format(filter.conditions), (*filter.arguments,)))
+
+    def get_votes_by(self, filter, agg):
+        results = self.database.execute(
+            "SELECT {}avg(score) FROM votes WHERE {} {}".format(agg.expr, filter.conditions, agg.group_by),
+            (*filter.arguments,))
+        if len(results) == 0 or len(results[0]) == 2:
+            return {label: score for label, score in results}
+        return results[0][0]
 
     def add_vote(self, uid, location, happiness_level):
         """
@@ -40,28 +47,6 @@ class VotingAPI:
         except IntegrityError as e:
             self.logger.exception(e)
             return False
-
-    def get_heat_map(self, start_time, end_time):
-        """Fetches the data for the generation of the heat map on the client side."""
-        return HeatMapPoint.from_tuple_array(self.database.execute(
-            """SELECT logical_loc, avg(score) FROM votes
-               WHERE logical_loc NOT NULL AND timestamp BETWEEN ? AND ?
-               GROUP BY logical_loc""", (start_time, end_time)))
-
-    def get_campus_average(self, start_time, end_time):
-        # TODO: implement filter instead of explicit time interval here.
-        """Returns the average happiness value registered on campus between the `start_time` and the `end_time`."""
-        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ?",
-                                     (start_time, end_time))[0][0]
-
-    def get_building_average(self, building_label, start_time, end_time):
-        # TODO: deprecate this in favor of calling `get_campus_average with a logical_location filter`
-        """
-        Returns the average happiness value registered inside `building_label` between the `start_time` and the
-        `end_time`.
-        """
-        return self.database.execute("SELECT avg(score) FROM votes WHERE timestamp BETWEEN ? AND ? AND logical_loc = ?",
-                                     (start_time, end_time, building_label))[0][0]
 
     def get_happiness_level(self, uid):
         """ Returns the most recent happiness level registered for `uid`. """

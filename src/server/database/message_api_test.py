@@ -146,7 +146,7 @@ class MessageAPITest(unittest.TestCase):
     def test_filter_timestamp_negative(self):
         self._populate()
         lim = self.db.execute('SELECT timestamp from posts WHERE uid = 2')[0][0]
-        time.sleep(0.01)
+        time.sleep(0.02)
         self.assertSequenceEqual(self._get_recent_posts(MockFilter(end_time=lim - time.time())), [
             dummy_message(2, 'message_2', 2, Reactions((2, 1)), LOCATIONS[2]),
             dummy_message(1, 'message_1', 1, Reactions((0, 1)), LOCATIONS[1]),
