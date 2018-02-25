@@ -22,6 +22,10 @@ class VotingRequests(RequestHandler):
         _filter = ResultFilter(form).add('logical_loc', form.logical_location.data)
         return self.votingAPI.get_votes_by(_filter, VoteAggregator(form.group_by.data))
 
+    def get_personal_votes_by(self, form, user_id):
+        _filter = ResultFilter(form).add('logical_loc', form.logical_location.data).add('uid', user_id)
+        return self.votingAPI.get_votes_by(_filter, VoteAggregator(form.group_by.data))
+
     def get_campus_average(self, form):
         return self.votingAPI.get_votes_by(ResultFilter(form), VoteAggregator())
 
@@ -43,5 +47,6 @@ class VotingRequests(RequestHandler):
             (self.get_building_average, GetBuildingAverageForm),
             (self.get_heatmap, GetHeatMapForm),
             (self.get_happiness_level, GetHappinessLevelForm),
-            (self.get_votes_by, GetVotesByForm)
+            (self.get_votes_by, GetVotesByForm),
+            (self.get_personal_votes_by, GetVotesByForm),
         ]
