@@ -2,11 +2,15 @@ setUpMapPersonal();
 //setButtonFunctions(getAllBuildingScores);
 var ctx = document.getElementById('userVotesOverTime').getContext('2d');
 var chart = new Chart(ctx, {
-    type: 'scatter',
+    type: 'line',
     data: {
       datasets: [{
-        label: "Votes Over Time",
+        label: "Vote",
         backgroundColor: '#DD1C77',
+        borderColor: '#DF65B0',
+        borderWidth: 2,
+        fill: false,
+        lineTension: 0,
         data: []
       }]
     },
@@ -16,7 +20,6 @@ var chart = new Chart(ctx, {
                 type: 'linear',
                 position: 'bottom',
                 ticks: {
-                    // Include a dollar sign in the ticks
                     callback: function(value, index, values) {
                         let temp = new Date(1000 * value).toDateString();
                         return temp;
@@ -31,8 +34,11 @@ var chart = new Chart(ctx, {
 });
 var h = getVoteHistory(null);
 makeChart(null, h);
+console.log(getAllBuildingScoresByUser());
 
 
+
+/* Functions for the stats page */
 
 function getUsersVotes(start_time) {
   var myScores;

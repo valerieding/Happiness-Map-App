@@ -165,8 +165,19 @@ function getAllBuildingScores(start_time) {
   return allScores;
 };
 
-function getAllBuildingScoresByUser(start_time) {
-  return {};
+function getAllBuildingScoresByUser() {
+  var allScores;
+  $.ajax({
+    url: "/request/get_personal_votes_by",
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    data: {'group_by': 'loc'},
+    success: function(data){
+      allScores = data;
+    }
+  });
+  return allScores;
 };
 
 function getBuildingScore(logloc) {
