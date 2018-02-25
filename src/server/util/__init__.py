@@ -101,7 +101,7 @@ class ResultFilter(DictObject):
         self.arguments = [ResultFilter._get_time(form.start_time), ResultFilter._get_time(form.end_time)]
 
     def add(self, key, value):
-        if value is not None:
+        if value is not None and value != '':
             self.conditions += " AND {} = ?".format(key)
             self.arguments.append(value)
         return self

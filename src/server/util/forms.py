@@ -29,7 +29,7 @@ class HappinessForm:
 class ResultFilterForm:
     start_time = FloatField('start_time', default=0)
     end_time = FloatField('end_time', default=float('inf'))
-    logical_location = StringField('logical_location', [LOGICAL_LOCATION_VALIDATOR])
+    logical_location = StringField('logical_location', validators=[LOGICAL_LOCATION_VALIDATOR])
 
 
 class PostIDForm:
