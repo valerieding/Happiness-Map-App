@@ -29,6 +29,15 @@ var chart = new Chart(ctx, {
         },
         legend: {
             display: false
+        },
+        tooltips: {
+            enabled: true,
+            callbacks: {
+                title: function(tooltipItem, chart) {
+                    let temp = new Date(1000 * tooltipItem[0].xLabel);
+                    return temp.toLocaleString();
+                }
+            }
         }
     }
 });
