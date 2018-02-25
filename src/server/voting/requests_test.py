@@ -139,6 +139,18 @@ class VotingRequestsTest(TestCase):
         self.assertFalse(mocked.called)
         self.assertEqual(response.data, FAILURE_RESPONSE)
 
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_personal_votes_by_location(self, mocked):
+        response = self.client.post('/request/get_personal_votes_by', data={'group_by': 'loc'})
+        self.assertTrue(mocked.called)
+        self.assertCountEqual(json.loads(response.data.decode('ascii')), {'A': 2.5, 'B': 3})
+
+    @mock.patch.object(votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
+    def test_get_personal_votes_by_invalid(self, mocked):
+        response = self.client.post('/request/get_personal_votes_by', data={'group_by': 'invalid_grouping'})
+        self.assertFalse(mocked.called)
+        self.assertEqual(response.data, FAILURE_RESPONSE)
+
     @mock.patch.object(votingAPI, 'get_happiness_level', return_value=3.0)
     def test_get_happiness_level_valid(self, mocked):
         response = self.client.post('/request/get_happiness_level')
