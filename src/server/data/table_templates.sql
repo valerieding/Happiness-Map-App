@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS posts (
     uid         integer     NOT NULL,
     message     varchar     NOT NULL,
     score       integer     NOT NULL check(score between 0 and 5),
-    upvotes     integer     NOT NULL check(upvotes >= 0),
-    downvotes   integer     NOT NULL check(downvotes >= 0),
+--     upvotes     integer     NOT NULL check(upvotes >= 0),
+--     downvotes   integer     NOT NULL check(downvotes >= 0),
     timestamp   float       NOT NULL,
     latitude    real        check(latitude between -90 and 90),
     longitude   real        check(longitude between -180 and 180),
@@ -31,6 +31,6 @@ CREATE TABLE IF NOT EXISTS posts (
 CREATE TABLE IF NOT EXISTS post_votes (
     postID      integer,
     uid         integer     NOT NULL,
-    isUpvote    integer     NOT NULL check(isUpvote between 0 and 1),
+    reaction    integer     NOT NULL check(reaction between 0 and 1),
     FOREIGN KEY(postID) REFERENCES posts(id)
 );

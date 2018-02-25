@@ -11,6 +11,10 @@ class MessageAPI:
 
     # TODO: make use of localization throughout the MessageAPI interface.
 
+    REACTION_COLS = ', '.join(
+        'COUNT(CASE WHEN post_votes.reaction = {} THEN 1 END) {}s'.format(value, name) for value, name in
+        enumerate(ALLOWED_REACTIONS_TO_POST))
+
     POST_ID_MAX = 2 ** 32
 
     def __init__(self, database):
@@ -19,14 +23,24 @@ class MessageAPI:
 
     def get_recent_posts(self, filter):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
+        # a row for each reaction a post has, and whether it's an upvote or downvote
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE {} ORDER BY timestamp DESC".format(filter.conditions), (*filter.arguments,)))
+            """SELECT * FROM 
+                ((SELECT * FROM posts WHERE {}) t1 LEFT OUTER JOIN 
+                (SELECT postID, {}
+                FROM post_votes
+                GROUP BY postID) t2 ON t1.id = t2.postID) 
+                ORDER BY timestamp DESC""".format(filter.conditions, MessageAPI.REACTION_COLS), (*filter.arguments,)))
 
     def get_trending_posts(self, filter):
         """Retrieves the trending messages posted around `location`. """
         return Message.from_tuple_array(self.database.execute(
-            "SELECT * FROM posts WHERE {} ORDER BY (upvotes - downvotes) DESC, timestamp DESC".format(filter.conditions),
-            (*filter.arguments,)))
+            """SELECT * FROM 
+                ((SELECT * FROM posts WHERE {}) t1 LEFT OUTER JOIN 
+                (SELECT postID, {}
+                FROM post_votes
+                GROUP BY postID) t2 ON t1.id = t2.postID) 
+                ORDER BY IFNULL(upvotes - downvotes, 0) DESC, timestamp DESC""".format(filter.conditions, MessageAPI.REACTION_COLS), (*filter.arguments,)))
 
     def add_post(self, uid, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
@@ -38,20 +52,15 @@ class MessageAPI:
             return False
         vote_id, happiness_level = vote[0][:2]
 
-        self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                              (vote_id, reply_to, uid, message, happiness_level, 0, 0, time.time(),
+        self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                              (vote_id, reply_to, uid, message, happiness_level, time.time(),
                                *vote[0][2:]))
         self.database.commit()
         return True
 
-    def _update_reaction_count(self, post_id, reaction, modifier):
-        reaction = ALLOWED_REACTIONS_TO_POST[reaction] + 's'  # TODO: improve this hack
-        self.database.execute(
-            "UPDATE posts SET {react} = {react} + ? WHERE id = ?".format(react=reaction), (modifier, post_id))
-
     def add_reaction(self, uid, post_id, reaction):
         """Adds a reaction to `post_id` by `uid`. """
-        existent_reaction = self.database.execute("SELECT isUpvote FROM post_votes WHERE postID = ? AND uid = ? "
+        existent_reaction = self.database.execute("SELECT reaction FROM post_votes WHERE postID = ? AND uid = ? "
                                                   "ORDER BY postID DESC LIMIT 1", (post_id, uid))
         existent_reaction = existent_reaction[0][0] if len(existent_reaction) != 0 else None
 
@@ -62,9 +71,7 @@ class MessageAPI:
         # Delete the previous reaction
         if existent_reaction is not None:
             self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
-            self._update_reaction_count(post_id, existent_reaction, -1)
         # Add the new reaction
-        self._update_reaction_count(post_id, reaction, 1)
         self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
         self.database.commit()
         return True
