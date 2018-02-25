@@ -1,6 +1,6 @@
 from wtforms import Form, validators, StringField, IntegerField
 
-from server.util.forms import LocationForm, PostIDForm, TimeIntervalForm, ReactionForm, ResultFilterForm
+from server.util.forms import PostIDForm, ReactionForm, ResultFilterForm
 
 
 class GetRecentPostsForm(Form, ResultFilterForm):
@@ -15,7 +15,6 @@ class AddPostForm(Form):
     """Validates the add_posts request form. """
     reply_to = IntegerField('reply_to')
     message = StringField('message', [validators.InputRequired()])
-    # TODO: restrict message input?
 
 
 class UpvoteForm(Form, PostIDForm):

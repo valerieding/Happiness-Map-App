@@ -112,3 +112,19 @@ class ResultFilter(DictObject):
         if result < 0:
             result += time.time()
         return result
+
+
+class VoteAggregator:
+
+    AGGREGATORS = {
+        'tod': 'time_of_day(timestamp)',
+        'dow': 'day_of_week(timestamp)',
+        'loc': 'logical_loc'
+    }
+
+    def __init__(self, group_by=None):
+        if group_by is None:
+            self.expr, self.group_by = '', ''
+            return
+        self.expr = VoteAggregator.AGGREGATORS[group_by] + ' as agg, '
+        self.group_by = ' GROUP BY agg'

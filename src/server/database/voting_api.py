@@ -22,6 +22,16 @@ class VotingAPI:
                WHERE {} ORDER BY timestamp DESC""".format(filter.conditions),
             (*filter.arguments,)))
 
+    def get_votes_by(self, filter, agg):
+        results = self.database.execute(
+            "SELECT {}avg(score) FROM votes WHERE {} {}".format(agg.expr, filter.conditions, agg.group_by),
+            (*filter.arguments,))
+        if len(results) == 0:
+            return {}
+        if len(results[0]) == 2:
+            return {label: score for label, score in results}
+        return results[0][0]
+
     def add_vote(self, uid, location, happiness_level):
         """
         Adds a happiness vote of `happiness_level` at `location` from `uid` to the database. If `uid` has already voted

@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 from threading import Lock
 
@@ -17,6 +18,8 @@ class DatabaseManager:
         self.locks = {}
         with open(TABLE_TEMPLATE_FILE, 'r') as table_template:
             self.cursor.executescript(table_template.read())
+        for method in DatabaseManager._get_sqlite_functions():
+            self.connection.create_function(*method)
 
     def execute(self, command, *args):
         self.cursor.execute(command, *args)
@@ -42,3 +45,16 @@ class DatabaseManager:
     def __del__(self):
         self.cursor.close()
         self.connection.close()
+
+    @staticmethod
+    def _get_sqlite_functions():
+        def time_of_day(timestamp):
+            """Returns the hour corresponding to this timestamp. Assumes Chicago Standard Time. """
+            return datetime.fromtimestamp(int(timestamp)).hour
+
+        def day_of_week(timestamp):
+            return datetime.fromtimestamp(int(timestamp)).weekday()
+
+        for name, method in list(locals().items()):
+            if callable(method):
+                yield (name, 1, method)
