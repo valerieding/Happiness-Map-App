@@ -5,7 +5,7 @@ from datetime import datetime
 from server.database.database import DatabaseManager
 from server.database.message_api_test import MockFilter
 from server.database.voting_api import VotingAPI
-from server.util import Location, HeatMapPoint, VoteAggregator
+from server.util import Location, VoteAggregator
 
 LOC_A = Location(1, 2, "A")
 LOC_B = Location(2, 4, "B")
@@ -31,10 +31,10 @@ class VotingAPITest(unittest.TestCase):
 
     def test_add_vote_disallow_multi_vote(self):
         self.votingApi.add_vote(1, LOC_A, 1)
-        self.assertEqual(self.votingApi.get_campus_average(0, float('inf')), 1)
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()), 1)
 
         self.votingApi.add_vote(1, LOC_B, 5)  # This should remove the previous vote
-        self.assertEqual(self.votingApi.get_campus_average(0, float('inf')), 5)
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()), 5)
 
     def test_add_vote_allow_old_multi_votes(self):
         self.votingApi.database.execute(
@@ -43,7 +43,7 @@ class VotingAPITest(unittest.TestCase):
         self.votingApi.database.commit()
 
         self.votingApi.add_vote(1, LOC_A, 4)  # Should not remove the old vote.
-        self.assertEqual(self.votingApi.get_campus_average(0, float('inf')), 2.5)
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()), 2.5)
 
     def test_add_vote_invalid(self):
         # Invalid requests because happiness_level has to be between 0 and 5.
@@ -60,6 +60,7 @@ class VotingAPITest(unittest.TestCase):
     def test_get_recent_votes(self):
         def recent_votes(**kwargs):
             return [(v.happiness_level, v.location) for v in self.votingApi.get_recent_votes(MockFilter(**kwargs))]
+
         self.assertListEqual(self.votingApi.get_recent_votes(MockFilter()), [])
 
         self._populate(USERS_A + USERS_B)
@@ -89,7 +90,7 @@ class VotingAPITest(unittest.TestCase):
         _add(1, 2, datetime(2018, 1, 2, 5))  # Tuesday,  5AM
         _add(1, 4, datetime(2018, 1, 1, 5))  # Monday,   5AM
         _add(2, 3, datetime(2018, 1, 2))     # Tuesday, 12AM
-    
+
     def test_get_votes_by_location(self):
         self.assertIsNone(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()))
 

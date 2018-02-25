@@ -1,5 +1,5 @@
-from datetime import datetime
 import sqlite3
+from datetime import datetime
 from threading import Lock
 
 from constants import TABLE_TEMPLATE_FILE
