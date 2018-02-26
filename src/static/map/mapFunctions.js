@@ -94,14 +94,16 @@ function allMapObjects(ns) {
   if (!ns) {
     return allObjs;
   }
-  if (ns[0]) {
+  if (ns.length) {
     ns.forEach(function(n) {
       allObjs[n.logical_location] = databaseToMapObj(n);
     });
   } else if (ns) {
-    allObjs[ns.logical_location] = databaseToMapObj(ns);
+    for (let key in ns) {
+      let temp = {logical_location: key, happiness_level: ns[key]};
+      allObjs[key] = databaseToMapObj(temp);
+    }
   }
-  console.log(allObjs);
   return allObjs;
 };
 
@@ -183,7 +185,6 @@ function getAllBuildingScoresByUser(start_time) {
     async: false,
     data: {'group_by': 'loc', 'start_time': start_time},
     success: function(data){
-      console.log(data);
       allScores = data;
     }
   });
@@ -206,24 +207,28 @@ function getBuildingScore(logloc) {
 
 
 //modifying map html functions
-function changeTimeFrame(start_time, regions, query_func) {
+function changeTimeFrame(start_time, query_func) {
 	let allScores = query_func(start_time);
 	let allPlaces = allMapObjects(allScores);
   console.log(allPlaces);
 	for (var i = 0; i < regions.length; i++){
-		let data = regions[i].data('info');
+    let data = regions[i].data('info');
 		if (allPlaces[data.id]) {
 			regions[i].animate({fill: allPlaces[data.id].color},200);
 			regions[i].data({'info': allPlaces[data.id]});
-		} else {
-			let grouped = regions[i].items
-			for (var j = 0; j < grouped.length; j++) {
-				data = grouped[j].data('info')
-				regions[i].items[j].animate({fill: allPlaces[data.id].color},200);
-				regions[i].items[j].data({'info': allPlaces[data.id]});
-			}
-		}
-	}
+		} else if (regions[i].items){
+      /*
+      for (var j = 0; j < grouped.length; j++) {
+  			data = grouped[j].data('info');
+        if (data.id){
+  				regions[i].items[j].animate({fill: allPlaces[data.id].color},200);
+  				regions[i].items[j].data({'info': allPlaces[data.id]});
+          //regions[i].data({'info': allPlaces[data.id]});
+          //regions[i].animate({fill: allPlaces[data.id].color},200);
+        }
+  		}*/
+    }
+  }
   if (query_func == getAllBuildingScores) {
     setMapFeatures(start_time);
   }
@@ -240,26 +245,25 @@ function setMapFeatures(start_time) {
 
 function setButtonFunctions(query_func) {
   $('#optAll').on('change', function () {
-    changeTimeFrame(null, regions, query_func);
+    changeTimeFrame(null, query_func);
   });
   $('#optWeek').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - week, regions, query_func);
+    changeTimeFrame(now - week, query_func);
   });
   $('#optDay').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - day, regions, query_func);
+    changeTimeFrame(now - day, query_func);
   });
   $('#optHour').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - twoHr, regions, query_func);
+    changeTimeFrame(now - twoHr, query_func);
   });
 }
 
 
 function setUpMapGeneral() {
-  console.log(regions);
-  changeTimeFrame(null, regions, getAllBuildingScores);
+  changeTimeFrame(null, getAllBuildingScores);
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
@@ -269,6 +273,7 @@ function setUpMapGeneral() {
       let label = info.rating + "<br>building happiness: " + info.score;
       document.getElementById('region-header').innerHTML = info.fullname;
       document.getElementById('region-text').innerHTML = label;
+
     });
 
     regions[i].mouseout(function(e){
@@ -279,8 +284,7 @@ function setUpMapGeneral() {
 }
 
 function setUpMapPersonal() {
-  console.log(regions);
-  changeTimeFrame(null, regions, getAllBuildingScoresByUser);
+  changeTimeFrame(null, getAllBuildingScoresByUser);
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
