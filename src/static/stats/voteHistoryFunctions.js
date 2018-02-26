@@ -8,6 +8,16 @@ var timeCallback = function(value, index, values) {
 }
 
 
+var chart = makeHistoryChart();
+var weekChart = makeWeekChart();
+var timeChart = makeTimeChart();
+updateHistoryChart(chart, null);
+setScatterButtonFunctions();
+
+
+setUpMapPersonal();
+setButtonFunctions(getAllBuildingScoresByUser);
+
 
 function getUsersVotes(start_time) {
   var myScores;
@@ -41,8 +51,9 @@ function getVoteHistory(start_time) {
   return voteHistory2;
 }
 
-function makeChart(ctx) {
-  var chart = new Chart(ctx, {
+function makeHistoryChart() {
+  let ctx = document.getElementById('userVotesOverTime').getContext('2d');
+  var timeChart = new Chart(ctx, {
       type: 'line',
       data: {
         datasets: [{
@@ -67,7 +78,7 @@ function makeChart(ctx) {
               yAxes: [{
                   type: 'linear',
                   ticks: {
-                    beginAtZero: true,
+                    min: 1,
                     stepSize: 1
                   }
               }]
@@ -86,10 +97,85 @@ function makeChart(ctx) {
           }
       }
   });
-  return chart;
+  return timeChart;
 }
 
-function updateChart(chart, start_time) {
+function makeWeekChart() {
+  let ctx = document.getElementById('userVotesByDayOfWeek').getContext('2d');
+  var weekChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      datasets: [{
+        label: "Vote",
+        borderWidth: 1,
+        backgroundColor: '#DD1C77',
+        data: [2.3, 1.8, 2.5, 3.4, 3.3, 4.8, 4.2]
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+          display: false,
+      },
+      yAxes: [{
+          type: 'linear',
+          ticks: {
+            min: 1,
+            max: 5,
+            stepSize: 1
+          }
+      }]
+    }
+  });
+  return weekChart;
+}
+
+function makeTimeChart() {
+  let ctx = document.getElementById('userVotesByTimeOfDay').getContext('2d');
+  let timesLabels = ["12 AM"];
+  for (let i = 1; i < 12; i++) {
+    timesLabels.push(parseInt(i) + " AM");
+  }
+  timesLabels.push("12 PM");
+  for (let i = 1; i < 12; i++) {
+    timesLabels.push(parseInt(i) + " PM");
+  }
+  var weekChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: timesLabels,
+      datasets: [{
+        label: "Vote",
+        borderWidth: 1,
+        backgroundColor: '#DD1C77',
+        data: [3.4, 2, 1, 0,
+              0, 0, 0, 0, 2,
+              3.1, 2.1, 2.6, 3.7, 4,
+              4, 3.7, 4.1, 3.2, 2.9,
+              4, 4.8, 4.6, 4.4, 3
+            ]
+      }]
+    },
+    options: {
+      responsive: true,
+      legend: {
+          display: false,
+      },
+      yAxes: [{
+          type: 'linear',
+          ticks: {
+            min: 1,
+            max: 5,
+            stepSize: 1
+          }
+      }]
+    }
+  });
+  return weekChart;
+}
+
+function updateHistoryChart(chart, start_time) {
   console.log(start_time);
   ds = getVoteHistory(start_time);
   console.log(ds);
