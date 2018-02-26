@@ -57,21 +57,18 @@ class MessageAPI:
 
     def add_reaction(self, uid, post_id, reaction):
         """Adds a reaction to `post_id` by `uid`. """
-        existent_reaction = self.database.execute("SELECT reaction FROM post_votes WHERE postID = ? AND uid = ? "
-                                                  "ORDER BY postID DESC LIMIT 1", (post_id, uid))
-        existent_reaction = existent_reaction[0][0] if len(existent_reaction) != 0 else None
-
-        # If the user has already posted this exact reaction before, disallow a new one.
-        if uid is None or reaction == existent_reaction:
+        if uid is None:
             return False
-
-        # Delete the previous reaction
-        if existent_reaction is not None:
+        try:
+            self.database.acquire_lock(uid)
             self.database.execute("DELETE FROM post_votes WHERE postID = ? AND uid = ?", (post_id, uid))
-        # Add the new reaction
-        self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
-        self.database.commit()
-        return True
+            self.database.execute("INSERT INTO post_votes VALUES (?, ?, ?)", (post_id, uid, reaction))
+            self.database.commit()
+            return True
+        except:
+            return False
+        finally:
+            self.database.release_lock(uid)
 
     def remove_post(self, post_id):
         """Removes the post with `post_id`. Should only be accessible to admins. """
