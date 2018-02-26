@@ -45,12 +45,13 @@ class RequestHandler:
         self.logger.info('User {} requested {}'.format(user, request_form_rep))
         if not form.validate():
             self.logger.warning('Invalid request from user {}: {}:\n\t{}'.format(user, request_form_rep, form.errors))
-            return jsonify('Invalid request', 400)
+            return jsonify('Invalid request: bad form', 400)
 
         try:
             response = jsonify(response_generator(**kwargs))
             if cookie:
                 response.set_cookie(*cookie)
             return response
-        except:
-            return jsonify('Invalid request', 400)
+        except Exception as e:
+            self.logger.exception(e)
+            return jsonify('Invalid request: bad output', 400)
