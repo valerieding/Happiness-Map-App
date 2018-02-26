@@ -12,8 +12,5 @@
     {"postID": 0, "uid": 5, "reaction": 0},
     {"postID": 0, "uid": 6, "reaction": 1},
     {"postID": 0, "uid": 7, "reaction": 1}
-  ],
-  "variables": [
-    {"key": "userID", "val": 11}
   ]
 }
