@@ -22,8 +22,12 @@
     <script type="application/javascript" src="/static/vote/vote.js"></script>
     <script type="application/javascript" src="/static/vote/voteMapScript.js"></script>
     <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
-    <script type="application/javascript" src="/static/popper.min.js"></script>
-    <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
     <script tyep="application/javascript" src="/static/board/board.js"></script>
     <title>Vote</title>
   </head>
@@ -52,7 +56,7 @@
             //alert("map loc = " + map_loc);
 
             happy = $("input[name=happiness_level]:checked").val();
-            
+
             // for the time being
             loc = drop_loc;
 
@@ -68,7 +72,7 @@
             */
             submitVote(loc, happy);
            // alert(loc + ": " + happy);
-           // alert($("#loc_drop option:selected").val());          
+           // alert($("#loc_drop option:selected").val());
            /*
            if (typeof happy != 'undefined' && typeof loc != 'undefined'){
               $.ajax({
@@ -91,7 +95,7 @@
                   },
                   error: function() {
                     //alert('Failed to submit vote');
-                  }              
+                  }
               });
             }
             else{
@@ -152,11 +156,11 @@
         </script>
         <div>
           <button id="vote_btn"> Submit Vote </button>
-        </div> 
+        </div>
     </form>
     </div>
 
-    
+
     <div id = "post_after_vote" class="form-group" style="float:left;">
       <main role="main" class="inner cover text-center" id="home-cover">
         <h3 class="cover-heading">Message Board</h1>
@@ -176,17 +180,17 @@
         var hidden = 1;
         $( "#show" ).click(function() {
           if(hidden == 0) {
-            $('#post_after_vote').hide(); 
-            $('#vote_ui').show(); 
-            $('#campus-map').show(); 
+            $('#post_after_vote').hide();
+            $('#vote_ui').show();
+            $('#campus-map').show();
             hidden = 1;
           } else {
-            $('#post_after_vote').show(); 
-            $('#vote_ui').hide(); 
-            $('#campus-map').hide(); 
+            $('#post_after_vote').show();
+            $('#vote_ui').hide();
+            $('#campus-map').hide();
             hidden = 0;
           }
-         
+
         });
         $('#post_after_vote').hide();
       </script>

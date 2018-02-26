@@ -114,14 +114,12 @@ function makeWeekChart() {
       }]
     },
     options: {
-      responsive: true,
       legend: {
           display: false,
       },
       yAxes: [{
-          type: 'linear',
           ticks: {
-            min: 1,
+            min: 0,
             max: 5,
             stepSize: 1
           }
@@ -158,14 +156,12 @@ function makeTimeChart() {
       }]
     },
     options: {
-      responsive: true,
       legend: {
           display: false,
       },
       yAxes: [{
-          type: 'linear',
           ticks: {
-            min: 1,
+            min: 0,
             max: 5,
             stepSize: 1
           }
