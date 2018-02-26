@@ -24,6 +24,7 @@ function getUsersVotes(start_time) {
       myScores = data;
     }
   });
+  console.log(myScores);
   return myScores;
 }
 
@@ -89,7 +90,9 @@ function makeChart(ctx) {
 }
 
 function updateChart(chart, start_time) {
+  console.log(start_time);
   ds = getVoteHistory(start_time);
+  console.log(ds);
   if (ds.length > 3) {
     document.getElementById("userVotesOverTime").style.display="block";
     chart.data.datasets.forEach((d) => {
