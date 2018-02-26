@@ -1,6 +1,5 @@
 import sqlite3
 from datetime import datetime
-from random import randint
 from threading import Lock
 
 from constants import TABLE_TEMPLATE_FILE
@@ -56,6 +55,9 @@ class DatabaseManager:
     def release_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is released."""
         self.locks[key].release()
+
+    def load_from_json(self, json_file):
+        pass
 
     def __del__(self):
         self.cursor.close()
