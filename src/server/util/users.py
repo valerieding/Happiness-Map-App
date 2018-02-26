@@ -1,7 +1,6 @@
 import pickle
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from os.path import isfile
-from random import randint
 
 from ecdsa import SigningKey, NIST256p, BadSignatureError
 
