@@ -105,7 +105,7 @@ $(document).ready(function(){
                 // 'request/upvote'
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
-                 console.log("my form input: " + $("#myform").serialize().slice(8));
+                 console.log("my form input: " + $ encodeURI(("#myform").serialize().slice(8));
               }
           });
         });
