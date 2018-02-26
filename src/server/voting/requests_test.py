@@ -1,5 +1,4 @@
 import json
-import re
 import time
 from base64 import urlsafe_b64encode
 from unittest import mock, TestCase, main, skip
@@ -48,7 +47,6 @@ class VotingRequestsTest(TestCase):
     def test_corrupted_cookie(self):
         self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps('corrupted_cookie_value')))
 
-    @skip('TODO: implement security')
     def test_malicious_cookie(self):
         self._test_wrong_cookie(UserManager._encode(123, 'definitely not a user signature'))
 

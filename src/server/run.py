@@ -15,7 +15,7 @@ from server.voting.requests import VotingRequests
 _db = DatabaseManager(DATABASE_FILE)
 messageAPI = MessageAPI(_db)
 votingAPI = VotingAPI(_db)
-user_manager = UserManager(SIGNATURE_KEY_FILE)
+user_manager = UserManager(SIGNATURE_KEY_FILE, _db)
 
 
 def get_flask_app(has_admin_privileges=False):

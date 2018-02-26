@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from random import randint
 from threading import Lock
 
 from constants import TABLE_TEMPLATE_FILE
@@ -27,6 +28,9 @@ class DatabaseManager:
 
     def commit(self):
         self.connection.commit()
+
+    def issue_user_id(self):
+        return randint(0, 2 ** 32)
 
     def acquire_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""
