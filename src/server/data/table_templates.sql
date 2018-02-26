@@ -35,5 +35,4 @@ CREATE TABLE IF NOT EXISTS post_votes (
 CREATE TABLE IF NOT EXISTS variables (
     key          varchar    PRIMARY KEY,
     val          integer    DEFAULT 0
-
 );

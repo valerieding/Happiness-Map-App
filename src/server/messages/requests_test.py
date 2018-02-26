@@ -1,11 +1,9 @@
-import json
 from unittest import mock, TestCase, main
 
 from server.run import FlaskAppContext
 
-context = FlaskAppContext(debug=True)
+context = FlaskAppContext(testing=True)
 app = context.get(has_admin_privileges=True)
-app.testing = True
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = b'[\n  "SOME_DUMMY_RESPONSE"\n]\n'

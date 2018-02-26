@@ -8,9 +8,8 @@ from server.run import FlaskAppContext
 from server.util import HeatMapPoint
 from server.util.users import UserManager
 
-context = FlaskAppContext(debug=True)
+context = FlaskAppContext(testing=True)
 app = context.get(has_admin_privileges=True)
-app.testing = True
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = b'[\n  "SOME_DUMMY_RESPONSE"\n]\n'

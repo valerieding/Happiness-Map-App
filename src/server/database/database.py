@@ -1,5 +1,7 @@
+import json
 import sqlite3
 from datetime import datetime
+from json import JSONDecodeError
 from threading import Lock
 
 from constants import TABLE_TEMPLATE_FILE
@@ -57,7 +59,23 @@ class DatabaseManager:
         self.locks[key].release()
 
     def load_from_json(self, json_file):
-        pass
+        try:
+            with open(json_file, 'r') as f:
+                json_object = json.loads(f.read())
+        except JSONDecodeError:
+            return
+        for table, lines in json_object.items():
+            for line in lines:
+                try:
+                    if line.get('time') is not None:
+                        line['timestamp'] = datetime.strptime(line['time'], '%b %d %Y %H:%M').timestamp()
+                        line.pop('time')
+                    self.execute(
+                        'INSERT INTO {}({}) VALUES({})'.format(table, ','.join(line.keys()),
+                                                               ', '.join(['?'] * len(line))),
+                        (*line.values(), ))
+                except Exception as e:
+                    pass
 
     def __del__(self):
         self.cursor.close()

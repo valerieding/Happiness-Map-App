@@ -12,7 +12,7 @@ _DATA_FOLDER = join(WEBSITE_ROOT_FOLDER, 'server', 'data')
 
 DATABASE_FILE = join(_DATA_FOLDER, 'happiness_map.db')
 
-POPULATE_DB_FILE = join(_DATA_FOLDER, 'initial-content.debug.json')
+POPULATE_DB_FILE = join(_DATA_FOLDER, 'initial_content.json')
 
 TABLE_TEMPLATE_FILE = join(_DATA_FOLDER, 'table_templates.sql')
 
