@@ -39,7 +39,7 @@ class MessageAPITest(unittest.TestCase):
         for i in range(len(LOCATIONS)):
             self.votingApi.add_vote(i, LOCATIONS[i], i % 6)
             self.messageApi.add_post(i, "message_{}".format(i))
-            time.sleep(0.01)  # Done to ensure order is predictable. TODO: instead mock the time.time().
+            time.sleep(0.01)  # Done to ensure order is predictable.
 
         self.post_of = {uid: post_id for uid, post_id in self.db.execute('SELECT uid, id FROM posts')}
 

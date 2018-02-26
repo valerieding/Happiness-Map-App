@@ -30,10 +30,12 @@ class DatabaseManager:
 
     def acquire_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""
+        if key in self.locks:
+            self.locks[key].acquire()
+            return
         self.master_lock.acquire()
         try:
-            if key not in self.locks:
-                self.locks[key] = Lock()
+            self.locks[key] = Lock()
             self.locks[key].acquire()
         finally:
             self.master_lock.release()

@@ -1,6 +1,5 @@
 import logging
 import time
-from sqlite3 import IntegrityError
 
 from constants import ALLOWED_REACTIONS_TO_POST
 from server.util import Message
@@ -8,8 +7,6 @@ from server.util import Message
 
 class MessageAPI:
     """Handles database requests relating to message posts. """
-
-    # TODO: make use of localization throughout the MessageAPI interface.
 
     REACTION_COLS = ', '.join(
         'COUNT(CASE WHEN post_votes.reaction = {} THEN 1 END) {}s'.format(value, name) for value, name in
