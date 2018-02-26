@@ -189,18 +189,18 @@ function updateHistoryChart(chart, start_time) {
 
 function setScatterButtonFunctions() {
   $('#optAllScatter').on('change', function () {
-    updateChart(chart, null);
+    updateHistoryChart(chart, null);
   });
   $('#optWeekScatter').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    updateChart(chart, now - week);
+    updateHistoryChart(chart, now - week);
   });
   $('#optDayScatter').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    updateChart(chart, now - day);
+    updateHistoryChart(chart, now - day);
   });
   $('#optHourScatter').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
-    updateChart(chart, now - twoHr);
+    updateHistoryChart(chart, now - twoHr);
   });
 }
