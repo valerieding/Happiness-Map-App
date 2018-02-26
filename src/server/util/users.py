@@ -13,7 +13,7 @@ class UserManager:
 
     COOKIE_NAME = "user_id"
 
-    def __init__(self, filename):
+    def __init__(self, filename, db):
         if isfile(filename):
             with open(filename, 'rb') as f:
                 self.sign_key = SigningKey.from_pem(f.read())
@@ -22,6 +22,7 @@ class UserManager:
             with open(filename, 'wb') as f:
                 f.write(self.sign_key.to_pem())
         self.verify_key = self.sign_key.get_verifying_key()
+        self.db = db
 
     @staticmethod
     def _encode(user_id, signature):
@@ -41,18 +42,22 @@ class UserManager:
             return None
         return decoded
 
+    def verify(self, signature, user_id):
+        try:
+            return self.verify_key.verify(signature, user_id)
+        except AssertionError:
+            # This happens if there is a length mismatch in the signature
+            return False
+
     def new_user(self):
         """Returns a fresh user_id. """
 
-        # TODO[SECURITY]: activate validation once it is no longer so expensive to validate
-        # TODO: make this serial with a persistent atomic integer
-        user_id = randint(0, 2 ** 32)
-        signature = "dummy key"  # self.sign_key.sign(bytes(user_id))
+        user_id = self.db.issue_user_id()
+        signature = self.sign_key.sign(str(user_id).encode('ascii'))
         return user_id, (UserManager.COOKIE_NAME, UserManager._encode(user_id, signature))
 
     def get_user(self, cookies):
         cookie = UserManager._decode(cookies.get(UserManager.COOKIE_NAME))
-        # TODO[SECURITY]: activate validation once it is no longer so expensive to validate
-        if cookie is None:  # or not self.verify_key.verify(cookie['signature'], cookie['user_id']):
+        if cookie is None or not self.verify(cookie['signature'], str(cookie['user_id']).encode('ascii')):
             return None
         return cookie['user_id']

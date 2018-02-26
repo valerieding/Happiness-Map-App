@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from random import randint
 from threading import Lock
 
 from constants import TABLE_TEMPLATE_FILE
@@ -20,6 +21,8 @@ class DatabaseManager:
             self.cursor.executescript(table_template.read())
         for method in DatabaseManager._get_sqlite_functions():
             self.connection.create_function(*method)
+        self.execute('INSERT OR IGNORE INTO variables VALUES ("userID", 1)')
+        self.commit()
 
     def execute(self, command, *args):
         self.cursor.execute(command, *args)
@@ -28,12 +31,24 @@ class DatabaseManager:
     def commit(self):
         self.connection.commit()
 
+    def issue_user_id(self):
+        try:
+            self.acquire_lock("USER_GENERATION")
+            self.execute('UPDATE variables SET val = val + 1 WHERE key = "userID"')
+            res = self.execute('SELECT val FROM variables WHERE key = "userID"')[0][0]
+            self.commit()
+            return res
+        finally:
+            self.release_lock("USER_GENERATION")
+
     def acquire_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""
+        if key in self.locks:
+            self.locks[key].acquire()
+            return
         self.master_lock.acquire()
         try:
-            if key not in self.locks:
-                self.locks[key] = Lock()
+            self.locks[key] = Lock()
             self.locks[key].acquire()
         finally:
             self.master_lock.release()
@@ -53,7 +68,7 @@ class DatabaseManager:
             return datetime.fromtimestamp(int(timestamp)).hour
 
         def day_of_week(timestamp):
-            return datetime.fromtimestamp(int(timestamp)).weekday()
+            return datetime.fromtimestamp(int(timestamp)).strftime('%A')
 
         for name, method in list(locals().items()):
             if callable(method):

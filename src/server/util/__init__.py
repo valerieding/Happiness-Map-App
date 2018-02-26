@@ -36,7 +36,7 @@ class Reactions(DictObject):
 
     def __init__(self, data):
         for reaction, count in zip(Reactions.INT_TO_REACTION, data):
-            self.__setattr__(reaction, count)
+            self.__setattr__(reaction, count or 0)
 
     @staticmethod
     def get_reaction_id(reaction):
@@ -58,8 +58,8 @@ class Message(DictObject):
     @staticmethod
     def from_tuple(args):
         return Message(post_id=args[0], vote_id=args[1], parent_id=args[2], user_id=args[3], message=args[4],
-                       happiness_level=args[5], reactions=Reactions(args[6:8]), timestamp=args[8],
-                       location=Location.from_tuple(args[9:]))
+                       happiness_level=args[5], timestamp=args[6],
+                       location=Location.from_tuple(args[7:10]), reactions=Reactions(args[11:]))
 
     @staticmethod
     def from_tuple_array(array):
@@ -101,7 +101,7 @@ class ResultFilter(DictObject):
         self.arguments = [ResultFilter._get_time(form.start_time), ResultFilter._get_time(form.end_time)]
 
     def add(self, key, value):
-        if value is not None:
+        if value is not None and value != '':
             self.conditions += " AND {} = ?".format(key)
             self.arguments.append(value)
         return self

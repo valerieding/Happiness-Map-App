@@ -37,6 +37,7 @@ class VotingAPI:
 
         # TODO: use user-specific locks around here (provided by the DatabaseManager).
         try:
+            self.database.acquire_lock(uid)
             self.database.execute("DELETE FROM votes WHERE uid = ? AND timestamp >= ?",
                                   (uid, time.time() - VotingAPI.VOTE_TIMEOUT))
             self.database.execute("INSERT INTO votes values (NULL, ?, ?, ?, ?, ?, ?, ?)",
@@ -47,6 +48,8 @@ class VotingAPI:
         except IntegrityError as e:
             self.logger.exception(e)
             return False
+        finally:
+            self.database.release_lock(uid)
 
     def get_happiness_level(self, uid):
         """ Returns the most recent happiness level registered for `uid`. """

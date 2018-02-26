@@ -7,7 +7,7 @@ from server.database.database import DatabaseManager
 
 
 class DatabaseManagerTest(unittest.TestCase):
-    EXPECTED_TABLES = ['votes', 'posts', 'post_votes']
+    EXPECTED_TABLES = ['votes', 'posts', 'post_votes', 'variables']
 
     def test_create(self):
         """
@@ -27,7 +27,8 @@ class DatabaseManagerTest(unittest.TestCase):
 
         # At this point all tables should be empty
         for table_name in DatabaseManagerTest.EXPECTED_TABLES:
-            self.assertEqual(len(db.execute("SELECT * FROM %s" % table_name)), 0)
+            expected_size = 1 if table_name == 'variables' else 0
+            self.assertEqual(len(db.execute("SELECT * FROM %s" % table_name)), expected_size)
 
         db.execute("INSERT INTO votes VALUES (1, 2, 3, 4, NULL, NULL, NULL, NULL)")
         db.commit()
