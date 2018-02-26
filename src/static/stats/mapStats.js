@@ -43,7 +43,7 @@ var chart = new Chart(ctx, {
 });
 var h = getVoteHistory(null);
 makeChart(null, h);
-console.log(getAllBuildingScoresByUser());
+console.log(getAllBuildingScoresByUser(0));
 
 
 

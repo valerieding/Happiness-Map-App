@@ -91,11 +91,17 @@ function allMapObjects(ns) {
   for (var prop in FullNameKey){
     allObjs[prop] = emptyMapObj(prop);
   }
-  if (ns) {
+  if (!ns) {
+    return allObjs;
+  }
+  if (ns[0]) {
     ns.forEach(function(n) {
       allObjs[n.logical_location] = databaseToMapObj(n);
     });
+  } else if (ns) {
+    allObjs[ns.logical_location] = databaseToMapObj(ns);
   }
+  console.log(allObjs);
   return allObjs;
 };
 
@@ -165,15 +171,19 @@ function getAllBuildingScores(start_time) {
   return allScores;
 };
 
-function getAllBuildingScoresByUser() {
+function getAllBuildingScoresByUser(start_time) {
   var allScores;
+  if (!start_time) {
+    start_time = 0;
+  }
   $.ajax({
     url: "/request/get_personal_votes_by",
     type: 'post',
     dataType: 'json',
     async: false,
-    data: {'group_by': 'loc'},
+    data: {'group_by': 'loc', 'start_time': start_time},
     success: function(data){
+      console.log(data);
       allScores = data;
     }
   });
@@ -199,6 +209,7 @@ function getBuildingScore(logloc) {
 function changeTimeFrame(start_time, regions, query_func) {
 	let allScores = query_func(start_time);
 	let allPlaces = allMapObjects(allScores);
+  console.log(allPlaces);
 	for (var i = 0; i < regions.length; i++){
 		let data = regions[i].data('info');
 		if (allPlaces[data.id]) {
@@ -247,6 +258,7 @@ function setButtonFunctions(query_func) {
 
 
 function setUpMapGeneral() {
+  console.log(regions);
   changeTimeFrame(null, regions, getAllBuildingScores);
   for (var i = 0; i < regions.length; i++){
 
@@ -267,7 +279,8 @@ function setUpMapGeneral() {
 }
 
 function setUpMapPersonal() {
-  //changeTimeFrame(null, regions, getAllBuildingScores);
+  console.log(regions);
+  changeTimeFrame(null, regions, getAllBuildingScoresByUser);
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
