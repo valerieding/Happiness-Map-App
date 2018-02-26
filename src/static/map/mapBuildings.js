@@ -185,154 +185,182 @@ regions.push(ratner);
 var physics = rsr.set();
 physics.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics.data({'info': allPlaces['physics']});
-regions.push(physics);
+//regions.push(physics);
 
 var physics5 = rsr.path("M 368.167,255.21 368.5,182.602 339.834,182.602 340.167,255.21 338.667,255.21    338.667,316.354 305.5,316.354 305.5,332.834 371.833,332.834 371.833,255.21   z");
 physics5.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics5.data({'info': allPlaces['physics']});
+regions.push(physics5);
 
 var physics4 = rsr.rect(316.833, 182.602, 18, 39.899);
 physics4.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics4.data({'info': allPlaces['physics']});
+regions.push(physics4);
 
 var physics3 = rsr.rect(282.75, 182.602, 30.5, 35.983);
 physics3.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics3.data({'info': allPlaces['physics']});
+regions.push(physics3);
 
 var physics2 = rsr.rect(231.5, 206.835, 23.25, 31.5);
 physics2.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics2.data({'info': allPlaces['physics']});
+regions.push(physics2);
 
 var physics1 = rsr.path("M 340.5,358.585 337.5,358.585 337.5,357.001 335.5,357.001 335.5,355.085    301.5,355.085 301.5,375.501 303.5,375.501 322.25,401.085 328.5,401.085 328.5,395.085 331,395.085 331,380.96 333.5,380.96    333.5,369.71 337.75,369.71 337.75,366.251 340.75,366.251 340.75,384.835 360.75,384.835 360.75,396.335 354,396.335 354,401.335    360.75,401.335 360.75,406.835 363.75,406.835 363.75,403.335 370,403.335 370,375.501 371.833,375.501 371.833,355.085    340.5,355.085   z");
 physics1.attr({fill: allPlaces["physics"].color, class: "building", id: 'physics'});
 physics1.data({'info': allPlaces['physics']});
+regions.push(physics1);
 
 var med = rsr.set();
 med.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med.data({'info': allPlaces['med']});
-regions.push(med);
+//regions.push(med);
 
 var med6 = rsr.rect(260.5, 468.835, 35, 30.333);
 med6.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med6.data({'info': allPlaces['med']});
+regions.push(med6);
 
 var med5 = rsr.path("M 221.5,457.168 221.5,507.168 242.167,507.168 242.167,500.335 257.167,500.335    257.167,486.001 244.833,486.001 244.833,472.335 241.167,472.335 241.167,457.168   z");
 med5.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med5.data({'info': allPlaces['med']});
+regions.push(med5);
 
 var med4 = rsr.path("M 301.5,355.085 221.667,355.085 221.667,436.335 247.5,436.335 247.5,375.335    301.5,375.335   z");
 med4.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med4.data({'info': allPlaces['med']});
+regions.push(med4);
 
 var med3 = rsr.path("M 292.833,246.835 262.833,246.835 262.833,277.502 264.333,277.502 264.333,285.782    262.833,285.782 262.833,332.002 292.833,332.002   z");
 med3.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med3.data({'info': allPlaces['med']});
+regions.push(med3);
 
 var med2 = rsr.path("M 256.501,295.834 252.834,295.834 252.834,256.834 246.501,256.834 246.501,246.835    225.667,246.835 225.667,249.501 222.001,249.501 222.001,290.834 220.334,290.834 220.334,332.002 256.501,332.002   z");
 med2.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med2.data({'info': allPlaces['med']});
+regions.push(med2);
 
 var med1 = rsr.path("M330.167,582.001v-8.832H352.5v-44.667h-6.333v-3h-81.333v25.666h-33v16.167l7,3.834H264.5   v10.832h-12.333v5.834h-22v-14.666L227,570.003h-38.5v-5.668h37.667v-40.167h-50.334v-11.666h-14.667v-6h33v-26h-11v10h-9.333v-6   h-12v-7.333h4.333v-2.333H195.5l-0.333-55.001h-21.333v-8h-8.667v6.667h-11v-18.667h-7.333v1.333H145.5v12l-9.333-0.333   l-5.999,23.5h-19v-38.833h-6.833v9.333H95.5v-8.167H85.333v8.167h-3.167v10.833h-9.833v-6.5h-4.667V395.71H197.5v-40.625H52v40.625   h10.5v15.459H52v86.5h10.166v25h-9.167v151.164h54.334V546.498h14.622v3.667H132v13.166h42.666v5.5l4.75,4.75h26.917v14.75H200.5   v-10.833h-65.667v3.667H131.5v16l2,2v78.833H199v-26.167h9.667v3.667h5.833v-3.833h10v26.333h52.334v-29.001h17.499v3.499h7.5v-3.5   H318.5v29.002h53v-95.997H330.167L330.167,582.001z M132.833,524.168V536.5h-10.879v4.335h-14.788v-18H67.833v-25.333H72.5v-2   h5.333c0,0,10-15.333,28.999-20.333v-12.333h4v-21.333h21v48.333H151.5v3.667h4v23.667h16l0.333,6.667l3.988,0.332L132.833,524.168   L132.833,524.168z M147,598.335h34.5v29.5H147V598.335z M187.833,664.502h-16v7.834h-11v-8h-13.5v-16.167h40.5V664.502z    M229.5,599.168h-4v32h-26.333v-40H229.5V599.168z M242,665.835h-7v-20h7V665.835z M264.5,665.835h-7v-20h7V665.835z    M264.833,628.835h-15v-6.667h-11.667v-22.666h-4v-8.667h18v4h12.667V628.835z M330.833,602.835h9.333v23h18.667v10h-28V602.835z    M276.5,581.835v-44.333h39.333v44.667H304.5v-9h6.333v-13.333h-7v-7h-13.667v7h-5.333v13.667h6v8.333L276.5,581.835L276.5,581.835   z M318.833,636.502h-14v-6h-22v-33.334h36V636.502z M360.167,663.835h-30v-15h30V663.835z");
 med1.attr({fill: allPlaces["med"].color, class: "building", id: 'med'});
 med1.data({'info': allPlaces['med']});
+regions.push(med1);
 
 var logan = rsr.set();
 logan.attr({fill: allPlaces["logan"].color, class: "building", id: 'logan'});
 logan.data({'info': allPlaces['logan']});
-regions.push(logan);
+//regions.push(logan);
 
 var logan2 = rsr.path("M 193.5,909.503 193.5,890.17 211.5,890.17 211.5,866.17 190.916,866.253    190.916,863.67 165.5,863.67 165.5,913.335 169.5,913.335 169.5,923.835 165.5,923.835 165.5,937.835 249,937.835 249,909.503   z");
 logan2.attr({fill: allPlaces["logan"].color, class: "building", id: 'logan'});
 logan2.data({'info': allPlaces['logan']});
-
+regions.push(logan2);
 var logan1 = rsr.path("M 245.5,872.337 223.5,872.337 223.5,899.837 214.833,899.837 214.833,907.17    245.5,907.17   z");
 logan1.attr({fill: allPlaces["logan"].color, class: "building", id: 'logan'});
 logan1.data({'info': allPlaces['logan']});
+regions.push(logan1);
 
 var eastBuild = rsr.set();
 eastBuild.attr({fill: allPlaces["eastBuild"].color, class: "building", id: 'eastBuild'});
 eastBuild.data({'info': allPlaces['eastBuild']});
-regions.push(eastBuild);
+//regions.push(eastBuild);
 
 var eastBuild4 = rsr.rect(629.25, 416.335, 23.75, 10.25);
 eastBuild4.attr({fill: allPlaces["eastBuild"].color, class: "building", id: 'eastBuild'});
 eastBuild4.data({'info': allPlaces['eastBuild']});
+regions.push(eastBuild4);
 var eastBuild3 = rsr.rect(629.25, 432.585, 26.5, 8.5);
 eastBuild3.attr({fill: allPlaces["eastBuild"].color, class: "building", id: 'eastBuild'});
 eastBuild3.data({'info': allPlaces['eastBuild']});
+regions.push(eastBuild3);
 var eastBuild2 = rsr.rect(629.25, 444.835, 18.25, 9);
 eastBuild2.attr({fill: allPlaces["eastBuild"].color, class: "building", id: 'eastBuild'});
 eastBuild2.data({'info': allPlaces['eastBuild']});
+regions.push(eastBuild2)
 var eastBuild1 = rsr.rect(629.25, 457.085, 18.5, 8.75);
 eastBuild1.attr({fill: allPlaces["eastBuild"].color, class: "building", id: 'eastBuild'});
 eastBuild1.data({'info': allPlaces['eastBuild']});
+regions.push(eastBuild1);
 
 var multi = rsr.set();
 multi.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi.data({'info': allPlaces['multi']});
-regions.push(multi);
+//regions.push(multi);
 
 var multi3 = rsr.rect(671.5, 368.085, 8, 9.25)
 multi3.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi3.data({'info': allPlaces['multi']});
+regions.push(multi3);
 var multi2 = rsr.rect(671.5, 380.835, 8, 12.25)
 multi2.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi2.data({'info': allPlaces['multi']});
+regions.push(multi2);
 var multi1 = rsr.rect(694.25, 377.335, 15.419, 11.5)
 multi1.attr({fill: allPlaces["multi"].color, class: "building", id: 'multi'});
 multi1.data({'info': allPlaces['multi']});
+regions.push(multi1);
 
 var north = rsr.set();
 north.attr({fill: allPlaces["north"].color, class: "building", id: 'north'});
 north.data({'info': allPlaces['north']});
-regions.push(north);
+//regions.push(north);
 
 var north2 = rsr.path("M581.75,21.335c1.25-5.5,0.25-13,0.25-13s-16.009-1.847-39.495,0.5   C535,9.585,512,16.335,512,16.335v10.5l21-4.5v22h-20v26l19.5-0.5c0,0,5.051-2.701,6-3.5c1.426-1.201,3.5-4.5,3.5-4.5l3.25,3.25   L577,32.335C577,32.335,581.413,22.818,581.75,21.335z");
 north2.attr({fill: allPlaces["north"].color, class: "building", id: 'north'});
 north2.data({'info': allPlaces['north']});
+regions.push(north2);
 var north1 = rsr.path("M594.75,29.835c0,0-6.75,3.25-9,5.25s-8.25,7-8.25,7l3,3.5   c0,0-5.5,0.5-14.5,14.75c-3.114,4.93-5.75,11.25-5.75,11.25s-1,2-1.5,6.25c0.25,5,0,27.5,0,27.5h10.75c0,0-0.5-15.75,0.75-28.25   c0.531-5.315,5.085-10.606,8-15.75c4.25-7.5,7-9.75,8.5-11.75s8.75-1.75,8.75-1.75s0.25,7.75-0.25,16.25s-5.75,34.5-5.75,34.5   l10.5-0.5l6.25-38v-30.25H594.75z");
 north1.attr({fill: allPlaces["north"].color, class: "building", id: 'north'});
 north1.data({'info': allPlaces['north']});
+regions.push(north1);
 
 var northBuild = rsr.set();
 northBuild.attr({fill: allPlaces["northBuild"].color, class: "building", id: 'northBuild'});
 northBuild.data({'info': allPlaces['northBuild']});
-regions.push(northBuild);
+//regions.push(northBuild);
 
 var northBuild2 = rsr.path("M432.167,92.168H397.5c0,0-1.667,5.667,0.667,12.667   s3.333,8.667,3.333,8.667l2-3.333l9.333-0.667l3.333,4l7.333-0.667v-2.667h5.333l4-0.667L432.167,92.168z");
 northBuild2.attr({fill: allPlaces["northBuild"].color, class: "building", id: 'northBuild'});
 northBuild2.data({'info': allPlaces['northBuild']});
+regions.push(northBuild2);
 var northBuild1 = rsr.path("M 396.833,151.501 393.5,151.501 393.5,156.168 397.5,156.168    397.5,159.501 406.167,159.501 406.167,162.835 411.5,162.835 411.5,160.168 421.5,160.168 421.5,147.501 396.833,147.501   z");
 northBuild1.attr({fill: allPlaces["northBuild"].color, class: "building", id: 'northBuild'});
 northBuild1.data({'info': allPlaces['northBuild']});
+regions.push(northBuild1);
 
 var maxp = rsr.set();
 maxp.attr({fill: allPlaces["maxp"].color, class: "building", id: 'maxp'});
 maxp.data({'info': allPlaces['maxp']});
-regions.push(maxp);
+//regions.push(maxp);
 
 
 var maxp3 = rsr.path("M 543.488,182.602 543.467,201.267 569.967,201.267 569.967,194.101    576.8,194.101 576.8,236.767 572.8,236.767 572.8,230.434 539.3,230.434 539.3,245.934 590.8,245.934 590.8,241.269    593.134,241.269 593.134,182.602   z");
 maxp3.attr({fill: allPlaces["maxp"].color, class: "building", id: 'maxp'});
 maxp3.data({'info': allPlaces['maxp']});
+regions.push(maxp3);
 var maxp2 = rsr.rect(444.8, 182.602, 84.25, 17.083);
 maxp2.attr({fill: allPlaces["maxp"].color, class: "building", id: 'maxp'});
 maxp2.data({'info': allPlaces['maxp']});
+regions.push(maxp2);
 var maxp1 = rsr.path("M 394.8,223.435 399.8,223.435 399.8,228.685 407.3,228.685    407.3,223.435 410.05,223.435 410.05,199.685 432.3,199.685 432.3,182.602 394.8,182.602   z");
 maxp1.attr({fill: allPlaces["maxp"].color, class: "building", id: 'maxp'});
 maxp1.data({'info': allPlaces['maxp']});
+regions.push(maxp1);
 
 var lab = rsr.set();
 lab.attr({fill: allPlaces["lab"].color, class: "building", id: 'lab'});
 lab.data({'info': allPlaces['lab']});
-regions.push(lab);
+//regions.push(lab);
 
 var lab2 = rsr.path("M 466.667,454.001 466.667,434.834 452.334,434.834 452.334,453.501    437.084,453.501 437.084,460.001 429.501,460.001 429.501,453.834 413.834,453.834 413.834,440.001 424.667,440.001    424.667,427.167 409.001,427.167 409.001,375.501 393,375.501 393,449.335 396.167,449.335 396.167,451.334 393,453.167    393,482.834 408.334,482.834 408.334,472.501 415.167,466.085 454.834,466.085 454.834,469.001 481.167,469.001 481.167,454.001      z");
 lab2.attr({fill: allPlaces["lab"].color, class: "building", id: 'lab'});
 lab2.data({'info': allPlaces['lab']});
+regions.push(lab2);
 var lab1 = rsr.rect(342.167, 424.502, 26, 45.667);
 lab1.attr({fill: allPlaces["lab"].color, class: "building", id: 'lab'});
 lab1.data({'info': allPlaces['lab']});
+regions.push(lab1);
 
 
 var rsrGroups = [physics,med,logan,eastBuild,multi,north,northBuild,maxp,lab];

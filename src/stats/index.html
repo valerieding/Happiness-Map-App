@@ -11,8 +11,12 @@
   <link href="/static/stats/stats.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
   <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
-  <script type="application/javascript" src="/static/popper.min.js"></script>
-  <script type="application/javascript" src="/static/bootstrap4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
   <script tyep="application/javascript" src="/static/stats/stats.js"></script>
   <title>Stats</title>
 </head>
@@ -80,7 +84,30 @@
       <div class="card p-3 m-2" style="overflow-y: auto">
         <div class="card-body">
           <h5 class="card-title">My History</h5>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-dark active">
+              <input type="radio" name="options"
+                id="optAllScatter" autocomplete="off" checked>
+              All
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optWeekScatter" autocomplete="off">
+              Past Week
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optDayScatter" autocomplete="off">
+              Past Day
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optHourScatter" autocomplete="off">
+              Past 2 Hours
+            </label>
+          </div>
           <canvas id="userVotesOverTime" width="400" height="100"></canvas>
+          <div id="warningNotEnoughInfo"></div>
         </div>
       </div>
     </div>
@@ -89,8 +116,8 @@
   <script src="/static/map/raphael-min.js"></script>
   <script src="/static/map/mapBackground.js"></script>
   <script src="/static/map/mapFunctions.js"></script>
-  <!-- Only use fillDatabase for testing -->
   <script src="/static/map/mapBuildings.js"></script>
+  <script src="/static/stats/statFunctions.js"></script>
   <script src="/static/stats/mapStats.js"></script>
 </div>
 </body>
