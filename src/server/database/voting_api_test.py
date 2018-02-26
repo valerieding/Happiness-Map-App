@@ -110,9 +110,9 @@ class VotingAPITest(unittest.TestCase):
         self.assertIsNone(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()))
 
         self._populate_time_specific()
-        self.assertEqual(self.votingApi.get_votes_by(MockFilter(), VoteAggregator('dow')), {0: 2.5, 1: 2.5})
-        self.assertEqual(self.votingApi.get_votes_by(MockFilter(uid=1), VoteAggregator('dow')), {0: 2.5, 1: 2.0})
-        self.assertEqual(self.votingApi.get_votes_by(MockFilter(uid=2), VoteAggregator('dow')), {1: 3.0})
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(), VoteAggregator('dow')), {"Monday": 2.5, "Tuesday": 2.5})
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(uid=1), VoteAggregator('dow')), {"Monday": 2.5, "Tuesday": 2.0})
+        self.assertEqual(self.votingApi.get_votes_by(MockFilter(uid=2), VoteAggregator('dow')), {"Tuesday": 3.0})
 
     def test_get_votes_by_time_of_day(self):
         self.assertIsNone(self.votingApi.get_votes_by(MockFilter(), VoteAggregator()))

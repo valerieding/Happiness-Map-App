@@ -55,7 +55,7 @@ class DatabaseManager:
             return datetime.fromtimestamp(int(timestamp)).hour
 
         def day_of_week(timestamp):
-            return datetime.fromtimestamp(int(timestamp)).weekday()
+            return datetime.fromtimestamp(int(timestamp)).strftime('%A')
 
         for name, method in list(locals().items()):
             if callable(method):
