@@ -1,9 +1,8 @@
 import pickle
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from os.path import isfile
-from random import randint
 
-from ecdsa import SigningKey, NIST256p
+from ecdsa import SigningKey, NIST256p, BadSignatureError
 
 
 class UserManager:
@@ -47,6 +46,9 @@ class UserManager:
             return self.verify_key.verify(signature, user_id)
         except AssertionError:
             # This happens if there is a length mismatch in the signature
+            return False
+        except BadSignatureError:
+            # This happens if the signature is invalid
             return False
 
     def new_user(self):

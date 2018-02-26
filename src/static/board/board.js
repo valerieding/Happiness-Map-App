@@ -33,7 +33,7 @@ $(document).ready(function(){
       console.log("happy level is " + happyL);
       $(function() {
         $.ajax({
-          url: '/request/happiness_level',
+          url: '/request/get_happiness_level',
           type: 'post',
           dataType: 'json',
           async: false,
