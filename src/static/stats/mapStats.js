@@ -6,52 +6,9 @@ var dateCallback = function(value, index, values) {
 }
 
 var ctx = document.getElementById('userVotesOverTime').getContext('2d');
-var chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: "Vote",
-        backgroundColor: '#DD1C77',
-        borderColor: '#DF65B0',
-        borderWidth: 2,
-        fill: false,
-        lineTension: 0,
-        data: []
-      }]
-    },
-    options: {
-        scales: {
-            xAxes: [{
-                type: 'linear',
-                position: 'bottom',
-                ticks: {
-                    callback: dateCallback
-                }
-            }],
-            yAxes: [{
-                type: 'linear',
-                ticks: {
-                  beginAtZero: true,
-                  stepSize: 1
-                }
-            }]
-        },
-        legend: {
-            display: false
-        },
-        tooltips: {
-            enabled: true,
-            callbacks: {
-                title: function(tooltipItem, chart) {
-                    let temp = new Date(1000 * tooltipItem[0].xLabel);
-                    return temp.toLocaleString();
-                }
-            }
-        }
-    }
-});
-var h = getVoteHistory(null);
-makeChart(null, h);
+var chart = makeChart(ctx);
+updateChart(chart, null);
+setScatterButtonFunctions();
 
 
 
@@ -88,9 +45,83 @@ function getVoteHistory(start_time) {
   return voteHistory2;
 }
 
-function makeChart(start_time, ds) {
-  chart.data.datasets.forEach((d) => {
-        d.data = ds;
-    });
-  chart.update();
+function makeChart(ctx) {
+  var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: "Vote",
+          backgroundColor: '#DD1C77',
+          borderColor: '#DF65B0',
+          borderWidth: 2,
+          fill: false,
+          lineTension: 0,
+          data: []
+        }]
+      },
+      options: {
+          scales: {
+              xAxes: [{
+                  type: 'linear',
+                  position: 'bottom',
+                  ticks: {
+                      callback: dateCallback
+                  }
+              }],
+              yAxes: [{
+                  type: 'linear',
+                  ticks: {
+                    beginAtZero: true,
+                    stepSize: 1
+                  }
+              }]
+          },
+          legend: {
+              display: false
+          },
+          tooltips: {
+              enabled: true,
+              callbacks: {
+                  title: function(tooltipItem, chart) {
+                      let temp = new Date(1000 * tooltipItem[0].xLabel);
+                      return temp.toLocaleString();
+                  }
+              }
+          }
+      }
+  });
+  return chart;
+}
+
+function updateChart(chart, start_time) {
+  ds = getVoteHistory(start_time);
+  console.log(ds);
+  if (ds.length > 1) {
+    document.getElementById("userVotesOverTime").style.display="block";
+    chart.data.datasets.forEach((d) => {
+          d.data = ds;
+      });
+    chart.update();
+  } else {
+    document.getElementById("userVotesOverTime").style.display="none";
+    document.getElementById("warningNotEnoughInfo").innerHTML = "Not Enough Data to Display"
+  }
+}
+
+function setScatterButtonFunctions() {
+  $('#optAllScatter').on('change', function () {
+    updateChart(chart, null);
+  });
+  $('#optWeekScatter').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    updateChart(chart, now - week);
+  });
+  $('#optDayScatter').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    updateChart(chart, now - day);
+  });
+  $('#optHourScatter').on('change', function () {
+    let now = Math.floor(Date.now() / 1000);
+    updateChart(chart, now - twoHr);
+  });
 }

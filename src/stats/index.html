@@ -84,7 +84,30 @@
       <div class="card p-3 m-2" style="overflow-y: auto">
         <div class="card-body">
           <h5 class="card-title">My History</h5>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-dark active">
+              <input type="radio" name="options"
+                id="optAllScatter" autocomplete="off" checked>
+              All
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optWeekScatter" autocomplete="off">
+              Past Week
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optDayScatter" autocomplete="off">
+              Past Day
+            </label>
+            <label class="btn btn-outline-dark">
+              <input type="radio" name="options"
+                id="optHourScatter" autocomplete="off">
+              Past 2 Hours
+            </label>
+          </div>
           <canvas id="userVotesOverTime" width="400" height="100"></canvas>
+          <div id="warningNotEnoughInfo"></div>
         </div>
       </div>
     </div>
