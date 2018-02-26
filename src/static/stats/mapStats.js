@@ -1,5 +1,10 @@
 setUpMapPersonal();
 //setButtonFunctions(getAllBuildingScores);
+var dateCallback = function(value, index, values) {
+    let temp = new Date(1000 * value).toDateString();
+    return temp;
+}
+
 var ctx = document.getElementById('userVotesOverTime').getContext('2d');
 var chart = new Chart(ctx, {
     type: 'line',
@@ -20,10 +25,14 @@ var chart = new Chart(ctx, {
                 type: 'linear',
                 position: 'bottom',
                 ticks: {
-                    callback: function(value, index, values) {
-                        let temp = new Date(1000 * value).toDateString();
-                        return temp;
-                    }
+                    callback: dateCallback
+                }
+            }],
+            yAxes: [{
+                type: 'linear',
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 1
                 }
             }]
         },
@@ -43,7 +52,6 @@ var chart = new Chart(ctx, {
 });
 var h = getVoteHistory(null);
 makeChart(null, h);
-console.log(getAllBuildingScoresByUser(0));
 
 
 
