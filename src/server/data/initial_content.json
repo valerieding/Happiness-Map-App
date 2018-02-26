@@ -1,0 +1,16 @@
+{
+  "votes": [
+    {"id": 0, "uid": 1, "time": "Jan 03 2017 13:27", "score": 4, "logical_loc": "reg"}
+  ],
+  "posts": [
+    {"id": 0, "voteID": 0, "uid": 1, "message": "Hello from json", "time": "Jan 03 2017 13:29", "score": 4, "logical_loc": "reg"}
+  ],
+  "post_votes": [
+    {"postID": 0, "uid": 2, "reaction": 0},
+    {"postID": 0, "uid": 3, "reaction": 0},
+    {"postID": 0, "uid": 4, "reaction": 0},
+    {"postID": 0, "uid": 5, "reaction": 0},
+    {"postID": 0, "uid": 6, "reaction": 1},
+    {"postID": 0, "uid": 7, "reaction": 1}
+  ]
+}

@@ -52,5 +52,6 @@ class RequestHandler:
             if cookie:
                 response.set_cookie(*cookie)
             return response
-        except:
-            return jsonify('Invalid request', 400)
+        except Exception as e:
+            self.logger.exception(e)
+            return jsonify('Invalid request: bad output', 400)
