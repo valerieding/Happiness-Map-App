@@ -21,6 +21,8 @@ class DatabaseManager:
             self.cursor.executescript(table_template.read())
         for method in DatabaseManager._get_sqlite_functions():
             self.connection.create_function(*method)
+        self.execute('INSERT OR IGNORE INTO variables VALUES ("userID", 1)')
+        self.commit()
 
     def execute(self, command, *args):
         self.cursor.execute(command, *args)
@@ -30,7 +32,14 @@ class DatabaseManager:
         self.connection.commit()
 
     def issue_user_id(self):
-        return randint(0, 2 ** 32)
+        try:
+            self.acquire_lock("USER_GENERATION")
+            self.execute('UPDATE variables SET val = val + 1 WHERE key = "userID"')
+            res = self.execute('SELECT val FROM variables WHERE key = "userID"')[0][0]
+            self.commit()
+            return res
+        finally:
+            self.release_lock("USER_GENERATION")
 
     def acquire_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""

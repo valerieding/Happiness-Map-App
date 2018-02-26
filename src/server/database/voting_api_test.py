@@ -27,7 +27,7 @@ class VotingAPITest(unittest.TestCase):
     def test_add_vote_valid(self):
         for user in USERS_A + USERS_B:
             self.assertTrue(self.votingApi.add_vote(*user))
-        self.assertEqual(self.votingApi.database.connection.total_changes, 10)
+        self.assertEqual(self.votingApi.database.connection.total_changes, 11)
 
     def test_add_vote_disallow_multi_vote(self):
         self.votingApi.add_vote(1, LOC_A, 1)
@@ -49,8 +49,8 @@ class VotingAPITest(unittest.TestCase):
         # Invalid requests because happiness_level has to be between 0 and 5.
         self.assertFalse(self.votingApi.add_vote(1, LOC_A, -2))
         self.assertFalse(self.votingApi.add_vote(1, LOC_B, 9))
-        # Ensure that no changes to the database occurred.
-        self.assertEqual(self.votingApi.database.connection.total_changes, 0)
+        # 1 update to database: user ID generation
+        self.assertEqual(self.votingApi.database.connection.total_changes, 1)
 
     def test_get_happiness_level(self):
         self.assertIsNone(self.votingApi.get_happiness_level(1))
