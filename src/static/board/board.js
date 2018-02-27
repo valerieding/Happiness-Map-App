@@ -104,12 +104,13 @@ $(document).ready(function(){
                      'longitude': 10, 
                      'message': $("#myform").serialize().slice(8), 
                      'logical_location': "Maclean"},
-              success: function(data) {
+              success: (function(data) {
                 // 'request/upvote'
                  console.log("added post successfully");
                  //console.log(decodeURI($(data))
-                 console.log("my form input: " + $ encodeURI(("#myform").serialize().slice(8)));
-              }
+                // console.log("my form input: " + $ encodeURI(("#myform").serialize().slice(8)));
+                 console.log("my form input: "+ $("#myform").serialize().slice(8));
+              })
           });
         });
       });
