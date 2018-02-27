@@ -92,6 +92,11 @@ var styles = {
   ]
 };
 
+var map;
+var marker;
+var gecoder;
+var gNavigator;
+
 /* This function initializes the Map, including defining its starting location 
  * and linking onClick functions to place a new marker and determine the logical
  * location of that click. */
@@ -121,34 +126,9 @@ function initMap() {
 }
 */
 
-/* Revision to above initMap() implementation
- * this one automatically provides your location with Google Maps Geolocation API
- * 
- * Automatically place marker on user's current location
- * If user is off campus, then default to campus center
- */
-function initMap() {
-  //var myLatlng = {lat: 41.791422, lng: -87.599729};
-  var myLatlng = {lat: 100, lng: -100};
-  var map = new google.maps.Map(document.getElementById('campus-map'), {
-    zoom: 16,
-    center: myLatlng
-  });
-
-  var free_click = false;
-
-  map.setOptions({styles: styles['hide']});
-
-  var geocoder = new google.maps.Geocoder;
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map,
-    title: 'Click to zoom'
-  });
-
-
-  if (navigator.geolocation || isOnCampus(myLatlng.lat, myLatlng.lng) == true) {
-    navigator.geolocation.getCurrentPosition(function(position) {
+function snapToCurrentLoc() {
+  if (gNavigator.geolocation || isOnCampus(myLatlng.lat(), myLatlng.lng()) == true) {
+    gNavigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -156,6 +136,7 @@ function initMap() {
 
       marker = placeMarker(pos, map);
       geocodeLatLng(geocoder, map, marker);
+      autoLoc = true;
 
 
 
@@ -173,6 +154,28 @@ function initMap() {
       //auto_loc = "<h5> Not currently on campus </h5>";
       //document.getElementById("autofill_loc").innerHTML = "<h5>Not on campus</h5>";
   }
+}
+
+/* Revision to above initMap() implementation
+ * this one automatically provides your location with Google Maps Geolocation API
+ * 
+ * Automatically place marker on user's current location
+ * If user is off campus, then default to campus center
+ */
+function initMap() {
+  var myLatlng = {lat: 41.791422, lng: -87.599729};
+  map = new google.maps.Map(document.getElementById('campus-map'), {
+    zoom: 16,
+    center: myLatlng
+  });
+
+  var free_click = false;
+  map.setOptions({styles: styles['hide']});
+
+  geocoder = new google.maps.Geocoder;
+  gNavigator = navigator;
+
+  //snapToCurrentLoc(navigator, map, marker, geocoder);
 
   map.addListener('click', function(e) {
    // if (free_click == true) {
@@ -231,6 +234,7 @@ function geocodeLatLng(geocoder, map, marker) {
   } else {
     currentMapLoc = 'offcampus';
   }
+  autoLoc = false;
 }  
 
 /* This function determines if a given click is within the boundaries of
