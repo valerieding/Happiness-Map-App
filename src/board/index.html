@@ -17,7 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <script tyep="application/javascript" src="/static/board/board.js"></script>
+    <script type="application/javascript" src="/static/board/board.js"></script>
     <title>Message Board</title>
   </head>
     <script>
@@ -48,18 +48,18 @@
 
           <div class="form-group" style="float:left;">
             <form  style="display:inline;"id="myform" method="post">
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
+                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message" autocomplete="off">
                 <BR>
-                <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+                <button id="tester" type="submit"  class="btn btn-primary">Submit</button>
             </form>
 
 
             <div style="display:inline;float:right;">
               <form style="display:inline;padding-left:5px;" id="recent" method="post" >
-                  <button type="button" class="btn btn-danger">Recent</button>
+                  <button type="button" class="btn btn-success">Recent</button>
               </form>
               <form style="display:inline;" id="trending" method="post">
-                <button type="button" class="btn btn-danger">Trending</button>
+                <button type="button" class="btn btn-success">Trending</button>
               </form>
             </div>
           </div>
