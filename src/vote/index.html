@@ -28,7 +28,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <script tyep="application/javascript" src="/static/board/board.js"></script>
+    <script type="application/javascript" src="/static/board/board.js"></script>
     <title>Vote</title>
   </head>
   <body>
@@ -115,6 +115,33 @@
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Vote</h1>
         </main>
+
+        <div id = "post_after_vote" class="form-group" style="float:left;">
+          <main role="main" class="inner cover text-center" id="home-cover">
+            <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
+        <div style="text-align: center;">
+        <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post" >
+            <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post" >
+            <button id="view_map" type="button" class="btn btn-danger">View Map</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post" >
+            <button id="view_board" type="button" class="btn btn-danger">View Messages</button>
+        </form>
+        <BR>
+        <BR>
+        <BR>
+            <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
+            <div id="welcome"></div>
+          </main>
+          <form  style="display:inline;"id="myform" method="post">
+            <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
+            <BR>
+            <button type="submit" style="display:block;" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
         <form id="vote" method="post">
           <div id="vote_ui" class="ui">
             <h5> On a scale of 1 (least happy) to 5 (most happy), how happy are you? </h5>
@@ -161,39 +188,7 @@
     </div>
 
 
-    <div id = "post_after_vote" class="form-group" style="float:left;">
-      <main role="main" class="inner cover text-center" id="home-cover">
-        <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
-        <div style="text-align: center;">
-        <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post" >
-            <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
-        </form>
-        <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post" >
-            <button id="view_map" type="button" class="btn btn-danger">View Map</button>
-        </form>
-        <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post" >
-            <button id="view_board" type="button" class="btn btn-danger">View Messages</button>
-        </form>
-        <BR>
-        <BR>
-        <BR>
-        
-      </div>
-        <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h3>
-          <!-- THIS is where 'welcomeText' goes when called on load: -->
-        <div id="welcome"></div>
-      </main>
-
-      
-      <BR>
-
-
-      <form  style="display:inline;"id="myform" method="post">
-        <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
-        <BR>
-        <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
+  
 
     <div>
       <!--<button type="button" id="show">Show Content</button> -->
