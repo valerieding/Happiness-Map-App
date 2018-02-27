@@ -119,7 +119,12 @@
         <div id = "post_after_vote" class="form-group" style="float:left;">
           <main role="main" class="inner cover text-center" id="home-cover">
             <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
-            <div id="welcome"></div>
+
+            <!-- welcome text only refreshes on page reload
+                 should refresh after submitting a vote -->
+            <div class="ui" id="welcome"></div> 
+
+
           </main>
           <form  style="display:inline;"id="myform" method="post">
             <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
@@ -167,6 +172,7 @@
         <script type="text/javascript" src="/static/vote/voteMapScript.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsbxNy5GODdnbs1MuazTLziaCXJnN9dCM&callback=initMap">
         </script>
+
         <div>
           <button type="button" id="vote_btn"> Submit Vote </button>
         </div>
@@ -202,7 +208,7 @@
             $('#post_after_vote').show();
             //$('#vote_ui').hide();
             //$('#campus-map').hide();
-            hidden = 0;
+           // hidden = 0;
           }
 
         });

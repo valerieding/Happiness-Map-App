@@ -3,7 +3,6 @@
  * from the click location, to set the location for a happiness vote. 
  */
 
-
 // An array mapping addresses to logical locations used for voting
 var arr = [
   ['1116 E 59th St', 'harper'],
@@ -96,6 +95,7 @@ var styles = {
 /* This function initializes the Map, including defining its starting location 
  * and linking onClick functions to place a new marker and determine the logical
  * location of that click. */
+/*
 function initMap() {
   var myLatlng = {lat: 41.791422, lng: -87.599729};
   var map = new google.maps.Map(document.getElementById('campus-map'), {
@@ -118,6 +118,75 @@ function initMap() {
   });
 
   marker.addListener('click', function() {});
+}
+*/
+
+/* Revision to above initMap() implementation
+ * this one automatically provides your location with Google Maps Geolocation API
+ * 
+ * Automatically place marker on user's current location
+ * If user is off campus, then default to campus center
+ */
+function initMap() {
+  //var myLatlng = {lat: 41.791422, lng: -87.599729};
+  var myLatlng = {lat: 100, lng: -100};
+  var map = new google.maps.Map(document.getElementById('campus-map'), {
+    zoom: 16,
+    center: myLatlng
+  });
+
+  var free_click = false;
+
+  map.setOptions({styles: styles['hide']});
+
+  var geocoder = new google.maps.Geocoder;
+  var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    title: 'Click to zoom'
+  });
+
+
+  if (navigator.geolocation || isOnCampus(myLatlng.lat, myLatlng.lng) == true) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      marker = placeMarker(pos, map);
+      geocodeLatLng(geocoder, map, marker);
+
+
+
+      map.setCenter(pos); 
+    }, function() {
+        //handleLocationError(true, infoWindow, map.getCenter());    
+        //marker = placeMarker(myLatlng, map);
+        //geocodeLatLng(geocoder, map, marker);
+        free_click = true;
+      });
+  } else {
+      // Browser doesnt' support Geolocation
+      // handleLocationError(false, infoWindow, map.getCenter())
+      free_click = true;
+      //auto_loc = "<h5> Not currently on campus </h5>";
+      //document.getElementById("autofill_loc").innerHTML = "<h5>Not on campus</h5>";
+  }
+
+  map.addListener('click', function(e) {
+   // if (free_click == true) {
+      marker.setMap(null);
+      marker = null;
+      marker = placeMarker(e.latLng, map);
+      geocodeLatLng(geocoder, map, marker);
+
+   // }
+  });
+
+  if (free_click == true)
+    marker.addListener('click', function() {});
+
 }
 
 /* This function places a marker on the map at the specified position. */
