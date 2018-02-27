@@ -34,6 +34,7 @@ class FlaskAppContext:
 
     def get(self, has_admin_privileges):
         app = Flask(__name__, static_folder=STATIC_FOLDER)
+        app.url_map.strict_slashes = False
         app.register_blueprint(MessageRequests(self.messageAPI, self.user_manager).get_blueprint())
         app.register_blueprint(VotingRequests(self.votingAPI, self.user_manager).get_blueprint())
         app.register_blueprint(page_server)
@@ -44,7 +45,6 @@ class FlaskAppContext:
         # Allow the smooth JSONification of objects
         app.json_encoder = FlaskAppContext.DictBasedJSONEncoder
         # Allow trailing slashes in all URLs.
-        app.url_map.strict_slashes = False
         app.testing = self.testing
         return app
 
