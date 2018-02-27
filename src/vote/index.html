@@ -163,10 +163,31 @@
 
     <div id = "post_after_vote" class="form-group" style="float:left;">
       <main role="main" class="inner cover text-center" id="home-cover">
-        <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
+        <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
+        <div style="text-align: center;">
+        <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post" >
+            <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post" >
+            <button id="view_map" type="button" class="btn btn-danger">View Map</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post" >
+            <button id="view_board" type="button" class="btn btn-danger">View Messages</button>
+        </form>
+        <BR>
+        <BR>
+        <BR>
+        
+      </div>
+        <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h3>
           <!-- THIS is where 'welcomeText' goes when called on load: -->
         <div id="welcome"></div>
       </main>
+
+      
+      <BR>
+
+
       <form  style="display:inline;"id="myform" method="post">
         <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
         <BR>
@@ -186,6 +207,24 @@
             hidden = 1;
           } else {
             $('#post_after_vote').show();
+            $('#vote_ui').hide();
+            $('#campus-map').hide();
+            //$('#vote_ui').hide();
+            //$('#campus-map').hide();
+            hidden = 0;
+          }
+
+        });
+        $( "#change_vote" ).click(function() {
+          if(hidden == 0) {
+            $('#post_after_vote').hide();
+            $('#vote_ui').show();
+            $('#campus-map').show();
+            hidden = 1;
+          } else {
+            //$('#post_after_vote').show();
+            //$('#vote_ui').hide();
+            //$('#campus-map').hide();
             //$('#vote_ui').hide();
             //$('#campus-map').hide();
             hidden = 0;
