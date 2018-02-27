@@ -5,6 +5,9 @@ $(document).ready(function(){
       //When page loads...
       getRecents();
       happyL = getCurrentHappiness();
+      if(happyL == null){
+        document.getElementById('myform').innerHTML = "";
+      }
       welcomeText(happyL);
 });
 
@@ -72,6 +75,50 @@ function getRecents(){
   });
 }
 
+//GET RECENTS WITH PARAMETER: LOCATION
+//Used for sorting posts by logical location
+//Will get desired location from a dropdown list of all possibilities
+function getRecents(loc){
+  //e.preventDefault();
+  $.ajax({
+    url: '/request/get_recent_posts',
+    type: 'post',
+    dataType: 'json',
+    data: {'logical_location':loc},
+    async: false,
+    success: function(data) {
+      var messageArray = data;
+      console.log(messageArray);
+      var trHTML = makeRow(messageArray);
+      $('#tuffy').empty()
+      $('#tuffy').append(headertext + trHTML);
+    },
+    error: function(msg) {
+      alert(msg.responseText);
+    }
+  });
+}
+
+function getTrending(){
+  $.ajax({
+    url: '/request/get_trending_posts',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 10, 'longitude': 10},
+    async: false,
+    success: function(data) {
+      var messageArray = data;
+      console.log(messageArray);
+      var trHTML = makeRow(messageArray);
+      $('#tuffy').empty(trHTML);
+      $('#tuffy').append(headertext + trHTML);
+    },
+    error: function(msg) {
+      alert(msg.responseText);
+    }
+  });
+}
+
 function getCurrentHappiness(){
   var happyL =0;
   console.log("happy level is " + happyL);
@@ -83,6 +130,9 @@ function getCurrentHappiness(){
     success: function(data) {
       happyL = data;
       console.log("happy level now is " + happyL);
+      // if(happyL == null){
+      //   document.getElementById('myform').innerHTML = "";
+      // }
      // welcomeText(happyL); 
     },
      error: function(msg) {
@@ -101,7 +151,6 @@ $(function() {
     document.getElementById('myform').innerHTML = "";
   });
 });
-
 
 //QUERY TO ADD POST
 function addPost(){
@@ -135,23 +184,7 @@ $(function() {
 $(function() {
   $("#trending").click(function(e) {
     e.preventDefault();
-    $.ajax({
-          url: '/request/get_trending_posts',
-          type: 'post',
-          dataType: 'json',
-          data: {'latitude': 10, 'longitude': 10},
-          async: false,
-          success: function(data) {
-            var messageArray = data;
-            console.log(messageArray);
-            var trHTML = makeRow(messageArray);
-            $('#tuffy').empty(trHTML);
-            $('#tuffy').append(headertext + trHTML);
-          },
-          error: function(msg) {
-            alert(msg.responseText);
-          }
-    });
+    getTrending();
   });        
 });
 
