@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS variables (
 );
 
 CREATE TABLE IF NOT EXISTS admin_credentials (
-    salt         blob       NOT NULL,
-    digest       blob       NOT NULL
+    digest       blob       NOT NULL,
+    salt         blob       NOT NULL
 );
