@@ -20,6 +20,7 @@ if __name__ == '__main__':
     if parser.parse_args().coverage:
         cov = coverage.Coverage(branch=True, source=[SERVER_FOLDER], concurrency=['multiprocessing'],
                                 omit=['*test.py', '*server/run.py', '*server/pages.py'])
+        cov.exclude(r'raise NotImplementedError')
         cov.start()
 
         # Send test results to a StringIO to silence it as much as possible. It is not relevant while doing coverage.

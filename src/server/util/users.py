@@ -28,13 +28,11 @@ class SignatureKey:
 
     def decode(self, data):
         signature = data.get('signature')
-        if signature is None:
-            return None
-        data.pop('signature')
+        data.pop('signature', None)
         try:
-            if self.verify_key.verify(signature, SignatureKey._serialize(data)):
+            if signature is not None and self.verify_key.verify(signature, SignatureKey._serialize(data)):
                 return data
-        except:
+        except Exception as e:
             pass
         return None
 

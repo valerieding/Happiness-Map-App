@@ -23,11 +23,14 @@ class VotingRequestsTest(TestCase):
     def _get_cookie(self):
         return next(iter(c.value for c in list(self.client.cookie_jar) if c.name == 'user_id'), None)
 
-    def _test_wrong_cookie(self, cookie):
+    def _test_wrong_cookie_raw(self, cookie):
         self.client.set_cookie('localhost', 'user_id', cookie)
         cookie = self._get_cookie()
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
         self.assertNotEqual(cookie, self._get_cookie())
+
+    def _test_wrong_cookie(self, cookie_object):
+        self._test_wrong_cookie_raw(urlsafe_b64encode(pickle.dumps(cookie_object)).decode('ascii'))
 
     def test_user_id_does_not_change(self):
         self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
@@ -36,14 +39,21 @@ class VotingRequestsTest(TestCase):
         self.assertEqual(initial_cookie, self._get_cookie())
 
     def test_arbitrary_cookie(self):
-        self._test_wrong_cookie('arbitrary cookie value')
+        self._test_wrong_cookie_raw('arbitrary cookie value')
+
+    def test_cookie_with_no_signature(self):
+        self._test_wrong_cookie({'user_id': 123})
 
     def test_corrupted_cookie(self):
-        self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps('corrupted_cookie_value')))
+        self._test_wrong_cookie('corrupted cookie value')
 
     def test_malicious_cookie(self):
-        self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps(
-            {'user_id': 123, 'signature': 'definitely not a user signature'})).decode('ascii'))
+        self._test_wrong_cookie({'user_id': 123, 'signature': 'definitely not a user signature'})
+
+    def test_cookie_signatures_are_user_dependent(self):
+        fake_cookie = {'user_id': 456}
+        context.key.encode(fake_cookie)
+        self._test_wrong_cookie({'user_id': 123, 'signature': fake_cookie['signature']})
 
     @mock.patch.object(context.votingAPI, 'get_happiness_level', return_value=DUMMY_RESPONSE)
     def test_get_happiness_level_none(self, mocked):

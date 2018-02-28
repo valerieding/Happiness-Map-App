@@ -1,7 +1,13 @@
+import getpass
+import hashlib
+import secrets
 from http import HTTPStatus
 
 import time
 from flask import request, redirect, make_response
+from http import HTTPStatus
+
+from flask import request, redirect
 from wtforms import Form, StringField, validators, PasswordField
 
 from server.util.forms import PostIDForm
@@ -56,20 +62,33 @@ class AdminRequests(RequestHandler):
 
 
 class AdminManager:
-
     ADMIN_COOKIE_LIFETIME = 3600  # 1 hour
+
+    PASSWORD_SALT_BYTES_SIZE = 64
 
     def __init__(self, key, db):
         self.cookie_manager = CookieManager(key, 'moderator', {'mod_id', 'expires'})
-        self.db = db
+        admin_creds = AdminManager._get_admin_creds(db)
+        if admin_creds is None or len(admin_creds[1]) != AdminManager.PASSWORD_SALT_BYTES_SIZE:
+            print('Admin password is not set or it is set incorrectly. Please set one now.')
+            self.salt = secrets.token_bytes(AdminManager.PASSWORD_SALT_BYTES_SIZE)
+            self.digest = self._get_digest(AdminManager._prompt_for_password())
+            AdminManager._set_admin_creds(db, self.digest, self.salt)
+        else:
+            self.digest, self.salt = admin_creds
+
+    def _get_digest(self, password):
+        mac = hashlib.sha3_384()
+        mac.update(self.salt)
+        mac.update(password)
+        return mac.digest()
 
     def authenticate(self, username, password):
-        # TODO[SECURITY]: implement properly
-        return username == 'admin' and password == 'correct horse battery staple'
+        return username == 'admin' and secrets.compare_digest(self.digest, self._get_digest(password))
 
     def set_cookie(self, response):
         expires = time.time() + AdminManager.ADMIN_COOKIE_LIFETIME
-        response.set_cookie(*self.cookie_manager.encode(mod_id='admin', expires=expires), expires=expires)
+        response.set_cookie(*self.cookie_manager.encode(mod_id='admin', expires=expires))
 
     def unset_cookie(self, response):
         response.set_cookie(self.cookie_manager.cookie_name, '', expires=0)
@@ -83,3 +102,22 @@ class AdminManager:
         if data is None or not AdminManager._validate_timestamp(data.get('expires')):
             return False
         return True
+
+    @staticmethod
+    def _get_admin_creds(db):
+        result = db.execute('SELECT salt, digest FROM admin_credentials')
+        return None if len(result) == 0 else result[0]
+
+    @staticmethod
+    def _set_admin_creds(db, digest, salt):
+        db.execute('UPDATE admin_credentials SET digest = ?, salt = ?', (digest, salt))
+        db.commit()
+
+    @staticmethod
+    def _prompt_for_password():
+        attempt_1 = getpass.getpass("Set admin password: ")
+        attempt_2 = getpass.getpass("Set admin password: ")
+        if attempt_1 is None or attempt_1 != attempt_2:
+            print('Passwords do not match. Try again:')
+            return AdminManager._prompt_for_password()
+        return attempt_1
