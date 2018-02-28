@@ -22,7 +22,6 @@ class AdminDatabaseManager:
             return self.prompt_for_password(message='Passwords do not match. Try again:')
         return attempt_1
 
-
     def get_credentials(self):
         result = self.db.execute('SELECT digest, salt FROM admin_credentials')
         return result[0] if len(result) == 1 else None
