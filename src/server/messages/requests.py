@@ -28,10 +28,10 @@ class MessageRequests(RequestHandler):
 
     def add_reaction(self, form, user_id):
         return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id(form.reaction.data))
-    #
+
     def upvote(self, form, user_id):
         return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id('upvote'))
-    #
+
     def downvote(self, form, user_id):
         return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id('downvote'))
 

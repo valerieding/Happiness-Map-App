@@ -24,13 +24,13 @@ class VotingRequests(RequestHandler):
     def get_personal_votes_by(self, form, user_id):
         _filter = ResultFilter(form).add('logical_loc', form.logical_location.data).add('uid', user_id)
         return self.votingAPI.get_votes_by(_filter, VoteAggregator(form.group_by.data))
-    #
+
     def get_campus_average(self, form):
         return self.votingAPI.get_votes_by(ResultFilter(form), VoteAggregator())
-    #
+
     def get_building_average(self, form):
         return next(iter(self.votingAPI.get_votes_by(ResultFilter(form), VoteAggregator('loc')).values()), None)
-    #
+
     def get_heatmap(self, form):
         return HeatMapPoint.from_tuple_array(
             self.votingAPI.get_votes_by(ResultFilter(form), VoteAggregator('loc')).items())
