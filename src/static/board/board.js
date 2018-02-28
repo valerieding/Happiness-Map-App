@@ -1,6 +1,11 @@
 //Global string to use get_recent and get_trending posts easier
 var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
 
+//Global flags
+var searchLoc = "";
+var recentsFlag = 0;
+var trendingFlag = 0;
+
 $(document).ready(function(){
       //When page loads...
       getRecents();
@@ -9,32 +14,22 @@ $(document).ready(function(){
         document.getElementById('myform').innerHTML = "";
       }
       welcomeText(happyL);
+
+      //populate dropdown with list at bottom of JS document..
       for (let key in log_locs) {
         $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
-      }
-      $("#vote_btn").click(function(){
-        var drop_loc;
-        var map_lock;
-        var happy;
-        var lock;
-        if(currentMapLoc == null) {
-          drop_loc = $("#loc_drop option:selected").val();
-          if (drop_loc === 'blank') {
-            drop_loc = '';
-            getRecents();
-          }
-          map_loc = $("map_loc").val();
-          //alert("map loc = " + map_loc);
-
-          happy = $("input[name=happiness_level]:checked").val();
-
-          // for the time being
-          loc = drop_loc;
-          getRecents(loc);
-
-        }
-      })
+      }  
 });
+
+
+function getSelectedLoc(){
+  var e = document.getElementById("loc_drop");
+  var strUser = e.options[e.selectedIndex].text;
+
+  var location = getKeyByValue(log_locs,strUser);
+  getRecents(location);
+  searchLoc = location;
+}
 
 //Change 'welcome' text based off the user's most recent happiness level vote.
 function welcomeText(happy_lvl){
@@ -70,16 +65,16 @@ function makeRow(messageArray){
     decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
     decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
     timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-    value['post_id']  + ');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+    value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
     value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-    value['post_id'] +');window.location.reload()\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+    value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
     value['reactions']['downvote'] + '</button></td></tr>' ;
   });
   return trHTML;
 }
 
-//GET RECENT POST BETTER FUNCTION
-function getRecentsFull(){
+//GET RECENT POSTS
+function getRecents(){
   //e.preventDefault();
   $.ajax({
     url: '/request/get_recent_posts',
@@ -91,39 +86,16 @@ function getRecentsFull(){
       var messageArray = data;
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
-      $('#tuffy').empty();
+      $('#tuffy').empty()
       $('#tuffy').append(headertext + trHTML);
     },
     error: function(msg) {
       alert(msg.responseText);
     }
   });
+  trendingFlag = 0;
 }
-
-//GET RECENTS WITH PARAMETER: LOCATION
-//Used for sorting posts by logical location
-//Will get desired location from a dropdown list of all possibilities
-function getRecents(loc){
-  //e.preventDefault();
-  $.ajax({
-    url: '/request/get_recent_posts',
-    type: 'post',
-    dataType: 'json',
-    data: {'logical_location':loc},
-    async: false,
-    success: function(data) {
-      var messageArray = data;
-      console.log(messageArray);
-      var trHTML = makeRow(messageArray);
-      $('#tuffy').empty();
-      $('#tuffy').append(headertext + trHTML);
-    },
-    error: function(msg) {
-      alert(msg.responseText);
-    }
-  });
-}
-
+//GET TRENDING POSTS
 function getTrending(){
   $.ajax({
     url: '/request/get_trending_posts',
@@ -142,6 +114,52 @@ function getTrending(){
       alert(msg.responseText);
     }
   });
+  trendingFlag = 1;
+}
+
+//GET RECENTS AND TRENDING WITH PARAMETER: LOCATION
+//Used for sorting posts by logical location
+//Will get desired location from a dropdown list of all possibilities
+function getRecents(loc){
+  //e.preventDefault();
+  $.ajax({
+    url: '/request/get_recent_posts',
+    type: 'post',
+    dataType: 'json',
+    data: {'logical_location':loc},
+    async: false,
+    success: function(data) {
+      var messageArray = data;
+      console.log(messageArray);
+      var trHTML = makeRow(messageArray);
+      $('#tuffy').empty()
+      $('#tuffy').append(headertext + trHTML);
+    },
+    error: function(msg) {
+      alert(msg.responseText);
+    }
+  });
+  trendingFlag = 0;
+}
+function getTrending(loc){
+  $.ajax({
+    url: '/request/get_trending_posts',
+    type: 'post',
+    dataType: 'json',
+    data: {'logical_location':loc},
+    async: false,
+    success: function(data) {
+      var messageArray = data;
+      console.log(messageArray);
+      var trHTML = makeRow(messageArray);
+      $('#tuffy').empty(trHTML);
+      $('#tuffy').append(headertext + trHTML);
+    },
+    error: function(msg) {
+      alert(msg.responseText);
+    }
+  });
+  trendingFlag = 1;
 }
 
 function getCurrentHappiness(){
@@ -165,21 +183,7 @@ function getCurrentHappiness(){
     }
   });
   return happyL;
-}
-
-function logout(){
-  $.ajax({
-    url: '/request/admin_logout',
-    type: 'post',
-    success: function(data) {
-      console.log("Admin logged out successfully");
-      window.location.reload();
-    },
-    error: function (msg) {
-      console.log("error logging out admin");
-    }
-  });
-}
+}    
 
 // ADD POST ON SUBMIT
 $(function() {
@@ -197,9 +201,9 @@ function addPost(){
     url: 'request/add_post',
     type: 'post',
     dataType: 'json',
-    data: {'latitude': 10,
-           'longitude': 10,
-           'message': $("#myform").serialize().slice(8),
+    data: {'latitude': 10, 
+           'longitude': 10, 
+           'message': $("#myform").serialize().slice(8), 
            'logical_location': "Maclean"},
     success: (function(data) {
        console.log("added post successfully");
@@ -209,13 +213,18 @@ function addPost(){
   getRecents();
   //Again!
   getRecents();
+  document.getElementById("loc_drop").value = "";
 }
 
 //QUERY FOR RECENT POSTS WHEN BUTTON IS CLICKED
 $(function() {
   $("#recent").click(function(e) {
     e.preventDefault();
-    getRecents();
+    if(searchLoc==""){
+      getRecents();
+    } else {
+      getRecents(searchLoc);
+    }
   });
 });
 
@@ -223,9 +232,58 @@ $(function() {
 $(function() {
   $("#trending").click(function(e) {
     e.preventDefault();
-    getTrending();
-  });
+    if(searchLoc==""){
+      getTrending();
+    } else {
+      getTrending(searchLoc);
+    }
+  });        
 });
+
+function upvote(vote,postID){
+  $.ajax({
+     url: '/request/add_reaction',
+     type: 'post',
+     dataType: 'json',
+     data: {'post_id': postID, 'reaction': 'upvote'}
+  });
+}
+
+function downvote(vote,postID){
+  $.ajax({
+     url: '/request/add_reaction',
+     type: 'post',
+     dataType: 'json',
+     data: {'post_id': postID, 'reaction': 'downvote'}
+  });
+}
+
+//QUERY TO UP AND DOWNVOTE WHEN BUTTONS ARE CLICKED
+function callReact(vote,postID){
+  switch(vote){
+    case "upvote":
+      upvote(vote,postID);
+      break;
+    case "downvote":
+      downvote(vote,postID);
+      break;
+    default:
+      window.alert("hi!");
+  }
+  if(searchLoc == ""){
+      if(trendingFlag){
+        getTrending();
+      } else {
+        getRecents();
+      }
+    } else {
+      if(trendingFlag){
+        getTrending(searchLoc);
+      } else{
+        getRecents(searchLoc);
+      }
+    }
+}
 
 // QUERY TO LOG OUT ADMIN
 $(function() {
@@ -235,34 +293,6 @@ $(function() {
     logout();
   });
 });
-
-//QUERY TO UP AND DOWNVOTE WHEN BUTTONS ARE CLICKED
-function callReact(vote,postID){
-  switch(vote){
-    case "upvote":
-      $(function(){
-        $.ajax({
-         url: '/request/add_reaction',
-         type: 'post',
-         dataType: 'json',
-         data: {'post_id': postID, 'reaction': 'upvote'}
-        });
-      });
-      break;
-    case "downvote":
-      $(function(){
-        $.ajax({
-         url: '/request/add_reaction',
-         type: 'post',
-         dataType: 'json',
-         data: {'post_id': postID, 'reaction': 'downvote'}
-        });
-      });
-      break;
-    default:
-      window.alert("hi!");
-  }
-}
 
 // We used a slightly modified version of this function from
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time-eg-2-seconds-ago-one-week-ago-etc-best
@@ -322,6 +352,10 @@ function timeSince(timeStamp) {
     }
 }
 
+//Found this on stack overflow since no built in function in JS...
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
 
 var log_locs = Object.freeze({
   blank: "",
