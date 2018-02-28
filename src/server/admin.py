@@ -1,12 +1,11 @@
 import getpass
 import hashlib
+import os
 import secrets
-from http import HTTPStatus
-
 import time
-from flask import request, redirect, make_response
 from http import HTTPStatus
 
+from flask import make_response
 from flask import request, redirect
 from wtforms import Form, StringField, validators, PasswordField
 
@@ -71,7 +70,7 @@ class AdminManager:
         admin_creds = AdminManager._get_admin_creds(db)
         if admin_creds is None or len(admin_creds[1]) != AdminManager.PASSWORD_SALT_BYTES_SIZE:
             print('Admin password is not set or it is set incorrectly. Please set one now.')
-            self.salt = secrets.token_bytes(AdminManager.PASSWORD_SALT_BYTES_SIZE)
+            self.salt = os.urandom(AdminManager.PASSWORD_SALT_BYTES_SIZE)
             self.digest = self._get_digest(AdminManager._prompt_for_password())
             AdminManager._set_admin_creds(db, self.digest, self.salt)
         else:
