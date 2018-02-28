@@ -24,6 +24,7 @@ class FlaskAppContext:
         self.db = DatabaseManager(DATABASE_FILE)
         if debug or testing:
             self.db = DatabaseManager(':memory:')
+            AdminManager._prompt_for_password = lambda *_: 'password'
         if debug and not testing:
             self.db.load_from_json(POPULATE_DB_FILE)
 

@@ -100,12 +100,13 @@ class AdminManager:
 
     @staticmethod
     def _get_admin_creds(db):
-        result = db.execute('SELECT salt, digest FROM admin_credentials')
+        result = db.execute('SELECT digest, salt FROM admin_credentials')
         return None if len(result) == 0 else result[0]
 
     @staticmethod
     def _set_admin_creds(db, digest, salt):
-        db.execute('UPDATE admin_credentials SET digest = ?, salt = ?', (digest, salt))
+        db.execute('DELETE FROM admin_credentials')
+        db.execute('INSERT INTO admin_credentials VALUES (?, ?)', (digest, salt))
         db.commit()
 
     @staticmethod
