@@ -293,6 +293,19 @@ $(function() {
     logout();
   });
 });
+function logout(){
+  $.ajax({
+    url: '/request/admin_logout',
+    type: 'post',
+    success: function(data) {
+      console.log("Admin logged out successfully");
+      window.location.reload();
+    },
+    error: function (msg) {
+      console.log("error logging out admin");
+    }
+  });
+}
 
 // We used a slightly modified version of this function from
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time-eg-2-seconds-ago-one-week-ago-etc-best
