@@ -14,9 +14,8 @@ class VotingRequests(RequestHandler):
             ResultFilter(form).add("uid", user_id).add("logical_loc", form.logical_location.data))
 
     def add_vote(self, form, user_id):
-        if self.votingAPI.add_vote(user_id, Location.from_request(form), form.happiness_level.data):
-            return 'Success'
-        return 'Invalid request', 400
+        self.votingAPI.add_vote(user_id, Location.from_request(form), form.happiness_level.data)
+        return ''
 
     def get_votes_by(self, form):
         _filter = ResultFilter(form).add('logical_loc', form.logical_location.data)

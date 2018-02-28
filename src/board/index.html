@@ -1,28 +1,30 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="/static/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/board/index_style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-    <script tyep="application/javascript" src="/static/board/board.js"></script>
-    <title>Message Board</title>
-  </head>
-    <script>
-      $(function(){
-        $("#myNav").load("/static/nav.html");
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="/static/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/board/index_style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+  <script type="application/javascript" src="/static/board/board.js"></script>
+  <script type="application/javascript" src="/static/board/boardAdmin.js"></script>
+  <title>Message Board</title>
+</head>
+<body>
+  <script>
+  $(function(){
+    $("#myNav").load("/static/nav.html");
         //An example "add_vote", when really this will be done by the user on the voting page.
         //Can change 'happiness_level' to see different welcome text (upon next reload)
               // $.ajax({
@@ -31,39 +33,72 @@
               //   dataType: 'json',
               //   data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
               //   });
-      });
-    </script>
-    <script type="text/javascript">
+});
+  </script>
 
-    </script>
-    <div class="homepage">
-      <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <div id="myNav"></div>
-        <main role="main" class="inner cover text-center" id="home-cover">
-          <h1 class="cover-heading">Message Board</h1>
-            <!-- THIS is where 'welcomeText' goes when called on load: -->
-                <div id="welcome"></div>
-        </main>
+  <div class="homepage">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+      <div id="myNav"></div>
+
+      <main role="main" class="inner cover text-center" id="home-cover">
+        <h1 class="cover-heading">Message Board</h1>
+        <!-- THIS is where 'welcomeText' goes when called on load: -->
+        <div id="welcome"></div>
+      </main>
+
+      {% if is_moderator %}
+      <h2>This page has MODERATOR turned ON</h2>
+      <script type="application/javascript" src="/static/board/boardAdmin.js"></script>
+      <form id="adminLogoutButton" method="post" >
+          <button type="button" class="btn btn-success">Admin Logout</button>
+      </form>
+      <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
+      <div class="form-group" style="float:left;">
+        <form  style="display:inline;"id="myform" method="post">
+          <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message" autocomplete="off">
+          <BR>
+            <button id="tester" type="submit"  class="btn btn-primary">Submit</button>
+          </form>
 
 
-          <div class="form-group" style="float:left;">
-            <form  style="display:inline;"id="myform" method="post">
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
-                <BR>
-                <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+          <div style="display:inline;float:right;">
+            <form style="display:inline;padding-left:5px;" id="recent" method="post" >
+              <button type="button" class="btn btn-success">Recent</button>
             </form>
-
-
-            <div style="display:inline;float:right;">
-              <form style="display:inline;padding-left:5px;" id="recent" method="post" >
-                  <button type="button" class="btn btn-danger">Recent</button>
-              </form>
-              <form style="display:inline;" id="trending" method="post">
-                <button type="button" class="btn btn-danger">Trending</button>
-              </form>
-            </div>
+            <form style="display:inline;" id="trending" method="post">
+              <button type="button" class="btn btn-success">Trending</button>
+            </form>
           </div>
-
+        </div>
+        <div>
+        <div>
+          <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
+            <option value="" disabled selected>Filter Results by Location</option>
+          </select>
+        </div>
+         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="float:right">
+          <label class="btn btn-outline-light active">
+            <input type="radio" name="options"
+              id="optAllScatter" autocomplete="off" checked>
+            All
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optWeekScatter" autocomplete="off">
+            Past Week
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optDayScatter" autocomplete="off">
+            Past Day
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optHourScatter" autocomplete="off">
+            Past 2 Hours
+          </label>
+        </div>
+      </div>
 
         <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
           <img class="card-img-top" alt="">
@@ -72,20 +107,93 @@
 
             <div class="d-flex justify-content-between">
 
-                  <table id="tuffy" border='2' class="table table-hover table-border">
-                      <tr>
-                          <th scope="col">Messages</th>
-                          <th scope="col">Happiness Level</th>
-                          <th scope="col">Location</th>
-                          <th scope="col">Time Stamp</th>
-                          <th scope="col">Reactions</th>
-                      </tr>
-                  </table>
+              <table id="tuffy" border='2' class="table table-hover table-border">
+                <tr>
+                  <th scope="col">Messages</th>
+                  <th scope="col">Happiness Level</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Time Stamp</th>
+                  <th scope="col">Reactions</th>
+                  <th scope="col">Remove Post</th>
+                </tr>
+              </table>
 
             </div>
           </div>
         </div>
+
+      {% else %}
+      <script type="application/javascript" src="/static/board/board.js"></script>
+      <div class="form-group" style="float:left;">
+        <form  style="display:inline;"id="myform" method="post">
+          <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message" autocomplete="off">
+          <BR>
+            <button id="tester" type="submit"  class="btn btn-primary">Submit</button>
+          </form>
+
+
+          <div style="display:inline;float:right;">
+            <form style="display:inline;padding-left:5px;" id="recent" method="post" >
+              <button type="button" class="btn btn-success">Recent</button>
+            </form>
+            <form style="display:inline;" id="trending" method="post">
+              <button type="button" class="btn btn-success">Trending</button>
+            </form>
+          </div>
+        </div>
+        <div>
+        <div>
+          <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
+            <option value="" disabled selected>Filter Results by Location</option>
+          </select>
+        </div>
+         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="float:right">
+          <label class="btn btn-outline-light active">
+            <input type="radio" name="options"
+              id="optAllScatter" autocomplete="off" checked>
+            All
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optWeekScatter" autocomplete="off">
+            Past Week
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optDayScatter" autocomplete="off">
+            Past Day
+          </label>
+          <label class="btn btn-outline-light">
+            <input type="radio" name="options"
+              id="optHourScatter" autocomplete="off">
+            Past 2 Hours
+          </label>
+        </div>
+      </div>
+
+        <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
+          <img class="card-img-top" alt="">
+          <div class="card-body">
+
+
+            <div class="d-flex justify-content-between">
+
+              <table id="tuffy" border='2' class="table table-hover table-border">
+                <tr>
+                  <th scope="col">Messages</th>
+                  <th scope="col">Happiness Level</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Time Stamp</th>
+                  <th scope="col">Reactions</th>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
       </div>
     </div>
   </body>
-</html>
+  </html>

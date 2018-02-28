@@ -62,6 +62,9 @@ var FullNameKey = Object.freeze({
   ryeck : "Ryerson/Eckhart",
   ratner : "Ratner Athletics Center",
   southeast : "South East Quad Buildings",
+  offcampus : "Off Campus Locations",
+  quad : "Main Quad",
+  mid : "Midway Plaisance",
 });
 
 
@@ -258,9 +261,12 @@ function setUpMapGeneral() {
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
-      this.node.style.opacity = 0.7;
-      this.node.style.stroke = 'yellow';
       var info = this.data('info');
+	  for (var j = 0; j < regions.length; j++){
+		if (regions[j].data('info') == info){
+			regions[j].attr({stroke: "yellow", opacity: "0.7"});
+		}
+	  }
       let label = info.rating + "<br>building happiness: " + info.score;
       document.getElementById('region-header').innerHTML = info.fullname;
       document.getElementById('region-text').innerHTML = label;
@@ -268,9 +274,13 @@ function setUpMapGeneral() {
     });
 
     regions[i].mouseout(function(e){
-      this.node.style.opacity = 1;
-      this.node.style.stroke = '#333333';
-    });
+      var info = this.data('info');
+	  for (var j = 0; j < regions.length; j++){
+		if (regions[j].data('info') == info){
+		  regions[j].attr({stroke: "#333333", opacity: "1"});
+		}
+	  }
+	});
   }
 }
 

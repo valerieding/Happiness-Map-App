@@ -28,10 +28,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <script tyep="application/javascript" src="/static/board/board.js"></script>
+    <script type="application/javascript" src="/static/board/board.js"></script>
+
     <title>Vote</title>
   </head>
   <body>
+
+
+<!-- Defining onClick Functions for buttons below -->
     <script>
       $(function(){
         $("#myNav").load("/static/nav.html")
@@ -109,12 +113,48 @@
         });
       });
     </script>
+
+
+<!-- Begin Actual Content -->
     <div class="homepage">
       <div id = "a" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
           <h1 class="cover-heading">Vote</h1>
         </main>
+
+
+<!-- Initially hidden elements, unhiden after voting -->
+        <div id = "post_after_vote" class="form-group" style="float:left;">
+          <main role="main" class="inner cover text-center" id="home-cover">
+            <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
+        <div style="text-align: center;">
+        <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post" >
+            <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post" >
+            <button id="view_map" type="button" onClick="location.href='/map'" class="btn btn-danger">View Map</button>
+        </form>
+        <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post" >
+            <button id="view_board" type="button" onClick="location.href='/board'" class="btn btn-danger">View Messages</button>
+        </form>
+        <BR>
+        <BR>
+        <BR>
+            <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
+            <!-- welcome text only refreshes on page reload
+                 should refresh after submitting a vote -->
+            <div class="ui" id="welcome"></div> 
+          </main>
+          <form  style="display:inline;"id="myform" method="post">
+            <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
+            <BR>
+            <button type="submit" style="display:block;" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+
+<!-- Voting UI begins here: -->
         <form id="vote" method="post">
           <div id="vote_ui" class="ui">
             <h5> On a scale of 1 (least happy) to 5 (most happy), how happy are you? </h5>
@@ -149,36 +189,24 @@
         </div>
         <script>
           var currentMapLoc = null;
+          var autoLoc = true;
         </script>
         <div id="campus-map" name="loc_map"></div>
         <script type="text/javascript" src="/static/vote/voteMapScript.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsbxNy5GODdnbs1MuazTLziaCXJnN9dCM&callback=initMap">
         </script>
         <div>
-          <button id="vote_btn"> Submit Vote </button>
+          <button type="button" id="vote_btn"> Submit Vote </button>
         </div>
     </form>
     </div>
 
 
-    <div id = "post_after_vote" class="form-group" style="float:left;">
-      <main role="main" class="inner cover text-center" id="home-cover">
-        <h3 class="cover-heading">Message Board</h1>
-          <!-- THIS is where 'welcomeText' goes when called on load: -->
-        <div id="welcome"></div>
-      </main>
-      <form  style="display:inline;"id="myform" method="post">
-        <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
-        <BR>
-        <button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-
+<!-- End of content, begin Scripts -->
     <div>
-      <button type="button" id="show">Show Content</button>
       <script type="application/javascript">
         var hidden = 1;
-        $( "#show" ).click(function() {
+        $( "#vote_btn" ).click(function() {
           if(hidden == 0) {
             $('#post_after_vote').hide();
             $('#vote_ui').show();
@@ -192,7 +220,16 @@
           }
 
         });
+        $( "#change_vote" ).click(function() {
+          if(hidden == 0) {
+            $('#post_after_vote').hide();
+            $('#vote_ui').show();
+            $('#campus-map').show();
+            hidden = 1;
+          } 
+        });
         $('#post_after_vote').hide();
+        snapToCurrentLoc(navigator, map, marker, geocoder);
       </script>
     </div>
   </body>

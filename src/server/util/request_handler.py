@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import logging
 
 from flask import Blueprint, request, jsonify
@@ -21,8 +23,12 @@ class RequestHandler:
         app = Blueprint(self.__class__.__name__, __name__)
         for handle, FormValidator in self.get_routes():
             rule = '/request/{}'.format(handle.__name__)
-            app.add_url_rule(rule=rule, endpoint=rule, view_func=self.view_builder(FormValidator, handle), methods=['POST'])
+            RequestHandler.add_post_request(app, rule, self.view_builder(FormValidator, handle))
         return app
+
+    @staticmethod
+    def add_post_request(app, rule, view_function, methods=None):
+        app.add_url_rule(rule=rule, endpoint=rule, view_func=view_function, methods=methods or ['POST'])
 
     def generate_response(self, FormValidator, response_generator, requires_valid_user_id=False):
         """
@@ -45,7 +51,7 @@ class RequestHandler:
         self.logger.info('User {} requested {}'.format(user, request_form_rep))
         if not form.validate():
             self.logger.warning('Invalid request from user {}: {}:\n\t{}'.format(user, request_form_rep, form.errors))
-            return jsonify('Invalid request', 400)
+            return '', HTTPStatus.BAD_REQUEST
 
         try:
             response = jsonify(response_generator(**kwargs))
@@ -54,4 +60,4 @@ class RequestHandler:
             return response
         except Exception as e:
             self.logger.exception(e)
-            return jsonify('Invalid request: bad output', 400)
+            return '', HTTPStatus.INTERNAL_SERVER_ERROR

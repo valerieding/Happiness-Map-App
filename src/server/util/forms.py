@@ -43,4 +43,4 @@ class ReactionForm:
 
 class AggregatorForm:
     AGGREGATORS = [(k, v) for k, v in VoteAggregator.AGGREGATORS.items()]
-    group_by = SelectField('group_by', choices=AGGREGATORS)
+    group_by = SelectField('group_by', [validators.optional()], choices=AGGREGATORS, coerce=lambda x: x)

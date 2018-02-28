@@ -36,3 +36,8 @@ CREATE TABLE IF NOT EXISTS variables (
     key          varchar    PRIMARY KEY,
     val          integer    DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS admin_credentials (
+    digest       blob       NOT NULL,
+    salt         blob       NOT NULL
+);

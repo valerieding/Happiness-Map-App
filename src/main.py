@@ -11,7 +11,5 @@ if __name__ == '__main__':
                         help='Specifies the server port number. Defaults to %(default)s.')
     parser.add_argument('--debug', action='store_true',
                         help='Allows for the hot-swap of server code and prints verbose logging to STDERR.')
-    parser.add_argument('--activate-admin', action='store_true',
-                        help='Activates the admin functionality. This will override host preferences to localhost')
     args = parser.parse_args()
     run_server(**vars(args), log_file=None if args.debug else LOG_FILE)

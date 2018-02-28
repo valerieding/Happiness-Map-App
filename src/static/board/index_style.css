@@ -3,3 +3,23 @@
 	background-color: blue;
 	color: white;
 }
+
+.btn-primary-green, .btn-primary-green:active, .btn-primary-green:visited {
+    background-color: MediumSeaGreen;
+    color: White;
+}
+
+.btn-primary-green:hover {
+	background-color: #308355;
+	color:White;
+}
+
+.btn-primary-purple, .btn-primary-purple:active, .btn-primary-purple:visited {
+    background-color: MediumSlateBlue;
+    color: White;
+}
+
+.btn-primary-purple:hover {
+	background-color: #6047eb;
+	color:White;
+}

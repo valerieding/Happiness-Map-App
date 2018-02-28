@@ -7,7 +7,7 @@ from server.database.database import DatabaseManager
 
 
 class DatabaseManagerTest(unittest.TestCase):
-    EXPECTED_TABLES = ['votes', 'posts', 'post_votes', 'variables']
+    EXPECTED_TABLES = ['votes', 'posts', 'post_votes', 'variables', 'admin_credentials']
 
     def test_create(self):
         """

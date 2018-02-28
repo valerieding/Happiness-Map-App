@@ -1,65 +1,18 @@
-import pickle
-from base64 import urlsafe_b64decode, urlsafe_b64encode
-from os.path import isfile
-
-from ecdsa import SigningKey, NIST256p, BadSignatureError
+from server.util.cookie_manager import CookieManager
 
 
 class UserManager:
-    """
-    Manages user IDs and signatures of them in cookies.
-    """
+    """ Manages regular user IDs stored in (signed) cookies. """
 
-    COOKIE_NAME = "user_id"
-
-    def __init__(self, filename, db):
-        if isfile(filename):
-            with open(filename, 'rb') as f:
-                self.sign_key = SigningKey.from_pem(f.read())
-        else:
-            self.sign_key = SigningKey.generate(curve=NIST256p)
-            with open(filename, 'wb') as f:
-                f.write(self.sign_key.to_pem())
-        self.verify_key = self.sign_key.get_verifying_key()
+    def __init__(self, key, db):
+        self.cookie_manager = CookieManager(key, 'user_id', {'user_id'})
         self.db = db
-
-    @staticmethod
-    def _encode(user_id, signature):
-        return urlsafe_b64encode(pickle.dumps({'user_id': user_id, 'signature': signature})).decode('ascii')
-
-    @staticmethod
-    def _decode(cookie):
-        if cookie is None:
-            # User has no login cookie
-            return None
-        try:
-            decoded = pickle.loads(urlsafe_b64decode(cookie.encode('ascii')), fix_imports=False)
-        except:
-            # `code` was altered. No user_id can be retrieved.
-            return None
-        if type(decoded) is not dict or set(decoded.keys()) != {'user_id', 'signature'}:
-            return None
-        return decoded
-
-    def verify(self, signature, user_id):
-        try:
-            return self.verify_key.verify(signature, user_id)
-        except AssertionError:
-            # This happens if there is a length mismatch in the signature
-            return False
-        except BadSignatureError:
-            # This happens if the signature is invalid
-            return False
 
     def new_user(self):
         """Returns a fresh user_id. """
-
         user_id = self.db.issue_user_id()
-        signature = self.sign_key.sign(str(user_id).encode('ascii'))
-        return user_id, (UserManager.COOKIE_NAME, UserManager._encode(user_id, signature))
+        return user_id, self.cookie_manager.encode(user_id=user_id)
 
     def get_user(self, cookies):
-        cookie = UserManager._decode(cookies.get(UserManager.COOKIE_NAME))
-        if cookie is None or not self.verify(cookie['signature'], str(cookie['user_id']).encode('ascii')):
-            return None
-        return cookie['user_id']
+        response = self.cookie_manager.decode(cookies)
+        return response.get('user_id') if response is not None and type(response) == dict else None
