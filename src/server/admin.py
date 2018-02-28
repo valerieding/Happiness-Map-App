@@ -20,3 +20,15 @@ class AdminRequests(RequestHandler):
 
     def get_routes(self):
         return [(self.remove_post, RemovePostForm)]
+
+
+class AdminCookie:
+
+    def __init__(self):
+        pass
+
+    def authenticate(self):
+        pass
+
+    def validate(self, cookie_jar):
+        return False
