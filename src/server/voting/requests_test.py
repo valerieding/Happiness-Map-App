@@ -126,6 +126,12 @@ class VotingRequestsTest(TestCase):
         self.assertTrue(mocked.called)
         self.assertCountEqual(json.loads(response.data.decode('ascii')), {'A': 2.5, 'B': 3})
 
+    @mock.patch.object(context.votingAPI, 'get_votes_by', return_value=2.5)
+    def test_get_votes_by_total(self, mocked):
+        response = self.client.post('/request/get_votes_by', data={})
+        self.assertTrue(mocked.called)
+        self.assertEqual(json.loads(response.data.decode('ascii')), 2.5)
+
     @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
     def test_get_votes_by_invalid(self, mocked):
         response = self.client.post('/request/get_votes_by', data={'group_by': 'invalid_grouping'})
