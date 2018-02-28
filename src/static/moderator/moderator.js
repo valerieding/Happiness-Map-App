@@ -3,6 +3,7 @@ $(function() {
   $("#adminLoginForm").submit(function(e) {
     e.preventDefault();
     adminLogin();
+    window.location.reload();
   });
 });
 
@@ -13,7 +14,8 @@ function adminLogin(){
     type: 'post',
     dataType: 'json',
     data: {
-           'password': $("#adminLoginForm").serialize().slice(8),
+           'username': document.getElementById('username').value,
+           'password': document.getElementById('password').value,
            },
     success: (function(data) {
       console.log("admin login successful");
