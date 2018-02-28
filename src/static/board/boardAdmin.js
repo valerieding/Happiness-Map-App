@@ -1,11 +1,29 @@
-//Global string to use get_recent and get_trending posts easier
-var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
+// same functions but for ADMIN
 
-//Global flags and stuff
+function makeRow(messageArray){
+  var trHTML = '';
+  $.each(messageArray, function(index, value){
+  trHTML += '<tr><td>' + 
+    decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+    decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
+    timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+    value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+    value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+    value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+    value['reactions']['downvote'] + '</button></td>' + 
+    '<td> <button onclick=\"deletePost('+ value['post_id'] + ');\" class=\"btn btn-primary\">' + 'Remove Post' + '</button> </td>'+
+    '</tr>' ;
+  console.log(value['post_id']);
+  });
+  return trHTML;
+}
+//Global string to use get_recent and get_trending posts easier
+var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
+
+//Global flags
 var searchLoc = "";
 var recentsFlag = 0;
 var trendingFlag = 0;
-var timeframe = 0;
 
 $(document).ready(function(){
       //When page loads...
@@ -20,7 +38,6 @@ $(document).ready(function(){
       for (let key in log_locs) {
         $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
       }  
-
 });
 
 
@@ -58,22 +75,22 @@ function welcomeText(happy_lvl){
    document.getElementById("welcome").innerHTML = welcome;
 }
 
-//HELPER FUNCTION to ~refactor~, exists to get rid of repetition
-//Makes the table string to use in the "get_trending_posts" and "get_recent_posts"
-function makeRow(messageArray){
-  var trHTML = '';
-  $.each(messageArray, function(index, value){
-  trHTML += '<tr><td>' + 
-    decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
-    decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
-    timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-    value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
-    value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-    value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
-    value['reactions']['downvote'] + '</button></td></tr>' ;
-  });
-  return trHTML;
-}
+// //HELPER FUNCTION to ~refactor~, exists to get rid of repetition
+// //Makes the table string to use in the "get_trending_posts" and "get_recent_posts"
+// function makeRow(messageArray){
+//   var trHTML = '';
+//   $.each(messageArray, function(index, value){
+//   trHTML += '<tr><td>' + 
+//     decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+//     decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
+//     timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+//     value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+//     value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+//     value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+//     value['reactions']['downvote'] + '</button></td></tr>' ;
+//   });
+//   return trHTML;
+// }
 
 // function makeRowAdmin(messageArray){
 //   var trHTML = '';
@@ -116,42 +133,23 @@ function getRecents(){
 }
 //GET TRENDING POSTS
 function getTrending(){
-  if(!timeframe){
-    $.ajax({
-      url: '/request/get_trending_posts',
-      type: 'post',
-      dataType: 'json',
-      async: false,
-      success: function(data) {
-        var messageArray = data;
-        console.log(messageArray);
-        var trHTML = makeRow(messageArray);
-        $('#tuffy').empty(trHTML);
-        $('#tuffy').append(headertext + trHTML);
-      },
-      error: function(msg) {
-        alert(msg.responseText);
-      }
-    });
-  } else {
-      $.ajax({
-        url: '/request/get_trending_posts',
-        type: 'post',
-        dataType: 'json',
-        data: {'start_time':timeframe},
-        async: false,
-        success: function(data) {
-          var messageArray = data;
-          console.log(messageArray);
-          var trHTML = makeRow(messageArray);
-          $('#tuffy').empty(trHTML);
-          $('#tuffy').append(headertext + trHTML);
-        },
-        error: function(msg) {
-          alert(msg.responseText);
-        }
-    });
-  }
+  $.ajax({
+    url: '/request/get_trending_posts',
+    type: 'post',
+    dataType: 'json',
+    data: {'latitude': 10, 'longitude': 10},
+    async: false,
+    success: function(data) {
+      var messageArray = data;
+      console.log(messageArray);
+      var trHTML = makeRow(messageArray);
+      $('#tuffy').empty(trHTML);
+      $('#tuffy').append(headertext + trHTML);
+    },
+    error: function(msg) {
+      alert(msg.responseText);
+    }
+  });
   trendingFlag = 1;
 }
 
@@ -200,49 +198,6 @@ function getTrending(loc){
   trendingFlag = 1;
 }
 
-function getRecentTimePeriod(timeframe,location){
-  //e.preventDefault();
-  if(location == ""){
-    $.ajax({
-      url: '/request/get_recent_posts',
-      type: 'post',
-      dataType: 'json',
-      data: {'start_time':timeframe},
-      async: false,
-      success: function(data) {
-        var messageArray = data;
-        console.log(messageArray);
-        var trHTML = makeRow(messageArray);
-        $('#tuffy').empty()
-        $('#tuffy').append(headertext + trHTML);
-      },
-      error: function(msg) {
-        alert(msg.responseText);
-      }
-    });
-  } else {
-      $.ajax({
-        url: '/request/get_recent_posts',
-        type: 'post',
-        dataType: 'json',
-        data: {'start_time':timeframe,'logical_location':location},
-        async: false,
-        success: function(data) {
-          var messageArray = data;
-          console.log(messageArray);
-          var trHTML = makeRow(messageArray);
-          $('#tuffy').empty()
-          $('#tuffy').append(headertext + trHTML);
-        },
-        error: function(msg) {
-          alert(msg.responseText);
-        }
-    });
-  }
-  trendingFlag = 0;
-}
-
-
 function getCurrentHappiness(){
   var happyL =0;
   console.log("happy level is " + happyL);
@@ -254,6 +209,10 @@ function getCurrentHappiness(){
     success: function(data) {
       happyL = data;
       console.log("happy level now is " + happyL);
+      // if(happyL == null){
+      //   document.getElementById('myform').innerHTML = "";
+      // }
+     // welcomeText(happyL); 
     },
      error: function(msg) {
       console.log("didnt work");
@@ -396,59 +355,6 @@ function logout(){
     }
   });
 }
-
-
-
-
-
-
-
-//Recent buttons clicked
-//ALL
-$(function() {
-  $('input[type=radio][id="optAllScatter"]').change(function(e) {
-    console.log("showing all posts");
-    e.preventDefault();
-    if(searchLoc==""){
-      getRecents();
-    } else {
-      getRecents(searchLoc);
-    }
-  });        
-});
-//WEEK
-$(function() {
-  $('input[type=radio][id="optWeekScatter"]').change(function(e) {
-    console.log("showing last week's posts");
-    e.preventDefault();
-    timeframe = -604800;
-    getRecentTimePeriod(timeframe, searchLoc);
-  });        
-});
-//DAY
-$(function() {
-  $('input[type=radio][id="optDayScatter"]').change(function(e) {
-    console.log("showing last day's posts");
-    e.preventDefault();
-    timeframe = -86400;
-    getRecentTimePeriod(timeframe, searchLoc);
-  });        
-});
-//TWO HOURS
-$(function() {
-  $('input[type=radio][id="optHourScatter"]').change(function(e) {
-    console.log("showing last two hours' posts");
-    e.preventDefault();
-    timeframe = -7200;
-    getRecentTimePeriod(timeframe, searchLoc);
-  });        
-});
-
-
-
-
-
-
 
 // We used a slightly modified version of this function from
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time-eg-2-seconds-ago-one-week-ago-etc-best
