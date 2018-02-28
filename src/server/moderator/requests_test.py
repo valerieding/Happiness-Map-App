@@ -33,6 +33,8 @@ class AdminRequestsTest(TestCase):
         self.assertTrue(self._validate_cookie_jar())
 
     def test_admin_login_invalid(self):
+        response = self.client.post('/request/admin_login', data={'username': 'admin'})
+        self.assertEquals(response.status_code, HTTPStatus.BAD_REQUEST)
         response = self.client.post('/request/admin_login', data={'username': 'not_admin', 'password': 'password'})
         self.assertEquals(response.status_code, HTTPStatus.UNAUTHORIZED)
         self.assertFalse(self._validate_cookie_jar())

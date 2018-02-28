@@ -15,9 +15,8 @@ class AdminDatabaseManager:
     def prompt_for_password(self, message='Admin password is not set or it is set incorrectly. Please set one now.'):
         if self.default_password is not None:
             return self.default_password
-        print(message)
-        attempt_1 = getpass.getpass("Set admin password: ")
-        attempt_2 = getpass.getpass("Set admin password: ")
+        attempt_1 = getpass.getpass('{}.\nSet admin password: '.format(message))
+        attempt_2 = getpass.getpass("Type it again: ")
         if attempt_1 is None or attempt_1 != attempt_2:
             return self.prompt_for_password(message='Passwords do not match. Try again:')
         return attempt_1
