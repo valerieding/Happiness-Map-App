@@ -91,7 +91,7 @@ function getRecentsFull(){
       var messageArray = data;
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
-      $('#tuffy').empty()
+      $('#tuffy').empty();
       $('#tuffy').append(headertext + trHTML);
     },
     error: function(msg) {
@@ -115,7 +115,7 @@ function getRecents(loc){
       var messageArray = data;
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
-      $('#tuffy').empty()
+      $('#tuffy').empty();
       $('#tuffy').append(headertext + trHTML);
     },
     error: function(msg) {
@@ -165,7 +165,21 @@ function getCurrentHappiness(){
     }
   });
   return happyL;
-}    
+}
+
+function logout(){
+  $.ajax({
+    url: '/request/admin_logout',
+    type: 'post',
+    success: function(data) {
+      console.log("Admin logged out successfully");
+      window.location.reload();
+    },
+    error: function (msg) {
+      console.log("error logging out admin");
+    }
+  });
+}
 
 // ADD POST ON SUBMIT
 $(function() {
@@ -183,9 +197,9 @@ function addPost(){
     url: 'request/add_post',
     type: 'post',
     dataType: 'json',
-    data: {'latitude': 10, 
-           'longitude': 10, 
-           'message': $("#myform").serialize().slice(8), 
+    data: {'latitude': 10,
+           'longitude': 10,
+           'message': $("#myform").serialize().slice(8),
            'logical_location': "Maclean"},
     success: (function(data) {
        console.log("added post successfully");
@@ -210,7 +224,16 @@ $(function() {
   $("#trending").click(function(e) {
     e.preventDefault();
     getTrending();
-  });        
+  });
+});
+
+// QUERY TO LOG OUT ADMIN
+$(function() {
+  $("#adminLogoutButton").click(function(e) {
+    e.preventDefault();
+    console.log("admin button clicked");
+    logout();
+  });
 });
 
 //QUERY TO UP AND DOWNVOTE WHEN BUTTONS ARE CLICKED

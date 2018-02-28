@@ -47,7 +47,11 @@
 
       {% if is_moderator %}
       <h2>This page has MODERATOR turned ON</h2>
+      <form id="adminLogoutButton" method="post" >
+          <button type="button" class="btn btn-success">Admin Logout</button>
+      </form>
       <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
+
       {% else %}
       <div class="form-group" style="float:left;">
         <form  style="display:inline;"id="myform" method="post">

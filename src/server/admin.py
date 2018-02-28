@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 import time
-from flask import request, redirect
+from flask import request, redirect, make_response
 from wtforms import Form, StringField, validators, PasswordField
 
 from server.util.forms import PostIDForm
@@ -41,8 +41,9 @@ class AdminRequests(RequestHandler):
         return response
 
     def admin_logout(self):
-        self.admin_manager.unset_admin_cookie()
-        return '', HTTPStatus.ACCEPTED
+        response = make_response('')
+        self.admin_manager.unset_cookie(response)
+        return response, HTTPStatus.OK
 
     def get_routes(self):
         return [(self.remove_post, RemovePostForm)]
@@ -50,7 +51,7 @@ class AdminRequests(RequestHandler):
     def get_blueprint(self):
         app = super().get_blueprint()
         RequestHandler.add_post_request(app, '/request/admin_login', self.admin_login)
-        RequestHandler.add_post_request(app, '/request/admin_login', self.admin_login)
+        RequestHandler.add_post_request(app, '/request/admin_logout', self.admin_logout)
         return app
 
 
