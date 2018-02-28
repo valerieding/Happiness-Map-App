@@ -19,35 +19,50 @@
 	<title>Moderator</title>
 </head>
 <body>
-  {% if is_moderator %}
-    <h2>This page has MODERATOR turned ON</h2>
-    <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
-  {% else %}
-    <h2>This page has MODERATOR turned OFF</h2>
-    <script>
-		$(function(){
-			$('#myModal').modal(data-show=true);
-	        //An example "add_vote", when really this will be done by the user on the voting page.
-	        //Can change 'happiness_level' to see different welcome text (upon next reload)
-	              // $.ajax({
-	              //   url: 'request/add_vote',
-	              //   type: 'post',
-	              //   dataType: 'json',
-	              //   data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
-	              //   });
-		});
-	</script>
+	{% if is_moderator %}
+	<h2>This page has MODERATOR turned ON</h2>
+	<!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
+	{% else %}
+	<h2>This page has MODERATOR turned OFF</h2>
 	<div class="homepage">
 		<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
 			<div id="myNav"></div>
 			<main role="main" class="inner cover text-center" id="home-cover">
 				<h1 class="cover-heading">Moderator</h1>
-				<div id="myModal"></div>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+					Admin Login
+				</button>
+				<!-- Modal -->
+				<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="adminModalLabel">Admin Login</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+								<form id="adminLoginForm" method="post">
+									<input type="text" name="user" placeholder="Username">
+									<input type="password" name="pass" placeholder="Password">
+									<input type="submit" name="login" class="login loginmodal-submit" value="Login">
+							 	</form>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</main>
-			</div>
 		</div>
-  {% endif %}
-	
-	
-	</body>
-	</html>
+	</div>
+	{% endif %}
+
+
+</body>
+</html>
