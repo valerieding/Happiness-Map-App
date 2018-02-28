@@ -1,5 +1,7 @@
 .campus-bg {
 	background-color: #FFFFFF;
+	background-image: url(img/words.png);
+    background-repeat: no-repeat;
 }
 
 .card {
