@@ -1,9 +1,24 @@
 {
   "votes": [
-    {"id": 0, "uid": 1, "time": "Jan 03 2017 13:27", "score": 4, "logical_loc": "reg"}
+    {"id": 0, "uid": 1, "time": "Feb 03 2018 8:27", "score": 1, "logical_loc": "regenstein"},
+    {"id": 1, "uid": 1, "time": "Feb 03 2018 10:00", "score": 4, "logical_loc": "reynolds"},
+    {"id": 2, "uid": 1, "time": "Feb 03 2018 12:00", "score": 2, "logical_loc": "harper"},
+    {"id": 3, "uid": 1, "time": "Feb 03 2018 13:00", "score": 3, "logical_loc": "harper"},
+    {"id": 4, "uid": 1, "time": "Feb 03 2018 14:00", "score": 2, "logical_loc": "harper"},
+    {"id": 5, "uid": 1, "time": "Feb 03 2018 16:30", "score": 4, "logical_loc": "bartlett"},
+    {"id": 6, "uid": 1, "time": "Feb 03 2018 18:00", "score": 5, "logical_loc": "harris"},
+    {"id": 7, "uid": 1, "time": "Feb 03 2018 19:20", "score": 5, "logical_loc": "booth"},
+    {"id": 8, "uid": 1, "time": "Feb 03 2018 20:20", "score": 4, "logical_loc": "cathey"},
+    {"id": 9, "uid": 1, "time": "Feb 03 2018 21:22", "score": 3, "logical_loc": "physics"},
+    {"id": 10, "uid": 1, "time": "Feb 03 2018 23:07", "score": 2, "logical_loc": "south"},
+    {"id": 11, "uid": 1, "time": "Feb 04 2018 22:07", "score": 4, "logical_loc": "bj"},
+    {"id": 12, "uid": 1, "time": "Feb 05 2018 22:07", "score": 5, "logical_loc": "law"},
+    {"id": 13, "uid": 1, "time": "Feb 06 2018 12:07", "score": 3, "logical_loc": "ida"},
+    {"id": 14, "uid": 1, "time": "Feb 07 2018 15:15", "score": 4, "logical_loc": "maxp"},
+    {"id": 15, "uid": 1, "time": "Feb 08 2018 22:07", "score": 2, "logical_loc": "regenstein"}
   ],
   "posts": [
-    {"id": 0, "voteID": 0, "uid": 1, "message": "Hello from json", "time": "Jan 03 2017 13:29", "score": 4, "logical_loc": "reg"}
+    {"id": 0, "voteID": 0, "uid": 1, "message": "Hello from json", "time": "Feb 03 2018 8:30", "score": 4, "logical_loc": "regenstein"}
   ],
   "post_votes": [
     {"postID": 0, "uid": 2, "reaction": 0},

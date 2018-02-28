@@ -29,12 +29,11 @@ function getUsersVotes(start_time) {
     type: 'post',
     dataType: 'json',
     async: false,
-    ata: {'start_time': start_time},
+    data: {'start_time': start_time},
     success: function(data){
       myScores = data;
     }
   });
-  console.log(myScores);
   return myScores;
 }
 
@@ -49,6 +48,36 @@ function getVoteHistory(start_time) {
       y: voteHistory[i].happiness_level});
   }
   return voteHistory2;
+}
+
+function getVoteByDayOfWeek() {
+  var myScores;
+  $.ajax({
+    url: '/request/get_personal_votes_by',
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    data: {'group_by': 'dow'},
+    success: function(data){
+      myScores = data;
+    }
+  });
+  return myScores;
+}
+
+function getVoteByTimeOfDay() {
+  var myScores;
+  $.ajax({
+    url: '/request/get_personal_votes_by',
+    type: 'post',
+    dataType: 'json',
+    async: false,
+    data: {'group_by': 'tod'},
+    success: function(data){
+      myScores = data;
+    }
+  });
+  return myScores;
 }
 
 function makeHistoryChart() {
@@ -175,7 +204,7 @@ function updateHistoryChart(chart, start_time) {
   console.log(start_time);
   ds = getVoteHistory(start_time);
   console.log(ds);
-  if (ds.length > 3) {
+  if (ds.length > 2) {
     document.getElementById("userVotesOverTime").style.display="block";
     chart.data.datasets.forEach((d) => {
           d.data = ds;

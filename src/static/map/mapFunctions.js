@@ -141,12 +141,13 @@ function getCampusScore(start_time) {
       start_time = 0;
     }
     $.ajax({
-      url: '/request/get_campus_average',
+      url: '/request/get_votes_by',
       type: 'post',
       async: false,
       data: {'start_time': start_time},
       success: function(data){
         campus_avg = data;
+        console.log(campus_avg);
       }
     });
     if (campus_avg){
@@ -161,11 +162,11 @@ function getAllBuildingScores(start_time) {
     start_time = 0;
   }
   $.ajax({
-    url: '/request/get_heatmap',
+    url: '/request/get_votes_by',
     type: 'post',
     dataType: 'json',
     async: false,
-    data: {'start_time': start_time},
+    data: {'group_by': 'loc', 'start_time': start_time},
     success: function(data){
       allScores = data;
     }
@@ -217,16 +218,6 @@ function changeTimeFrame(start_time, query_func) {
 			regions[i].animate({fill: allPlaces[data.id].color},200);
 			regions[i].data({'info': allPlaces[data.id]});
 		} else if (regions[i].items){
-      /*
-      for (var j = 0; j < grouped.length; j++) {
-  			data = grouped[j].data('info');
-        if (data.id){
-  				regions[i].items[j].animate({fill: allPlaces[data.id].color},200);
-  				regions[i].items[j].data({'info': allPlaces[data.id]});
-          //regions[i].data({'info': allPlaces[data.id]});
-          //regions[i].animate({fill: allPlaces[data.id].color},200);
-        }
-  		}*/
     }
   }
   if (query_func == getAllBuildingScores) {
