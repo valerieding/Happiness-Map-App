@@ -3,13 +3,15 @@ import logging
 from flask import Flask, json
 
 from constants import STATIC_FOLDER, DATABASE_FILE, SIGNATURE_KEY_FILE, POPULATE_DB_FILE
-from server.admin import AdminRequests, AdminManager
 from server.database.database import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.messages.requests import MessageRequests
+from server.moderator.requests import AdminRequests
 from server.pages import PageRequests
-from server.util.users import UserManager, SignatureKey
+from server.util.admin import AdminManager
+from server.util.cookie_manager import SignatureKey
+from server.util.users import UserManager
 from server.voting.requests import VotingRequests
 
 
@@ -32,7 +34,7 @@ class FlaskAppContext:
         self.votingAPI = VotingAPI(self.db)
         self.key = SignatureKey(SIGNATURE_KEY_FILE)
         self.user_manager = UserManager(self.key, self.db)
-        self.admin_manager = AdminManager(self.key, self.db)
+        self.admin_manager = AdminManager(self.key, self.db, default_password='password' if debug or testing else None)
         self.testing = testing
 
     def get(self):
