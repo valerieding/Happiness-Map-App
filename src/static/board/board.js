@@ -54,7 +54,7 @@ function makeRow(messageArray){
 }
 
 //GET RECENT POST BETTER FUNCTION
-function getRecents(){
+function getRecentsFull(){
   //e.preventDefault();
   $.ajax({
     url: '/request/get_recent_posts',
