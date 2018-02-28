@@ -82,4 +82,5 @@ class UserManager:
         return user_id, self.cookie_manager.encode(user_id=user_id)
 
     def get_user(self, cookies):
-        return self.cookie_manager.decode(cookies)['user_id']
+        response = self.cookie_manager.decode(cookies)
+        return response.get('user_id') if response is not None and type(response) == dict else None
