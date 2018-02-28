@@ -104,15 +104,6 @@ class MessageRequestsTest(TestCase):
         self.assertFalse(mocked.called)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
-    @mock.patch.object(context.messageAPI, 'remove_post')
-    def test_remove_post_valid(self, mocked):
-        self.client.post('/request/remove_post', data={'post_id': 10})
-        self.assertTrue(mocked.called)
-
-    @mock.patch.object(context.messageAPI, 'remove_post')
-    def test_remove_post_invalid(self, mocked):
-        self.client.post('/request/remove_post', data={})
-        self.assertFalse(mocked.called)
 
 
 if __name__ == '__main__':
