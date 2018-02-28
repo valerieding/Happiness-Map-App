@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="/static/main.css" rel="stylesheet">
+	<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
+	<script tyep="application/javascript" src="/static/moderator/moderator.js"></script>
+	<title>Moderator</title>
+</head>
+<body>
+	<script>
+		$(function(){
+			$('#myModal').modal(options)
+	        //An example "add_vote", when really this will be done by the user on the voting page.
+	        //Can change 'happiness_level' to see different welcome text (upon next reload)
+	              // $.ajax({
+	              //   url: 'request/add_vote',
+	              //   type: 'post',
+	              //   dataType: 'json',
+	              //   data: {'latitude': 20, 'longitude': 10, 'happiness_level': 5}
+	              //   });
+		});
+	</script>
+	<div class="homepage">
+		<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+			<div id="myNav"></div>
+			<main role="main" class="inner cover text-center" id="home-cover">
+				<h1 class="cover-heading">Moderator</h1>
+				<div id="myModal"></div>
+			</main>
+
+<!-- 
+			<div class="form-group" style="float:left;">
+				<form  style="display:inline;"id="myform" method="post">
+					<input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
+					<BR>
+						<button type="submit" onclick="window.location.reload()" class="btn btn-primary">Submit</button>
+					</form>
+
+
+					<div style="display:inline;float:right;">
+						<form style="display:inline;padding-left:5px;" id="recent" method="post" >
+							<button type="button" class="btn btn-danger">Recent</button>
+						</form>
+						<form style="display:inline;" id="trending" method="post">
+							<button type="button" class="btn btn-danger">Trending</button>
+						</form>
+					</div>
+				</div>
+
+
+				<div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
+					<img class="card-img-top" alt="">
+					<div class="card-body">
+
+
+						<div class="d-flex justify-content-between">
+
+							<table id="tuffy" border='2' class="table table-hover table-border">
+								<tr>
+									<th scope="col">Messages</th>
+									<th scope="col">Happiness Level</th>
+									<th scope="col">Location</th>
+									<th scope="col">Time Stamp</th>
+									<th scope="col">Reactions</th>
+								</tr>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</body>
+	</html>
