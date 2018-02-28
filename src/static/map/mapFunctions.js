@@ -62,6 +62,7 @@ var FullNameKey = Object.freeze({
   ryeck : "Ryerson/Eckhart",
   ratner : "Ratner Athletics Center",
   southeast : "South East Quad Buildings",
+  offcampus : "Off Campus Locations",
 });
 
 

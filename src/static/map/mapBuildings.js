@@ -6,6 +6,11 @@ crerar.attr({fill: allPlaces['crerar'].color, class: "building", id: 'crerar'});
 crerar.data({'info': allPlaces['crerar']});
 regions.push(crerar);
 
+var offcampus = rsr.circle(900, 190, 77);
+offcampus.attr({fill: allPlaces['offcampus'].color, class: "building", id: "offcampus"});
+offcampus.data({'info': allPlaces['offcampus']});
+regions.push(offcampus);
+
 var bj = rsr.path("M 388.833,864.168 478.167,864.168 478.167,924.835 468.834,924.835 456.167,924.835   456.167,919.502 437.833,919.502 437.833,913.835 422.5,913.835 412.167,913.835 412.167,922.502 388.833,922.502  z");
 bj.attr({fill: allPlaces['bj'].color, class: "building", id: 'bj'});
 bj.data({'info': allPlaces['bj']});
