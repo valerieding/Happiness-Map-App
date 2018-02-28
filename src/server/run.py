@@ -3,12 +3,12 @@ import logging
 from flask import Flask, json
 
 from constants import STATIC_FOLDER, DATABASE_FILE, SIGNATURE_KEY_FILE, POPULATE_DB_FILE
-from server.admin import AdminRequests
+from server.admin import AdminRequests, AdminCookie
 from server.database.database import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
 from server.messages.requests import MessageRequests
-from server.pages import page_server
+from server.pages import PageRequests
 from server.util.users import UserManager
 from server.voting.requests import VotingRequests
 
@@ -37,7 +37,7 @@ class FlaskAppContext:
         app.url_map.strict_slashes = False
         app.register_blueprint(MessageRequests(self.messageAPI, self.user_manager).get_blueprint())
         app.register_blueprint(VotingRequests(self.votingAPI, self.user_manager).get_blueprint())
-        app.register_blueprint(page_server)
+        app.register_blueprint(PageRequests(AdminCookie()).get_blueprint())
 
         if has_admin_privileges:
             app.register_blueprint(AdminRequests(self.messageAPI, self.user_manager).get_blueprint())

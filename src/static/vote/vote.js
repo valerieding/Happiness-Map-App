@@ -4,30 +4,51 @@ var helloworld = function(){
 
 // send happiness vote to database
 function submitVote(loc, happy){
-  alert(loc + " " + happy);
+  //alert(loc + " " + happy);
   if (typeof happy != 'undefined' && typeof loc != 'undefined'){
-    $.ajax({
-                url: '/request/add_vote',
-                method: 'post',
-                dataType: 'json',
-                data: {'latitude': 10,
-                       'longitude': 10,
-                       'logical_location': loc,
-                       'happiness_level': happy},
-                       //'logical_location': $('#loc_drop option:selected').val(),
-                       //'happiness_level': $('input[name=happiness_level]:checked').val()},
-                beforeSend: function() {
-                  //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                  //alert("Location: " + $("#loc_drop option:selected").val());
-                  //alert('echo');
-                },
-                success: function() {
-                  //alert('Vote Submitted');
-                },
-                error: function() {
-                  //alert('Failed to submit vote');
-                }              
-            }); 
+    var confirmText = "(" + happy + ")\n";
+    if(autoLoc == true) {
+       confirmText += "We auto-detected your location is: " + loc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+    } 
+    if(loc == 'offcampus') {
+      confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+    }
+    if(loc == '' || loc == ' ' || loc == null) {
+      confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
+      alert(confirmText);
+    } else {
+      if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
+        var confirmed = confirm(confirmText);
+        if (confirmed == true) {
+          $.ajax({
+                  url: '/request/add_vote',
+                  method: 'post',
+                  dataType: 'json',
+                  data: {'latitude': 10,
+                         'longitude': 10,
+                         'logical_location': loc,
+                         'happiness_level': happy},
+                         //'logical_location': $('#loc_drop option:selected').val(),
+                         //'happiness_level': $('input[name=happiness_level]:checked').val()},
+                  beforeSend: function() {
+                    //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
+                    //alert("Location: " + $("#loc_drop option:selected").val());
+                    //alert('echo');
+                  },
+                  success: function() {
+                    //alert('Vote Submitted');
+                  },
+                  error: function() {
+                    //alert('Failed to submit vote');
+                  }              
+              }); 
+            //txt = "You pressed OK!";
+        } else {
+            //txt = "You pressed Cancel!";
+        }
+      }
+    }
+    
   }
   else{
     alert("You have to submit both a happiness value and your location");
@@ -40,6 +61,59 @@ function submitVote(loc, happy){
 // To Do: move to external static file for reference in both
 var log_locs = Object.freeze({
   blank: "",
+  offcampus: "Off Campus",
+  alumni : "Alumni House",
+  bartlett : "Bartlett Dining Commons",
+  bond : "Bond Chapel",
+  bookstore : "University Bookstore",
+  booth : "Booth School of Business",
+  bj : "Burton Judson Courts",
+  cathey : "Cathey Dining Commons",
+  classicsBuilds : "Classics Quad Buildings",
+  cobb : "Cobb Hall",
+  crerar : "Crerar Library",
+  eastBuild : "East Quad Buildings",
+  edward : "Edward H Levi Hall",
+  harper : "Harper Memorial Library",
+  harris : "Harris School",
+  henry : "Henry Crown Field House",
+  hutch : "Hutchinson Commons",
+  ida : "Ida Noyes",
+  lab : "Lab Buildings",
+  law : "Law School",
+  logan : "Logan and Midway Studios",
+  mainNorth : "Main Quad North Buildings",
+  mansueto : "Mansueto Library",
+  maxp : "Max Palevsky Commons",
+  med : "Medical Campus",
+  multi : "Office of Multicultural Affairs",
+  new_grad : "New Graduate Residence Halls",
+  north : "Campus North Residence and Dining",
+  northBuild : "North Quad Buildings",
+  oriental : "Oriental Institute",
+  physics : "Physics Buildings",
+  quadr : "Quadrangle Club",
+  ratner : "Ratner Athletics Center",
+  regenstein : "Regenstein Library",
+  reynolds : "Reynolds Club",
+  rock : "Rockefeller Chapel",
+  rosenwald : "Rosenwald",
+  ryeck : "Ryerson/Eckhart",
+  saieh : "Saieh Hall for Economics",
+  smart : "Smart Museum",
+  snell :  "Snell-Hitchcock",
+  ssr : "Social Science Research",
+  stuart : "Stuart Hall",
+  south : "South Campus Residence Hall",
+  southeast : "South East Quad Buildings",
+  swift : "Swift Hall",
+}); 
+
+
+
+/*
+
+blank: "",
   bj : "Burton Judson Courts",
   cathey : "Cathey Dining Commons",
   south : "South Campus Residence Hall",
@@ -66,8 +140,8 @@ var log_locs = Object.freeze({
   northBuild : "North Quad Buildings",
   lab : "Lab Buildings",
   crerar : "Crerar Library",
-	mansueto : "Mansueto Library",
-	regenstein : "Regenstein Library",
+  mansueto : "Mansueto Library",
+  regenstein : "Regenstein Library",
   bartlett : "Bartlett Dining Commons",
   maxp : "Max Palevsky Commons",
   hutch : "Hutchinson Commons",
@@ -86,5 +160,6 @@ var log_locs = Object.freeze({
   ratner : "Ratner Athletics Center",
   southeast : "South East Quad Buildings",
   offcampus: "Off Campus",
-}); 
 
+  */
+  

@@ -1,28 +1,40 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
 from constants import WEBSITE_ROOT_FOLDER
 
-page_server = Blueprint('static', __name__, template_folder=WEBSITE_ROOT_FOLDER)
 
-HOMEPAGE = {'route': 'map', 'path': 'index.html'}
+class PageRequests:
 
+    HOMEPAGE = {'route': 'map', 'path': 'index.html'}
 
-@page_server.route('/', defaults=HOMEPAGE)
-@page_server.route('/index.html', defaults=HOMEPAGE)
-@page_server.route('/nav.html', defaults={'route': '.', 'path': 'nav.html'})
-@page_server.route('/about', defaults={'route': 'about'})
-@page_server.route('/about/<path:path>', defaults={'route': 'about'})
-@page_server.route('/board', defaults={'route': 'board'})
-@page_server.route('/board/<path:path>', defaults={'route': 'board'})
-@page_server.route('/map', defaults={'route': 'map'})
-@page_server.route('/map/<path:path>', defaults={'route': 'map'})
-@page_server.route('/stats', defaults={'route': 'stats'})
-@page_server.route('/stats/<path:path>', defaults={'route': 'stats'})
-@page_server.route('/vote', defaults={'route': 'vote'}, methods=['GET', 'POST'])
-@page_server.route('/vote/<path:path>', defaults={'route': 'vote'})
-def serve_pages(route, path='index.html'):
-    return render_template(route + '/' + path)
+    REGULAR_PAGES = ['about', 'map', 'stats', 'vote']
 
+    ADMIN_AWARE_PAGES = ['board']
 
-def get_pages_blueprint(has_admin_privileges):
-    return page_server
+    PAGES_WITH_POST = {'vote'}
+
+    def __init__(self, admin):
+        self.admin = admin
+
+    def serve_page(self, route, path='index.html'):
+        return render_template(route + '/' + path)
+
+    def serve_admin_aware_page(self, route, path='index.html'):
+        return render_template(route + '/' + path, is_moderator=self.admin.validate(request.cookies))
+
+    @staticmethod
+    def add_route(app, route, view_func):
+        methods = ['GET'] if route in PageRequests.PAGES_WITH_POST else ['GET', 'POST']
+        for rule in ['/{}'.format(route), '/{}/<path:path>'.format(route)]:
+            app.add_url_rule(rule=rule, endpoint=rule, view_func=view_func, defaults={'route': route}, methods=methods)
+
+    def get_blueprint(self):
+        app = Blueprint('static', __name__, template_folder=WEBSITE_ROOT_FOLDER)
+        app.add_url_rule(rule='/', endpoint='/', view_func=self.serve_page, defaults=PageRequests.HOMEPAGE)
+        app.add_url_rule(rule='/nav.html', endpoint='/nav', view_func=self.serve_page,
+                         defaults={'route': '.', 'path': 'nav.html'})
+        for domain in PageRequests.REGULAR_PAGES:
+            PageRequests.add_route(app, domain, self.serve_page)
+        for domain in PageRequests.ADMIN_AWARE_PAGES:
+            PageRequests.add_route(app, domain, self.serve_admin_aware_page)
+        return app
