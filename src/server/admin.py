@@ -1,7 +1,6 @@
 import getpass
 import hashlib
 import os
-import secrets
 import time
 from http import HTTPStatus
 
@@ -77,13 +76,10 @@ class AdminManager:
             self.digest, self.salt = admin_creds
 
     def _get_digest(self, password):
-        mac = hashlib.sha3_384()
-        mac.update(self.salt)
-        mac.update(password)
-        return mac.digest()
+        return hashlib.pbkdf2_hmac('sha256', password.encode('ascii'), self.salt, 100000)
 
     def authenticate(self, username, password):
-        return username == 'admin' and secrets.compare_digest(self.digest, self._get_digest(password))
+        return username == 'admin' and self.digest == self._get_digest(password)
 
     def set_cookie(self, response):
         expires = time.time() + AdminManager.ADMIN_COOKIE_LIFETIME
