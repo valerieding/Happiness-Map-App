@@ -9,7 +9,7 @@ class PageRequests:
 
     REGULAR_PAGES = ['about', 'map', 'stats', 'vote']
 
-    ADMIN_AWARE_PAGES = ['board']
+    ADMIN_AWARE_PAGES = ['board', 'moderator']
 
     PAGES_WITH_POST = {'vote'}
 

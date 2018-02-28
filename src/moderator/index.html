@@ -15,10 +15,15 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
 	</script>
-	<script tyep="application/javascript" src="/static/moderator/moderator.js"></script>
+	<script type="application/javascript" src="/static/moderator/moderator.js"></script>
 	<title>Moderator</title>
 </head>
 <body>
+  {% if is_moderator %}
+    <h2>This page has MODERATOR turned ON</h2>
+  {% else %}
+    <h2>This page has MODERATOR turned OFF</h2>
+  {% endif %}
 	<script>
 		$(function(){
 			$('#myModal').modal(options)
