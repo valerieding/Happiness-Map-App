@@ -73,8 +73,25 @@
               {
                   loc = drop_loc;
               }
-            */
-            submitVote(loc, happy);
+            */var confirmText = "(" + happy + ")\n";
+              var confirmed = true;
+              if(autoLoc == true) {
+                 confirmText += "We auto-detected your location is: " + loc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+              } 
+              if(loc == 'offcampus') {
+                confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+              }
+              if(loc == '' || loc == ' ' || loc == null) {
+                confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
+                alert(confirmText);
+              } else {
+                if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
+                  confirmed = confirm(confirmText);
+                }
+              }
+              if (confirmed == true) {
+                submitVote(loc, happy);
+              }
            // alert(loc + ": " + happy);
            // alert($("#loc_drop option:selected").val());
            /*
