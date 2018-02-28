@@ -20,7 +20,7 @@ class PageRequests:
         return render_template(route + '/' + path)
 
     def serve_admin_aware_page(self, route, path='index.html'):
-        return render_template(route + '/' + path, is_moderator=self.admin.validate(request.cookies))
+        return render_template(route + '/' + path, is_moderator=self.admin.validate_cookie(request.cookies))
 
     @staticmethod
     def add_route(app, route, view_func):

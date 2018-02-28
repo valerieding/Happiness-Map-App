@@ -1,13 +1,13 @@
+from http import HTTPStatus
 from unittest import mock, TestCase, main
 
 from server.run import FlaskAppContext
 
 context = FlaskAppContext(testing=True)
-app = context.get(has_admin_privileges=True)
+app = context.get()
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = b'[\n  "SOME_DUMMY_RESPONSE"\n]\n'
-FAILURE_RESPONSE = b'[\n  "Invalid request", \n  400\n]\n'
 
 
 class MessageRequestsTest(TestCase):
@@ -25,7 +25,7 @@ class MessageRequestsTest(TestCase):
     def test_get_recent_posts_invalid(self, mocked):
         response = self.client.post('/request/get_recent_posts', data={'logical_location': '*'})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'get_recent_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_personal_posts_valid(self, mocked):
@@ -39,7 +39,7 @@ class MessageRequestsTest(TestCase):
         response = self.client.post('/request/get_recent_personal_posts',
                                     data={'logical_location': '"', 'start_time': -1.3})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_trending_posts_valid(self, mocked):
@@ -52,7 +52,7 @@ class MessageRequestsTest(TestCase):
     def test_get_trending_posts_invalid(self, mocked):
         response = self.client.post('/request/get_trending_posts', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'get_trending_posts', return_value=DUMMY_RESPONSE)
     def test_get_recent_trending_posts_valid(self, mocked):
@@ -65,7 +65,7 @@ class MessageRequestsTest(TestCase):
     def test_get_trending_personal_posts_invalid(self, mocked):
         response = self.client.post('/request/get_trending_personal_posts', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'add_post', return_value=DUMMY_RESPONSE)
     def test_add_post_valid(self, mocked):
@@ -77,7 +77,7 @@ class MessageRequestsTest(TestCase):
     def test_add_post_invalid(self, mocked):
         response = self.client.post('/request/add_post')
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'add_reaction', return_value=DUMMY_RESPONSE)
     def test_upvote_valid(self, mocked):
@@ -102,7 +102,7 @@ class MessageRequestsTest(TestCase):
     def test_add_reaction_invalid(self, mocked):
         response = self.client.post('/request/add_reaction', data={'post_id': 10, 'reaction': 'not_a_react'})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'remove_post')
     def test_remove_post_valid(self, mocked):

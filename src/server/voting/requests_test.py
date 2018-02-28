@@ -2,6 +2,7 @@ import json
 import pickle
 import time
 from base64 import urlsafe_b64encode
+from http import HTTPStatus
 from unittest import mock, TestCase, main
 
 from server.run import FlaskAppContext
@@ -9,12 +10,10 @@ from server.util import HeatMapPoint
 from server.util.users import UserManager
 
 context = FlaskAppContext(testing=True)
-app = context.get(has_admin_privileges=True)
+app = context.get()
 
 DUMMY_RESPONSE = ['SOME_DUMMY_RESPONSE']
 JSON_DUMMY_RESPONSE = b'[\n  "SOME_DUMMY_RESPONSE"\n]\n'
-SUCCESS_RESPONSE = b'"Success"\n'
-FAILURE_RESPONSE = b'[\n  "Invalid request", \n  400\n]\n'
 
 
 class VotingRequestsTest(TestCase):
@@ -43,7 +42,8 @@ class VotingRequestsTest(TestCase):
         self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps('corrupted_cookie_value')))
 
     def test_malicious_cookie(self):
-        self._test_wrong_cookie(UserManager._encode(123, 'definitely not a user signature'))
+        self._test_wrong_cookie(urlsafe_b64encode(pickle.dumps(
+            {'user_id': 123, 'signature': 'definitely not a user signature'})).decode('ascii'))
 
     @mock.patch.object(context.votingAPI, 'get_happiness_level', return_value=DUMMY_RESPONSE)
     def test_get_happiness_level_none(self, mocked):
@@ -54,20 +54,14 @@ class VotingRequestsTest(TestCase):
     @mock.patch.object(context.votingAPI, 'add_vote', return_value=True)
     def test_add_vote_valid(self, mocked):
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        self.assertEqual(response.data, SUCCESS_RESPONSE)
         self.assertTrue(mocked.called)
-
-    @mock.patch.object(context.votingAPI, 'add_vote', return_value=False)
-    def test_add_vote_valid_but_rejected_by_database(self, mocked):
-        response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': 3})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
-        self.assertTrue(mocked.called)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     @mock.patch.object(context.votingAPI, 'add_vote')
     def test_add_vote_invalid(self, mocked):
         response = self.client.post('/request/add_vote', data={'latitude': 45, 'longitude': 45, 'happiness_level': -1})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.votingAPI, 'get_recent_votes', return_value=DUMMY_RESPONSE)
     def test_get_recent_votes_valid(self, mocked):
@@ -86,7 +80,7 @@ class VotingRequestsTest(TestCase):
     def test_get_recent_votes_invalid(self, mocked):
         response = self.client.post('/request/get_recent_votes', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.votingAPI, 'get_votes_by', return_value=3.0)
     def test_get_campus_average_valid(self, mocked):
@@ -109,8 +103,8 @@ class VotingRequestsTest(TestCase):
     @mock.patch.object(context.votingAPI, 'get_votes_by')
     def test_get_building_average_invalid(self, mocked):
         response = self.client.post('/request/get_building_average', data={'end_time': '45'})
-        self.assertEqual(response.data, FAILURE_RESPONSE)
         self.assertFalse(mocked.called)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
     def test_get_heat_map_valid(self, mocked):
@@ -136,7 +130,7 @@ class VotingRequestsTest(TestCase):
     def test_get_votes_by_invalid(self, mocked):
         response = self.client.post('/request/get_votes_by', data={'group_by': 'invalid_grouping'})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
     def test_get_personal_votes_by_location(self, mocked):
@@ -148,7 +142,7 @@ class VotingRequestsTest(TestCase):
     def test_get_personal_votes_by_invalid(self, mocked):
         response = self.client.post('/request/get_personal_votes_by', data={'group_by': 'invalid_grouping'})
         self.assertFalse(mocked.called)
-        self.assertEqual(response.data, FAILURE_RESPONSE)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.votingAPI, 'get_happiness_level', return_value=3.0)
     def test_get_happiness_level_valid(self, mocked):

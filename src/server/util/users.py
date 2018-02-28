@@ -1,18 +1,15 @@
-import pickle
+import json
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from os.path import isfile
 
+import pickle
 from ecdsa import SigningKey, NIST256p, BadSignatureError
 
 
-class UserManager:
-    """
-    Manages user IDs and signatures of them in cookies.
-    """
+class SignatureKey:
+    """Signs dictionaries. Serves as an authenticator for cookies. """
 
-    COOKIE_NAME = "user_id"
-
-    def __init__(self, filename, db):
+    def __init__(self, filename):
         if isfile(filename):
             with open(filename, 'rb') as f:
                 self.sign_key = SigningKey.from_pem(f.read())
@@ -21,45 +18,68 @@ class UserManager:
             with open(filename, 'wb') as f:
                 f.write(self.sign_key.to_pem())
         self.verify_key = self.sign_key.get_verifying_key()
-        self.db = db
 
     @staticmethod
-    def _encode(user_id, signature):
-        return urlsafe_b64encode(pickle.dumps({'user_id': user_id, 'signature': signature})).decode('ascii')
+    def _serialize(data):
+        return json.dumps(data, sort_keys=True).encode('ascii')
 
-    @staticmethod
-    def _decode(cookie):
+    def encode(self, data):
+        data['signature'] = self.sign_key.sign(SignatureKey._serialize(data))
+
+    def decode(self, data):
+        signature = data.get('signature')
+        if signature is None:
+            return None
+        data.pop('signature')
+        try:
+            if self.verify_key.verify(signature, SignatureKey._serialize(data)):
+                return data
+        except:
+            pass
+        return None
+
+
+class CookieManager:
+
+    def __init__(self, key, cookie_name, cookie_fields):
+        self.key = key
+        self.cookie_name = cookie_name
+        self.cookie_fields = cookie_fields
+
+    def encode(self, **cookie):
+        assert set(cookie.keys()) == self.cookie_fields
+        self.key.encode(cookie)
+        return self.cookie_name, urlsafe_b64encode(pickle.dumps(cookie)).decode('ascii')
+
+    def decode(self, cookie_jar):
+        cookie = cookie_jar.get(self.cookie_name)
         if cookie is None:
-            # User has no login cookie
+            # User has no cookie
             return None
         try:
-            decoded = pickle.loads(urlsafe_b64decode(cookie.encode('ascii')), fix_imports=False)
+            decoded = pickle.loads(urlsafe_b64decode(cookie.encode('ascii')))
         except:
-            # `code` was altered. No user_id can be retrieved.
+            # Cookie was altered. Reject it.
             return None
-        if type(decoded) is not dict or set(decoded.keys()) != {'user_id', 'signature'}:
+        if type(decoded) is not dict:
+            return None
+        decoded = self.key.decode(decoded)
+        if decoded is None or set(decoded.keys()) != self.cookie_fields:
             return None
         return decoded
 
-    def verify(self, signature, user_id):
-        try:
-            return self.verify_key.verify(signature, user_id)
-        except AssertionError:
-            # This happens if there is a length mismatch in the signature
-            return False
-        except BadSignatureError:
-            # This happens if the signature is invalid
-            return False
+
+class UserManager:
+    """ Manages regular user IDs stored in (signed) cookies. """
+
+    def __init__(self, key, db):
+        self.cookie_manager = CookieManager(key, 'user_id', {'user_id'})
+        self.db = db
 
     def new_user(self):
         """Returns a fresh user_id. """
-
         user_id = self.db.issue_user_id()
-        signature = self.sign_key.sign(str(user_id).encode('ascii'))
-        return user_id, (UserManager.COOKIE_NAME, UserManager._encode(user_id, signature))
+        return user_id, self.cookie_manager.encode(user_id=user_id)
 
     def get_user(self, cookies):
-        cookie = UserManager._decode(cookies.get(UserManager.COOKIE_NAME))
-        if cookie is None or not self.verify(cookie['signature'], str(cookie['user_id']).encode('ascii')):
-            return None
-        return cookie['user_id']
+        return self.cookie_manager.decode(cookies)['user_id']
