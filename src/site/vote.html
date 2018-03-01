@@ -29,7 +29,6 @@
         for (let key in log_locs) {
           $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
         }
-          alert("(lat: " + lat_coord + ", long: " + long_coord + ")");
 
         var hidden = 1;
 
@@ -46,9 +45,6 @@
           var confirmText = "(" + happy + ")\n";
           var confirmed = true;
           loc = currentMapLoc;
-
-          alert("(lat: " + lat_coord + ", long: " + long_coord + ")");
-          alert("test drive: " + arr[0]);
 
           if(autoLoc == true) {
              confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
