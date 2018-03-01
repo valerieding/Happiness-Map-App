@@ -19,28 +19,32 @@ setUpMapPersonal();
 setButtonFunctions(getAllBuildingScoresByUser);
 
 
-function getUsersVotes(start_time) {
+async function getUsersVotes(start_time) {
   var myScores;
   if (!start_time) {
     start_time = 0;
   }
-  $.ajax({
-    url: '/request/get_recent_votes',
-    type: 'post',
-    dataType: 'json',
-    data: {'start_time': start_time},
-    success: function(data){
-      myScores = data;
-    }
-  });
-  return myScores;
+  try {
+    myScores = await $.ajax({
+      url: '/request/get_recent_votes',
+      type: 'post',
+      dataType: 'json',
+      data: {'start_time': start_time},
+      success: function(data){
+        myScores = data;
+      }
+    });
+    return myScores;
+  } catch(error) {
+    console.error(error);
+  }
 }
 
-function getVoteHistory(start_time) {
-  var voteHistory = getUsersVotes(start_time);
+async function getVoteHistory(start_time) {
+  var voteHistory = await getUsersVotes(start_time);
   var voteHistory2 = [];
 
-  for (var i = 0; i < Math.min(100, voteHistory.length); i++) {
+  for (var i = 0; i < Math.min(40, voteHistory.length); i++) {
     let x = new Date(1000 * voteHistory[i].timestamp).toDateString();
     voteHistory2.push({
       x: voteHistory[i].timestamp,
@@ -49,32 +53,40 @@ function getVoteHistory(start_time) {
   return voteHistory2;
 }
 
-function getVoteByDayOfWeek() {
+async function getVoteByDayOfWeek() {
   var myScores;
-  $.ajax({
-    url: '/request/get_personal_votes_by',
-    type: 'post',
-    dataType: 'json',
-    data: {'group_by': 'dow'},
-    success: function(data){
-      myScores = data;
-    }
-  });
-  return myScores;
+  try {
+    myScores = await $.ajax({
+      url: '/request/get_personal_votes_by',
+      type: 'post',
+      dataType: 'json',
+      data: {'group_by': 'dow'},
+      success: function(data){
+        myScores = data;
+      }
+    });
+    return myScores;
+  } catch(error) {
+    console.error(error);
+  }
 }
 
-function getVoteByTimeOfDay() {
+async function getVoteByTimeOfDay() {
   var myScores;
-  $.ajax({
-    url: '/request/get_personal_votes_by',
-    type: 'post',
-    dataType: 'json',
-    data: {'group_by': 'tod'},
-    success: function(data){
-      myScores = data;
-    }
-  });
-  return myScores;
+  try {
+    myScores = await $.ajax({
+      url: '/request/get_personal_votes_by',
+      type: 'post',
+      dataType: 'json',
+      data: {'group_by': 'tod'},
+      success: function(data){
+        myScores = data;
+      }
+    });
+    return myScores;
+  } catch(error) {
+    console.error(error);
+  }
 }
 
 function makeHistoryChart() {
@@ -126,10 +138,10 @@ function makeHistoryChart() {
   return timeChart;
 }
 
-function makeWeekChart() {
+async function makeWeekChart() {
   let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let dayScores = [0, 0, 0, 0, 0, 0, 0];
-  let dayData = getVoteByDayOfWeek();
+  let dayData = await getVoteByDayOfWeek();
   for (let day in days) {
     if (dayData[days[day]]) {
       dayScores[day] = formatScore(dayData[days[day]]);
@@ -163,8 +175,8 @@ function makeWeekChart() {
   return weekChart;
 }
 
-function makeTimeChart() {
-  let timeData = getVoteByTimeOfDay();
+async function makeTimeChart() {
+  let timeData = await getVoteByTimeOfDay();
   let ctx = document.getElementById('userVotesByTimeOfDay').getContext('2d');
   let timesScores = [];
   for (let i = 0; i < 24; i++) {
@@ -209,8 +221,8 @@ function makeTimeChart() {
   return weekChart;
 }
 
-function updateHistoryChart(chart, start_time) {
-  ds = getVoteHistory(start_time);
+async function updateHistoryChart(chart, start_time) {
+  ds = await getVoteHistory(start_time);
   if (ds.length > 2) {
     document.getElementById("userVotesOverTime").style.display="block";
     document.getElementById("warningNotEnoughInfo").innerHTML = "";

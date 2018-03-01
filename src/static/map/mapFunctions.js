@@ -138,48 +138,57 @@ function formatScore(n) {
 
 
 //querying database functions
-function getCampusScore(start_time) {
+async function getCampusScore(start_time) {
     var campus_avg;
     if (!start_time) {
       start_time = 0;
     }
-    $.ajax({
+    try {
+      campus_avg = await $.ajax({
+        url: '/request/get_votes_by',
+        type: 'post',
+        data: {'start_time': start_time},
+        success: function(data){
+          campus_avg = data;
+        }
+      });
+      if (campus_avg){
+        return campus_avg;
+      }
+      return "n/a";
+    } catch(error) {
+      console.error(error);
+    }
+};
+
+async function getAllBuildingScores(start_time) {
+  var allScores;
+  if (!start_time) {
+    start_time = 0;
+  }
+  try {
+    allScores = await $.ajax({
       url: '/request/get_votes_by',
       type: 'post',
-      data: {'start_time': start_time},
+      dataType: 'json',
+      data: {'group_by': 'loc', 'start_time': start_time},
       success: function(data){
-        campus_avg = data;
+        allScores = data;
       }
     });
-    if (campus_avg){
-      return campus_avg;
-    }
-    return "n/a";
+    return allScores;
+  } catch(error) {
+    console.error(error);
+  }
 };
 
-function getAllBuildingScores(start_time) {
+async function getAllBuildingScoresByUser(start_time) {
   var allScores;
   if (!start_time) {
     start_time = 0;
   }
-  $.ajax({
-    url: '/request/get_votes_by',
-    type: 'post',
-    dataType: 'json',
-    data: {'group_by': 'loc', 'start_time': start_time},
-    success: function(data){
-      allScores = data;
-    }
-  });
-  return allScores;
-};
-
-function getAllBuildingScoresByUser(start_time) {
-  var allScores;
-  if (!start_time) {
-    start_time = 0;
-  }
-  $.ajax({
+  try {
+    allScores = await $.ajax({
     url: "/request/get_personal_votes_by",
     type: 'post',
     dataType: 'json',
@@ -187,30 +196,34 @@ function getAllBuildingScoresByUser(start_time) {
     success: function(data){
       allScores = data;
     }
-  });
-  return allScores;
+    });
+    return allScores;
+  } catch(error) {
+    console.error(error);
+  }
 };
 
 
 //modifying map html functions
-function changeTimeFrame(start_time, query_func) {
-	let allScores = query_func(start_time);
+async function changeTimeFrame(start_time, query_func) {
+	let allScores = await query_func(start_time);
+  console.log(allScores);
 	let allPlaces = allMapObjects(allScores);
 	for (var i = 0; i < regions.length; i++){
     let data = regions[i].data('info');
 		if (allPlaces[data.id]) {
 			regions[i].animate({fill: allPlaces[data.id].color},200);
 			regions[i].data({'info': allPlaces[data.id]});
-		} else if (regions[i].items){
-    }
+		}
   }
   if (query_func == getAllBuildingScores) {
     setMapFeatures(start_time);
   }
 };
 
-function setMapFeatures(start_time) {
-  let campus_avg = getCampusScore(start_time);
+async function setMapFeatures(start_time) {
+  let campus_avg = await getCampusScore(start_time);
+  console.log(campus_avg);
 	document.getElementById('region-header').innerHTML =
 		'Try hovering over a building!<br><br><br>';
 	document.getElementById('region-text').innerHTML = '';
