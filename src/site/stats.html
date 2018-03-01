@@ -63,21 +63,31 @@
             </div>
             <div class="card p-3 m-2" style="overflow-y: auto">
                 <div class="card-body">
-                    <h5 class="card-title">My Recent Posts</h5>
-                    <!-- <p class="card-text" id="recentPosts">Posts go here</p> -->
-                    <div id="welcome" style="display:none;"></div>
+                    <div>
+                        <h5 style="display:inline;" class="card-title">My Recent Posts</h5>
+                        <!-- <p class="card-text" id="recentPosts">Posts go here</p> -->
+                        <div style="display:inline;float:right;">
+                            <form style="display:inline;padding-left:5px;" id="recent" method="post">
+                                <button type="button" class="btn btn-success">Recent <i class="fa fa-caret-square-o-down"></i></button>
+                            </form>
+                            <form style="display:inline;" id="trending" method="post">
+                                <button type="button" class="btn btn-success">Trending <i class="fa fa-caret-square-o-down"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <BR>
                     <div class="d-flex justify-content-between">
                       <table id="tuffy" border='2' class="table table-hover table-border">
-                        <tr>
+                        <!-- <tr>
                           <th scope="col">Happiness Level</th>
                           <th scope="col">Messages</th>
                           <th scope="col">Location</th>
                           <th scope="col">Time Stamp</th>
                           <th scope="col">Reactions</th>
-                        <!--   {% if is_moderator %}
+                          {% if is_moderator %}
                             <th scope="col">Remove Post</th>
-                          {% endif %} -->
-                        </tr>
+                          {% endif %}
+                        </tr> -->
                       </table>
 
                     </div>
@@ -120,6 +130,7 @@
                 </div>
             </div>
         </div>
+        <div id="welcome" style="display:none;"></div>
     </div>
     <script src="/static/map/raphael-min.js"></script>
     <script src="/static/map/mapBackground.js"></script>
