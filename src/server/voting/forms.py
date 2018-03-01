@@ -1,6 +1,6 @@
-from wtforms import Form, validators, StringField
+from wtforms import Form
 
-from server.util.forms import LocationForm, HappinessForm, ResultFilterForm, LOGICAL_LOCATION_VALIDATOR, AggregatorForm
+from server.util.generic_forms import *
 
 
 class GetRecentVotesForm(Form, ResultFilterForm):

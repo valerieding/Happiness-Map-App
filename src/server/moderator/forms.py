@@ -1,6 +1,6 @@
 from wtforms import Form, StringField, validators, PasswordField
 
-from server.util.forms import PostIDForm
+from server.util.generic_forms import PostIDForm
 
 
 class RemovePostForm(Form, PostIDForm):

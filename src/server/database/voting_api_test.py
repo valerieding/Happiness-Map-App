@@ -5,7 +5,8 @@ from datetime import datetime
 from server.database.database import DatabaseManager
 from server.database.message_api_test import MockFilter
 from server.database.voting_api import VotingAPI
-from server.util import Location, VoteAggregator
+from server.util.sqlite_helpers import VoteAggregator
+from server.util.wrappers import Location
 
 LOC_A = Location(1, 2, "A")
 LOC_B = Location(2, 4, "B")

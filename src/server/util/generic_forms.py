@@ -1,7 +1,7 @@
 from wtforms import IntegerField, FloatField, validators, StringField, SelectField
 
 from constants import ALLOWED_REACTIONS_TO_POST
-from server.util import VoteAggregator
+from server.util.sqlite_helpers import VoteAggregator
 
 """
 Defines several form stubs that should be used via inheritance by the end-user Form validators.
