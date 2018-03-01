@@ -234,7 +234,7 @@ $(function() {
     } else {
       getTrending(searchLoc,timeframe);
     }
-  });        
+  });
 });
 
 // QUERY TO UP AND DOWNVOTE
@@ -305,7 +305,7 @@ function logout(){
 //When time-related buttons are clicked:
 //ALL
 $(function() {
-  $('input[type=radio][id="optAllScatter"]').change(function(e) {
+  $('input[type=radio][id="optAllMess"]').change(function(e) {
     console.log("showing all posts");
     e.preventDefault();
     timeframe = 0;
@@ -314,34 +314,34 @@ $(function() {
     } else {
       getRecents(searchLoc,timeframe);
     }
-  });        
+  });
 });
 //WEEK
 $(function() {
-  $('input[type=radio][id="optWeekScatter"]').change(function(e) {
+  $('input[type=radio][id="optWeekMess"]').change(function(e) {
     console.log("showing last week's posts");
     e.preventDefault();
     timeframe = -604800;
     getRecents(searchLoc, timeframe);
-  });        
+  });
 });
 //DAY
 $(function() {
-  $('input[type=radio][id="optDayScatter"]').change(function(e) {
+  $('input[type=radio][id="optDayMess"]').change(function(e) {
     console.log("showing last day's posts");
     e.preventDefault();
     timeframe = -86400;
     getRecents(searchLoc, timeframe);
-  });        
+  });
 });
 //TWO HOURS
 $(function() {
-  $('input[type=radio][id="optHourScatter"]').change(function(e) {
+  $('input[type=radio][id="optHourMess"]').change(function(e) {
     console.log("showing last two hours' posts");
     e.preventDefault();
     timeframe = -7200;
     getRecents(searchLoc, timeframe);
-  });        
+  });
 });
 
 // We used a slightly modified version of this function from
@@ -439,6 +439,3 @@ function getKeyByValue(object, value) {
 //   southeast : "South East Quad Buildings",
 //   swift : "Swift Hall",
 // });
-
-
-
