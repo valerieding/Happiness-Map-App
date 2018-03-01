@@ -3,6 +3,7 @@
 {% block title %} Vote {% endblock %}
 {% block resources %}
 <link href="/static/vote/vote.css" rel="stylesheet">
+<script type="application/javascript" src="/static/logical_locs.js"></script>
 <style>
     #campus-map {
         height: 400px;
@@ -14,7 +15,9 @@
     }
 
 </style>
+
 <script type="application/javascript" src="/static/logical_locs.js"></script>
+
 
 {% endblock %}
 
@@ -93,14 +96,10 @@
           }
         });
       });
-
-
-
-
 </script>
 
 
-<!-- Begin Actual Content -->
+<!-- Begin Page Content -->
 <div class="homepage">
     <div id="a" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <div id="myNav"></div>
@@ -151,7 +150,7 @@
         -->
 
 
-        <!-- Voting UI begins here: -->
+<!-- Voting UI begins: -->
         <form id="vote" method="post">
             <div id="vote_ui" class="ui">
                 <h5> On a scale of 1 (least happy) to 5 (most happy), how happy are you? </h5>
@@ -178,21 +177,21 @@
                     </select>
                 </div>
                 <script>
-                      var currentMapLoc = null;
-                      var autoLoc = true;
-                      function onSelectChange() {
-                        var sel = document.getElementById("loc_drop").value;
-                        //alert(sel);
-                        if(sel != null) {
-                          currentMapLoc = sel;
-                          autoLoc = false;
-                        }
-                      }
-
-
-
-
+                    /* currentMapLoc is updated every time the location is 
+                     * set, whether by auto-detection, map click, or drop-
+                     * down. */
+                  var currentMapLoc = null;
+                  var autoLoc = true;
+                      // When the dropdown selection is changed
+                  function onSelectChange() {
+                    var sel = document.getElementById("loc_drop").value;
+                    if(sel != null) {
+                      currentMapLoc = sel;
+                      autoLoc = false;
+                    }
+                  }
                 </script>
+<!-- The selectable Map element -->
                 <div id="campus-map" name="loc_map"></div>
                 <script type="text/javascript" src="/static/vote/voteMapScript.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsbxNy5GODdnbs1MuazTLziaCXJnN9dCM&callback=initMap">
@@ -205,7 +204,7 @@
     </div>
 
 
-    <!-- End of content, begin Scripts -->
+    <!-- End of content, begin more Scripts -->
 
     <div>
         <script type="application/javascript">
@@ -238,11 +237,6 @@
         $('#post_after_vote').hide();
         */
         snapToCurrentLoc(navigator, map, marker, geocoder);
-
-
-
-
-
         </script>
     </div>
 </div>
