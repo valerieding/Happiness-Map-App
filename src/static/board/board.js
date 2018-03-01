@@ -155,7 +155,7 @@ function getTrending(loc,time){
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
       $('#tuffy').empty(trHTML);
-      $('#tuffy').append(headertext + trHTML);
+      $('#tuffy').append('<table class=\'table table-hover\'>'+ headertext + trHTML + '</table>');
     },
     error: function(msg) {
       alert(msg.responseText);
