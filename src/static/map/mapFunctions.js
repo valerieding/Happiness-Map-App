@@ -150,7 +150,6 @@ function getCampusScore(start_time) {
       data: {'start_time': start_time},
       success: function(data){
         campus_avg = data;
-        console.log(campus_avg);
       }
     });
     if (campus_avg){
@@ -200,7 +199,6 @@ function getAllBuildingScoresByUser(start_time) {
 function changeTimeFrame(start_time, query_func) {
 	let allScores = query_func(start_time);
 	let allPlaces = allMapObjects(allScores);
-  console.log(allPlaces);
 	for (var i = 0; i < regions.length; i++){
     let data = regions[i].data('info');
 		if (allPlaces[data.id]) {

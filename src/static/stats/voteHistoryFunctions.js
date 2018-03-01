@@ -135,14 +135,14 @@ function makeWeekChart() {
   let dayData = getVoteByDayOfWeek();
   for (let day in days) {
     if (dayData[days[day]]) {
-      dayScores[day] = dayData[days[day]];
+      dayScores[day] = formatScore(dayData[days[day]]);
     }
   }
   let ctx = document.getElementById('userVotesByDayOfWeek').getContext('2d');
   var weekChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: labels,
+      labels: days,
       datasets: [{
         label: "Vote",
         borderWidth: 1,
@@ -172,7 +172,7 @@ function makeTimeChart() {
   let timesScores = [];
   for (let i = 0; i < 24; i++) {
     if (timeData[i]) {
-      timesScores.push(timeData[i]);
+      timesScores.push(formatScore(timeData[i]));
     } else {
       timesScores.push(0);
     }
@@ -213,9 +213,7 @@ function makeTimeChart() {
 }
 
 function updateHistoryChart(chart, start_time) {
-  console.log(start_time);
   ds = getVoteHistory(start_time);
-  console.log(ds);
   if (ds.length > 2) {
     document.getElementById("userVotesOverTime").style.display="block";
     chart.data.datasets.forEach((d) => {
