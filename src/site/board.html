@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %} Board {% endblock %}
+{% block resources %}
+<link rel="stylesheet" href="/static/board/index_style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script type="application/javascript" src="/static/board/board.js"></script>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="homepage">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <div id="myNav"></div>
+
+        <main role="main" class="inner cover text-center" id="home-cover">
+            <h1 class="cover-heading">Message Board</h1>
+            <!-- THIS is where 'welcomeText' goes when called on load: -->
+            <div id="welcome"></div>
+        </main>
+        <script src="/static/board/board.js" is_mod={{ is_moderator }} id="mod_lock"></script>
+        <script type="application/javascript" src="/static/board/board.js"></script>
+        {% if is_moderator %}
+        <!-- <script src="/static/board/board.js" one="true" id="mihai"></script> -->
+        <form id="adminLogoutButton" method="post">
+            <button type="button" class="btn btn-success">Admin Logout</button>
+        </form>
+        {% endif %}
+        <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
+        <div class="form-group" style="float:left;">
+            <form style="display:inline;" id="myform" method="post">
+                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!"
+                       name="message" autocomplete="off">
+                <BR>
+                <button id="tester" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+
+            <div style="display:inline;float:right;">
+                <form style="display:inline;padding-left:5px;" id="recent" method="post">
+                    <button type="button" class="btn btn-success">Recent</button>
+                </form>
+                <form style="display:inline;" id="trending" method="post">
+                    <button type="button" class="btn btn-success">Trending</button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <div>
+                <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
+                    <option value="" disabled selected>Filter Results by Location</option>
+                </select>
+            </div>
+
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="loc_drop" form="vote"
+                            name="location" onchange="getSelectedLoc();">
+                        Filter Results by Location
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="loc_drop">
+                        <a value="" disabled selected>Filter Results by Location</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons" style="float:right">
+                <label class="btn btn-outline-light active">
+                    <input type="radio" name="options"
+                           id="optAllScatter" autocomplete="off" checked>
+                    All
+                </label>
+                <label class="btn btn-outline-light">
+                    <input type="radio" name="options"
+                           id="optWeekScatter" autocomplete="off">
+                    Past Week
+                </label>
+                <label class="btn btn-outline-light">
+                    <input type="radio" name="options"
+                           id="optDayScatter" autocomplete="off">
+                    Past Day
+                </label>
+                <label class="btn btn-outline-light">
+                    <input type="radio" name="options"
+                           id="optHourScatter" autocomplete="off">
+                    Past 2 Hours
+                </label>
+            </div>
+        </div>
+
+        <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
+            <img class="card-img-top" alt="">
+            <div class="card-body">
+
+
+                <div class="d-flex justify-content-between">
+
+                    <table id="tuffy" border='2' class="table table-hover table-border">
+                        <tr>
+                            <th scope="col">Happiness Level</th>
+                            <th scope="col">Messages</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Time Stamp</th>
+                            <th scope="col">Reactions</th>
+                            {% if is_moderator %}
+                            <th scope="col">Remove Post</th>
+                            {% endif %}
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

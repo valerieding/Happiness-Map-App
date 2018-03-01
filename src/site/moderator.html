@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %} Moderator {% endblock %}
+{% block resources %}
+<script type="application/javascript" src="/static/moderator/moderator.js"></script>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+{% if is_moderator %}
+<script>window.location.replace("/board");</script>
+{% else %}
+<div class="homepage">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <div id="myNav"></div>
+        <main role="main" class="inner cover text-center" id="home-cover">
+            <h1 class="cover-heading">Moderator</h1>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                Admin Login
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="adminModalLabel">Admin Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form id="adminLoginForm" method="post">
+                                <input type="text" name="user" placeholder="Username" id="username">
+                                <input type="password" name="pass" placeholder="Password" id="password">
+                                <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

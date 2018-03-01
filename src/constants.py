@@ -4,6 +4,9 @@ from os.path import abspath, dirname, join
 """The root folder of server source files. """
 WEBSITE_ROOT_FOLDER = dirname(abspath(__file__))
 
+"""Folder containing all webpage templates. """
+TEMPLATE_FOLDER = join(WEBSITE_ROOT_FOLDER, 'site')
+
 """The root folder of statically served files. """
 STATIC_FOLDER = join(WEBSITE_ROOT_FOLDER, 'static')
 
