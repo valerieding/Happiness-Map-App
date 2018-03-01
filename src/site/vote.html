@@ -82,6 +82,9 @@
                    'longitude': 10,
                    'logical_location': loc,
                    'happiness_level': happy},
+            success: function(data) {
+              location.href='/board';
+            }
             });
           }
               // Redirect user to Board page so they can send a message after voting
