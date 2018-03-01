@@ -372,7 +372,7 @@ lab1.attr({fill: allPlaces["lab"].color, class: "building", id: 'lab'});
 lab1.data({'info': allPlaces['lab']});
 regions.push(lab1);
 
-var mid = rsr.set(); 
+var mid = rsr.set();
 mid.attr({fill: allPlaces["mid"].color, class: "building", id: 'mid'});
 mid.data({'info': allPlaces['mid']});
 
@@ -390,7 +390,7 @@ mid3.data({'info': allPlaces['mid']});
 regions.push(mid3);
 
 
-var rsrGroups = [physics,med,logan,eastBuild,multi,north,northBuild,maxp,lab,midway];
+var rsrGroups = [physics,med,logan,eastBuild,multi,north,northBuild,maxp,lab,mid];
 physics.push(
 	physics5 ,
 	physics4 ,

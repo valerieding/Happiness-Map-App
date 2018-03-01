@@ -195,20 +195,6 @@ function getAllBuildingScoresByUser(start_time) {
   return allScores;
 };
 
-function getBuildingScore(logloc) {
-  var score;
-  $.ajax({
-    url: '/request/get_building_average',
-    type: 'post',
-    dataType: 'json',
-    data: {'logical_location': logloc, 'start_time': 0},
-    success: function(data){
-      score = data;
-    }
-  });
-  return score;
-};
-
 
 //modifying map html functions
 function changeTimeFrame(start_time, query_func) {
