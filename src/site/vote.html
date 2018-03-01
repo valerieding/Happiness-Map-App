@@ -15,87 +15,87 @@
     }
 
 </style>
-<!-- <script type="application/javascript" src="/static/board/board.js"></script> -->
+
+<script type="application/javascript" src="/static/logical_locs.js"></script>
+
 
 {% endblock %}
 
 {% block body %}
 {{ super() }}
-
-<!-- Click functions for buttons of the Vote UI -->
 <script>
-      // Function that runs when the page is first loaded
-  $(document).ready(function(){
-    for (let key in log_locs) {
-      $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
-    }
-    var hidden = 1;
-        // Function that runs when the SubmitVote button is clicked
-    $("#vote_btn").click(function(){
-      var drop_loc = $("#loc_drop option:selected").val();
-      if (drop_loc === 'blank')
-        drop_loc = null;
+      $(document).ready(function(){
+        for (let key in log_locs) {
+          $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
+        }
 
-      var map_loc;
-      var happy;
-      var loc;
-        //var loc = '';
-        // map selection should take priority over dropdown selection
-        /* if (typeof map_loc != 'undefined') {
-              loc = map_loc;
+        var hidden = 1;
+        $("#vote_btn").click(function(){
+          /*
+          var drop_loc = $("#loc_drop option:selected").val();
+          if (drop_loc === 'blank')
+            drop_loc = null;
+          */
+          var map_loc;
+          var happy;
+          var loc;
+            //var loc = '';
+            // map selection should take priority over dropdown selection
+            /* if (typeof map_loc != 'undefined') {
+                  loc = map_loc;
+              }
+              else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
+              {
+                  loc = drop_loc;
+              } */
+          happy = $("input[name=happiness_level]:checked").val();
+          var confirmText = "(" + happy + ")\n";
+          var confirmed = true;
+          loc = currentMapLoc;
+          if(autoLoc == true) {
+             confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            //confirmed = confirm(confirmText);
+
+          } else if(autoLoc == false && currentMapLoc == 'offcampus') {
+            confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            //confirmed = confirm(confirmText);
+
+          } else if(currentMapLoc == '' || currentMapLoc == ' ' || currentMapLoc == null) {
+            confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
+           // confirmed = confirm(confirmText);
+          } else {
+            confirmText += "We auto-detected that your location is: " + currentMapLoc;
           }
-          else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
-          {
-              loc = drop_loc;
-          } */
-      happy = $("input[name=happiness_level]:checked").val();
-      var confirmText = "(" + happy + ")\n";
-      var confirmed = true;
-      loc = currentMapLoc;
-      /* If the user's location was auto-detected, or if their location 
-       * is set to null or offcampus, they should be prompted to confirm 
-       * this location before submitting a vote (because of auto-detect
-       * location and click inaccuracy). */
-      if(autoLoc == true) {
-         confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-      } else if(autoLoc == false && currentMapLoc == 'offcampus') {
-        confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-      } else if(currentMapLoc == '' || currentMapLoc == ' ' || currentMapLoc == null) {
-        confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
-      }
-      if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
-            // If there is a reason to confirm with the user, confirm.
-        confirmed = confirm(confirmText);
-      }
 
-          // If the user confirmed their location, send vote
-      if (confirmed == true){
-        alert("Sending Vote:\nmap: " + currentMapLoc + ", happy: " + happy);
-        loc = currentMapLoc;
-        happy = $("input[name=happiness_level]:checked").val();
-        if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
-          $.ajax({
-            url: '/request/add_vote',
-            type: 'post',
-            dataType: 'json',
-            data: {'latitude': 10,
-                   'longitude': 10,
-                   'logical_location': loc,
-                   'happiness_level': happy},
-            success: function(data) {
-              location.href='/board';
+          /*
+          if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
+            confirmed = confirm(confirmText);
+          }
+          */
+          confirmed = confirm(confirmText);
+          if (confirmed == true){
+            //alert("map: " + currentMapLoc + ", happy: " + happy);
+            loc = currentMapLoc;
+            happy = $("input[name=happiness_level]:checked").val();
+            if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
+              $.ajax({
+                url: '/request/add_vote',
+                type: 'post',
+                dataType: 'json',
+                data: {'latitude': 10,
+                       'longitude': 10,
+                       'logical_location': loc,
+                       'happiness_level': happy},
+                });
+              setTimeout(function(){ 
+                location.href = "board";
+              }, 2);
             }
-            });
+            //location.href = "board";
+
           }
-              // Redirect user to Board page so they can send a message after voting
-              //TODO the page redirects before the vote is able to be sent. This is something we need to fix, to make sure the vote is sent before the redirect. 
-          //location.href='/board';
-      } else if (typeof drop_loc != undefined) {
-        alert("Undefined Happiness level or Locatoin:\ndrop: " + drop_loc + ", happy: " + happy);
-        loc = drop_loc;
-      }
-    });
-  });
+        });
+      });
 </script>
 
 
@@ -106,6 +106,49 @@
         <main role="main" class="inner cover text-center" id="home-cover">
             <h1 class="cover-heading">Vote</h1>
         </main>
+
+
+        <!-- Initially hidden elements, unhiden after voting -->
+        <!--
+        <div id="post_after_vote" class="form-group" style="float:left;">
+            <main role="main" class="inner cover text-center" id="home-cover">
+                <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
+                <div style="text-align: center;">
+                    <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post">
+                        <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
+                    </form>
+                    <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post">
+                        <button id="view_map" type="button" onClick="location.href='/map'" class="btn btn-danger">View
+                            Map
+                        </button>
+                    </form>
+                    <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post">
+                        <button id="view_board" type="button" onClick="location.href='/board'" class="btn btn-danger">
+                            View Messages
+                        </button>
+                    </form>
+                    <BR>
+                    <BR>
+                    <BR>
+                    <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h3>
+                     welcome text only refreshes on page reload
+                         should refresh after submitting a vote 
+                     <div class="ui" id="welcome" hidden></div> 
+                </div>
+            </main>
+            <div>
+                <form style="display:inline;" id="myform" method="post">
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!"
+                           name="message">
+                    <BR>
+                    <button type="submit" style="display:block;" onclick="window.location.reload()"
+                            class="btn btn-primary">Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+        -->
+
 
 <!-- Voting UI begins: -->
         <form id="vote" method="post">
@@ -165,8 +208,35 @@
 
     <div>
         <script type="application/javascript">
-            // Only once the whole page has loaded does the map try to find location
-          snapToCurrentLoc(navigator, map, marker, geocoder);
+        
+        //var hidden = 1;        
+        /*
+        $( "#vote_btn" ).click(function() {
+          if(hidden == 0) {
+            $('#post_after_vote').hide();
+            $('#vote_ui').show();
+            $('#campus-map').show();
+            hidden = 1;
+          } else {
+            $('#post_after_vote').show();
+            $('#vote_ui').hide();
+            $('#campus-map').hide();
+            hidden = 0;
+          }        
+        });
+        */
+        /*
+        $( "#change_vote" ).click(function() {
+          //if(hidden == 0) {
+            $('#post_after_vote').hide();
+            $('#vote_ui').show();
+            $('#campus-map').show();
+            hidden = 1;
+          //} 
+        });
+        $('#post_after_vote').hide();
+        */
+        snapToCurrentLoc(navigator, map, marker, geocoder);
         </script>
     </div>
 </div>
