@@ -31,28 +31,34 @@ function getSelectedLoc(){
 
 //Change 'welcome' text based off the user's most recent happiness level vote.
 function welcomeText(happy_lvl){
-    var welcome = ""
+    var welcome = "", color
     switch(happy_lvl){
       case 1:
-        welcome = "<h4 style=\"color:White; text-align:left;\">1/5?!?! Why are you so sad?</h4>";
+        welcome = "1/5?!?! Why are you so sad?";
+        color = "SlateBlue";
         break;
       case 2:
-        welcome ="<h4 style=\"color:White; text-align:left;\">2/5? Tell us why you're feeling blue...</h4>";
+        welcome ="2/5? Tell us why you're feeling blue...";
+        color = "DodgerBlue";
         break;
       case 3:
-        welcome ="<h4 style=\"color:White; text-align:left;\">Keep your chin up, and tell us why you feel so 3 right now...</h4>";
+        welcome ="Keep your chin up, and tell us why you feel so 3 right now...";
+        color = "Orange";
         break;
       case 4:
-        welcome ="<h4 style=\"color:White; text-align:left;\">4/5? Nice! Tell us why...</h4>";
+        welcome ="4/5? Nice! Tell us why...";
+        color = "Yellow";
         break;
       case 5:
-        welcome = "<h4 style=\"color:White; text-align:left;\">A perfect 5? You're too happy. Tell us why...</h4>";
+        welcome = "A perfect 5? You're too happy. Tell us why...";
+        color = "MediumSeaGreen";
         break;
       default:
         document.getElementById('myform').innerHTML = "";
-        welcome = "<h4 style=\"color:White; text-align:left;\">Vote first, then post!</h4>";
+        welcome = "Vote first, then post!";
+        color = "White";
     }
-   document.getElementById("welcome").innerHTML = welcome;
+    return "<h4 style=\"color:" + color + "; text-align:left;\">" + welcome + "</h4>"
 }
 
 //HELPER FUNCTION to ~refactor~, exists to get rid of repetition
@@ -148,7 +154,7 @@ function getCurrentHappiness(){
     type: 'post',
     dataType: 'json',
     success: function(data) {
-      welcomeText(data)
+      document.getElementById("welcome").innerHTML = welcomeText(data)
     },
     error: function(msg) {
       console.log("get_happiness_level failed");
