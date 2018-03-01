@@ -8,10 +8,12 @@ var timeCallback = function(value, index, values) {
 }
 
 
-var chart = makeHistoryChart();
+var chart = makeHistoryChart({
+    stepSize: 60*60*24,
+    callback: dateCallback,
+  }, null);
 var weekChart = makeWeekChart();
 var timeChart = makeTimeChart();
-updateHistoryChart(chart, null);
 setScatterButtonFunctions();
 
 
@@ -19,7 +21,7 @@ setUpMapPersonal();
 setButtonFunctions(getAllBuildingScoresByUser);
 
 
-async function getUsersVotes(start_time) {
+async function getVoteHistory(start_time) {
   var myScores;
   if (!start_time) {
     start_time = 0;
@@ -38,19 +40,6 @@ async function getUsersVotes(start_time) {
   } catch(error) {
     console.error(error);
   }
-}
-
-async function getVoteHistory(start_time) {
-  var voteHistory = await getUsersVotes(start_time);
-  var voteHistory2 = [];
-
-  for (var i = 0; i < Math.min(60, voteHistory.length); i++) {
-    let x = new Date(1000 * voteHistory[i].timestamp).toDateString();
-    voteHistory2.push({
-      x: voteHistory[i].timestamp,
-      y: voteHistory[i].happiness_level});
-  }
-  return voteHistory2;
 }
 
 async function getVoteByDayOfWeek() {
@@ -89,7 +78,23 @@ async function getVoteByTimeOfDay() {
   }
 }
 
-function makeHistoryChart() {
+async function makeHistoryChart(ticks, start_time) {
+  var voteHistory = await getVoteHistory(start_time);
+  if (voteHistory.length <= 2) {
+    document.getElementById("userVotesOverTime").style.display="none";
+    document.getElementById("warningNotEnoughInfo").innerHTML = "Not Enough Data to Display"
+    return;
+  }
+  document.getElementById("userVotesOverTime").style.display="block";
+  document.getElementById("warningNotEnoughInfo").innerHTML = "";
+  var voteHistory2 = [];
+  for (var i = 0; i < Math.min(60, voteHistory.length); i++) {
+    let x = new Date(1000 * voteHistory[i].timestamp).toDateString();
+    voteHistory2.push({
+      x: voteHistory[i].timestamp,
+      y: voteHistory[i].happiness_level});
+  }
+
   let ctx = document.getElementById('userVotesOverTime').getContext('2d');
   var timeChart = new Chart(ctx, {
       type: 'line',
@@ -101,7 +106,7 @@ function makeHistoryChart() {
           borderWidth: 2,
           fill: false,
           lineTension: 0,
-          data: []
+          data: voteHistory2
         }]
       },
       options: {
@@ -109,9 +114,7 @@ function makeHistoryChart() {
               xAxes: [{
                   type: 'linear',
                   position: 'bottom',
-                  ticks: {
-                      callback: dateCallback
-                  }
+                  ticks: ticks
               }],
               yAxes: [{
                   type: 'linear',
@@ -221,32 +224,37 @@ async function makeTimeChart() {
   return weekChart;
 }
 
-async function updateHistoryChart(chart, start_time) {
-  ds = await getVoteHistory(start_time);
-  if (ds.length > 2) {
-    document.getElementById("userVotesOverTime").style.display="block";
-    document.getElementById("warningNotEnoughInfo").innerHTML = "";
-    chart.data.datasets.forEach((d) => {
-          d.data = ds;
-      });
-    chart.update();
-  } else {
-    document.getElementById("userVotesOverTime").style.display="none";
-    document.getElementById("warningNotEnoughInfo").innerHTML = "Not Enough Data to Display"
-  }
-}
 
 function setScatterButtonFunctions() {
   $('#optAllScatter').on('change', function () {
-    updateHistoryChart(chart, null);
+    let ticks = {
+        stepSize: 60*60*24,
+        callback: dateCallback
+    };
+    makeHistoryChart(ticks, null);
   });
   $('#optWeekScatter').on('change', function () {
-    updateHistoryChart(chart, -week);
+    let now = Math.floor(Date.now() / 1000);
+    let ticks = {
+        stepSize: 60*60*24,
+        callback: dateCallback
+    };
+    makeHistoryChart(ticks, -week);
   });
   $('#optDayScatter').on('change', function () {
-    updateHistoryChart(chart, -day);
+    let now = Math.floor(Date.now() / 1000);
+    let ticks = {
+        stepSize: 60*60,
+        callback: timeCallback
+    };
+    makeHistoryChart(ticks, -day);
   });
   $('#optHourScatter').on('change', function () {
-    updateHistoryChart(chart, -twoHr);
+    let now = Math.floor(Date.now() / 1000);
+    let ticks = {
+        stepSize: 60,
+        callback: timeCallback
+    };
+    makeHistoryChart(ticks, -twoHr);
   });
 }
