@@ -41,8 +41,8 @@ var FullNameKey = Object.freeze({
   northBuild : "North Quad Buildings",
   lab : "Lab Buildings",
   crerar : "Crerar Library",
-	mansueto : "Mansueto Library",
-	regenstein : "Regenstein Library",
+  mansueto : "Mansueto Library",
+  regenstein : "Regenstein Library",
   bartlett : "Bartlett Dining Commons",
   maxp : "Max Palevsky Commons",
   hutch : "Hutchinson Commons",
@@ -146,7 +146,6 @@ function getCampusScore(start_time) {
     $.ajax({
       url: '/request/get_votes_by',
       type: 'post',
-      async: false,
       data: {'start_time': start_time},
       success: function(data){
         campus_avg = data;
@@ -167,7 +166,6 @@ function getAllBuildingScores(start_time) {
     url: '/request/get_votes_by',
     type: 'post',
     dataType: 'json',
-    async: false,
     data: {'group_by': 'loc', 'start_time': start_time},
     success: function(data){
       allScores = data;
@@ -185,7 +183,6 @@ function getAllBuildingScoresByUser(start_time) {
     url: "/request/get_personal_votes_by",
     type: 'post',
     dataType: 'json',
-    async: false,
     data: {'group_by': 'loc', 'start_time': start_time},
     success: function(data){
       allScores = data;
@@ -226,16 +223,13 @@ function setButtonFunctions(query_func) {
     changeTimeFrame(null, query_func);
   });
   $('#optWeek').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - week, query_func);
+    changeTimeFrame(-week, query_func);
   });
   $('#optDay').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - day, query_func);
+    changeTimeFrame(-day, query_func);
   });
   $('#optHour').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    changeTimeFrame(now - twoHr, query_func);
+    changeTimeFrame(-twoHr, query_func);
   });
 }
 

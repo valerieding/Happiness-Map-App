@@ -28,7 +28,6 @@ function getUsersVotes(start_time) {
     url: '/request/get_recent_votes',
     type: 'post',
     dataType: 'json',
-    async: false,
     data: {'start_time': start_time},
     success: function(data){
       myScores = data;
@@ -56,7 +55,6 @@ function getVoteByDayOfWeek() {
     url: '/request/get_personal_votes_by',
     type: 'post',
     dataType: 'json',
-    async: false,
     data: {'group_by': 'dow'},
     success: function(data){
       myScores = data;
@@ -71,7 +69,6 @@ function getVoteByTimeOfDay() {
     url: '/request/get_personal_votes_by',
     type: 'post',
     dataType: 'json',
-    async: false,
     data: {'group_by': 'tod'},
     success: function(data){
       myScores = data;

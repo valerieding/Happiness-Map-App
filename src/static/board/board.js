@@ -10,12 +10,7 @@ var mod = 0;
 $(document).ready(function(){
       //When page loads...
       getRecents();
-      happyL = getCurrentHappiness();
-      if(happyL == null){
-        document.getElementById('myform').innerHTML = "";
-      }
-      welcomeText(happyL);
-
+      getCurrentHappiness();
       //populate dropdown with list at bottom of JS document..
       for (let key in log_locs) {
         $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
@@ -54,6 +49,7 @@ function welcomeText(happy_lvl){
         welcome = "<h4 style=\"color:White; text-align:left;\">A perfect 5? You're too happy. Tell us why...</h4>";
         break;
       default:
+        document.getElementById('myform').innerHTML = "";
         welcome = "<h4 style=\"color:White; text-align:left;\">Vote first, then post!</h4>";
     }
    document.getElementById("welcome").innerHTML = welcome;
@@ -66,115 +62,27 @@ function makeRow(messageArray,mod){
   mod = document.getElementById('mod_lock').getAttribute('is_mod').toLowerCase() == 'true';
   console.log('mod: ' + mod)
   console.log("mod = " + typeof(mod));
-  if (!mod) {
-    headertext = '<tr><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
-    console.log("getting it right")
-  } else {
-    headertext = '<tr><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
-    console.log("getting it wrong")
+  var headers = '<th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th>'
+  if (mod) {
+    headers += '<th scope=\'col\'>Remove Post</th>';
   }
+  headertext = '<tr>' + headers + '</tr>'
   $.each(messageArray, function(index, value){
-
-    if (mod){
-      trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
-        decodeURIComponent(value['message']) + '</td><td>' + 
-        decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
-        timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-        value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
-        value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-        value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
-        value['reactions']['downvote'] + '</button></td>' + 
-        '<td> <button onclick=\"deletePost('+ value['post_id'] + ');\" class=\"btn btn-primary\">' + 'Remove Post' + '</button> </td>'+
-      '</tr>' ;
-      console.log("admin mod");
-    } else {
-      trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
-        decodeURIComponent(value['message']) + '</td><td>' + 
-        decodeURIComponent(log_locs[value['location']['logical_location']]) + '</td><td>' + 
-        timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-        value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
-        value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-        value['post_id'] +');\" class=\"btn btn-danger\"><i class="fa fa-frown-o"></i> ' + 
-        value['reactions']['downvote'] + '</button></td></tr>' ;
-        console.log(mod);
+    trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' +
+        decodeURIComponent(value['message']) + '</td><td>' +
+        decodeURIComponent(value['location']['logical_location']) + '</td><td>' +
+        timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' +
+        value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' +
+        value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' +
+        value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' +
+        value['reactions']['downvote'] + '</button></td>';
+    if (mod) {
+      trHTML += '<td> <button onclick=\"deletePost('+ value['post_id'] + ');\" class=\"btn btn-primary\">' + 'Remove Post' + '</button> </td>';
     }
-    
+    trHTML += '</tr>'
   });
   return trHTML;
 }
-
-// function makeHeader(mod) {
-//   //Global string to use get_recent and get_trending posts easier
-//   mod = document.getElementById('mihai').getAttribute('one');
-//   if (!mod) {
-//     var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
-//   } else {
-//     var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
-//   }
-// }
-
-//GET RECENT POSTS
-// function getRecents(){
-//   //e.preventDefault();
-//   $.ajax({
-//     url: '/request/get_recent_posts',
-//     type: 'post',
-//     dataType: 'json',
-//     data: {'latitude': 10, 'longitude': 10},
-//     async: false,
-//     success: function(data) {
-//       var messageArray = data;
-//       console.log(messageArray);
-//       var trHTML = makeRow(messageArray);
-//       $('#tuffy').empty()
-//       $('#tuffy').append(headertext + trHTML);
-//     },
-//     error: function(msg) {
-//       alert(msg.responseText);
-//     }
-//   });
-//   trendingFlag = 0;
-// }
-//GET TRENDING POSTS
-// function getTrending(){
-//   if(!timeframe){
-//     $.ajax({
-//       url: '/request/get_trending_posts',
-//       type: 'post',
-//       dataType: 'json',
-//       async: false,
-//       success: function(data) {
-//         var messageArray = data;
-//         console.log(messageArray);
-//         var trHTML = makeRow(messageArray);
-//         $('#tuffy').empty(trHTML);
-//         $('#tuffy').append(headertext + trHTML);
-//       },
-//       error: function(msg) {
-//         alert(msg.responseText);
-//       }
-//     });
-//   } else {
-//       $.ajax({
-//         url: '/request/get_trending_posts',
-//         type: 'post',
-//         dataType: 'json',
-//         data: {'start_time':timeframe},
-//         async: false,
-//         success: function(data) {
-//           var messageArray = data;
-//           console.log(messageArray);
-//           var trHTML = makeRow(messageArray);
-//           $('#tuffy').empty(trHTML);
-//           $('#tuffy').append(headertext + trHTML);
-//         },
-//         error: function(msg) {
-//           alert(msg.responseText);
-//         }
-//     });
-//   }
-//   trendingFlag = 1;
-// }
 
 //GET RECENTS AND TRENDING WITH PARAMETERS: LOCATION and TIMEFRAME
 //Used for sorting posts by logical location and/or recency
@@ -193,7 +101,6 @@ function getRecents(loc,time){
     type: 'post',
     dataType: 'json',
     data: currData,
-    async: false,
     success: function(data) {
       var messageArray = data;
       console.log(messageArray);
@@ -221,7 +128,6 @@ function getTrending(loc,time){
     type: 'post',
     dataType: 'json',
     data: currData,
-    async: false,
     success: function(data) {
       var messageArray = data;
       console.log(messageArray);
@@ -237,23 +143,18 @@ function getTrending(loc,time){
 }
 
 function getCurrentHappiness(){
-  var happyL =0;
-  console.log("happy level is " + happyL);
   $.ajax({
     url: '/request/get_happiness_level',
     type: 'post',
     dataType: 'json',
-    async: false,
     success: function(data) {
-      happyL = data;
-      console.log("happy level now is " + happyL);
+      welcomeText(data)
     },
-     error: function(msg) {
-      console.log("didnt work");
+    error: function(msg) {
+      console.log("get_happiness_level failed");
     }
   });
-  return happyL;
-}    
+}
 
 // ADD POST ON SUBMIT
 $(function() {
@@ -426,59 +327,42 @@ $(function() {
 // We used a slightly modified version of this function from
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time-eg-2-seconds-ago-one-week-ago-etc-best
 // We know it's smelly but we'll try to refactor on iteration 2
+var secondsPerMinute = 60;
+var secondsPerHour = secondsPerMinute * 60;
+var secondsPerDay = secondsPerHour * 24;
+var secondsPerMonth = secondsPerDay * 30;
+var secondsPerYear = secondsPerDay * 365;
+
 function timeSince(timeStamp) {
-    var previous = new Date(timeStamp * 1000);
-    var current = new Date();
+    var elapsed = new Date().getTime() / 1000 - timeStamp;
 
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
-
-    var elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-        if (Math.round(elapsed/1000) == 1){
-          return Math.round(elapsed/1000) + ' second ago';   
-        }
-         return Math.round(elapsed/1000) + ' seconds ago';   
+    var value, unit, prefix = '';
+    if (elapsed < secondsPerMinute) {
+        value = Math.round(elapsed);
+        unit = 'second';
+    } else if (elapsed < secondsPerHour) {
+        value = Math.round(elapsed / secondsPerMinute);
+        unit = 'minute';
+    } else if (elapsed < secondsPerDay) {
+        value = Math.round(elapsed / secondsPerHour);
+        unit = 'hour';
+    } else if (elapsed < secondsPerMonth) {
+        prefix = '~'
+        value = Math.round(elapsed / secondsPerDay);
+        unit = 'day';
+    } else if (elapsed < secondsPerYear) {
+        prefix = '~'
+        value = Math.round(elapsed / secondsPerMonth);
+        unit = 'month';
+    } else {
+        prefix = '~'
+        value = Math.round(elapsed / secondsPerYear);
+        unit = 'year';
     }
-
-    else if (elapsed < msPerHour) {
-        if (Math.round(elapsed/msPerMinute) == 1){
-          return  Math.round(elapsed/msPerMinute) + ' minute ago';   
-        }
-         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+    if (value != 1) {
+        unit += 's'
     }
-
-    else if (elapsed < msPerDay ) {
-        if (Math.round(elapsed/msPerHour) == 1){
-          return  Math.round(elapsed/msPerHour) + ' hour ago';   
-        }
-         return Math.round(elapsed/msPerHour ) + ' hours ago';   
-    }
-
-    else if (elapsed < msPerMonth) {
-        if (Math.round(elapsed/msPerDay) == 1){
-          return '~' + Math.round(elapsed/msPerDay) + ' day ago';   
-        }
-        return '~' + Math.round(elapsed/msPerDay) + ' days ago';   
-    }
-
-    else if (elapsed < msPerYear) {
-        if (Math.round(elapsed/msPerMonth) == 1){
-          return '~' + Math.round(elapsed/msPerMonth) + ' month ago';   
-        }
-        return '~' + Math.round(elapsed/msPerMonth) + ' months ago';   
-    }
-
-    else {
-        if (Math.round(elapsed/msPerYear) == 1){
-          return '~' + Math.round(elapsed/msPerYear) + ' year ago';   
-        }
-        return '~' + Math.round(elapsed/msPerYear ) + ' years ago';   
-    }
+    return prefix + value + ' ' + unit + ' ago';
 }
 
 //Found this on stack overflow since no built in function in JS...
