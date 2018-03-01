@@ -2,7 +2,7 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import Voting
+from server.util.wrappers import Voting
 
 
 class VotingAPI:
@@ -35,7 +35,6 @@ class VotingAPI:
         in the last `VOTE_TIMEOUT` seconds, that vote is then changed to have this happiness level.
         """
 
-        # TODO: use user-specific locks around here (provided by the DatabaseManager).
         try:
             self.database.acquire_lock(uid)
             self.database.execute("DELETE FROM votes WHERE uid = ? AND timestamp >= ?",

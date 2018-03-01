@@ -80,18 +80,6 @@ class MessageRequestsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @mock.patch.object(context.messageAPI, 'add_reaction', return_value=DUMMY_RESPONSE)
-    def test_upvote_valid(self, mocked):
-        response = self.client.post('/request/upvote', data={'post_id': 10})
-        self.assertTrue(mocked.called)
-        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
-
-    @mock.patch.object(context.messageAPI, 'add_reaction', return_value=DUMMY_RESPONSE)
-    def test_downvote_valid(self, mocked):
-        response = self.client.post('/request/downvote', data={'post_id': 10})
-        self.assertTrue(mocked.called)
-        self.assertEqual(response.data, JSON_DUMMY_RESPONSE)
-
-    @mock.patch.object(context.messageAPI, 'add_reaction', return_value=DUMMY_RESPONSE)
     def test_add_reaction_valid(self, mocked):
         response = self.client.post('/request/add_reaction', data={'post_id': 10, 'reaction': 'upvote'})
         self.assertTrue(mocked.called)
@@ -103,7 +91,6 @@ class MessageRequestsTest(TestCase):
         response = self.client.post('/request/add_reaction', data={'post_id': 10, 'reaction': 'not_a_react'})
         self.assertFalse(mocked.called)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-
 
 
 if __name__ == '__main__':
