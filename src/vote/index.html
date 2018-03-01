@@ -70,53 +70,49 @@
           var confirmed = true;
           if(autoLoc == true) {
              confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-          } 
-          else if(autoLoc == false && currentMapLoc == 'offcampus') {
+          } else if(autoLoc == false && currentMapLoc == 'offcampus') {
             confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-          }
-          else if(currentMapLoc == '' || currentMapLoc == ' ' || currentMapLoc == null) {
+          } else if(currentMapLoc == '' || currentMapLoc == ' ' || currentMapLoc == null) {
             confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
-          } else {
-            if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
-              //confirmed = confirm(confirmText);
-            }
+          } 
+          if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
+            confirmed = confirm(confirmText);
           }
-          confirmed = confirm(confirmText);
+          //confirmed = confirm(confirmText);
 
           if (confirmed == true){
             alert("map: " + currentMapLoc + ", happy: " + happy);
             loc = currentMapLoc;
+            happy = $("input[name=happiness_level]:checked").val();
+            if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
+              $.ajax({
+                url: '/request/add_vote',
+                type: 'post',
+                dataType: 'json',
+                data: {'latitude': 10,
+                       'longitude': 10,
+                       'logical_location': loc,
+                       'happiness_level': happy},    
+                });
+              }
+            if(hidden == 0) {
+              $('#post_after_vote').hide();
+              $('#vote_ui').show();
+              $('#campus-map').show();
+              hidden = 1;
+            } else {
+              $('#post_after_vote').show();
+              $('#vote_ui').hide();
+              $('#campus-map').hide();
+              hidden = 0;
+            }
             //submitVote(currentMaploc, happy);
           }
            else if (typeof drop_loc != undefined) {
             alert("drop: " + drop_loc + ", happy: " + happy);
-            happy = $("input[name=happiness_level]:checked").val();
+            
             loc = drop_loc;
             //submitVote(drop_loc, happy);
-          }
-
-          if (happy >= 1 && happy <= 5 && typeof loc != undefined)
-          {
-            $.ajax({
-                    url: '/request/add_vote',
-                    type: 'post',
-                    dataType: 'json',
-                    data: {'latitude': 10,
-                           'longitude': 10,
-                           'logical_location': loc,
-                           'happiness_level': happy},    
-            });
-          }
-          if(hidden == 0) {
-            $('#post_after_vote').hide();
-            $('#vote_ui').show();
-            $('#campus-map').show();
-            hidden = 1;
-          } else {
-            $('#post_after_vote').show();
-            $('#vote_ui').hide();
-            $('#campus-map').hide();
-            hidden = 0;
           }
         });
       });
@@ -152,7 +148,7 @@
             <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
             <!-- welcome text only refreshes on page reload
                  should refresh after submitting a vote -->
-            <!--<div class="ui" id="welcome"></div> -->
+            <!-- <div class="ui" id="welcome" hidden></div> -->
           </main>
           <form  style="display:inline;"id="myform" method="post">
             <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
@@ -196,6 +192,7 @@
             //alert(sel);
             if(sel != null) {
               currentMapLoc = sel;
+              autoLoc = false;
             }
           }
         </script>
