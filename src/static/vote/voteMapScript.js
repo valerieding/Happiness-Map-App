@@ -106,9 +106,11 @@ function snapToCurrentLoc() {
       };
 
       marker = placeMarker(pos, map);
-      geocodeLatLng(geocoder, map, marker);
-      autoLoc = true;
-      which_loc = 'auto';
+      if(currentMapLoc == null) {
+        geocodeLatLng(geocoder, map, marker);
+        autoLoc = true;
+        //which_loc = 'auto';
+      }
 
 
 
