@@ -39,15 +39,6 @@
           var map_loc;
           var happy;
           var loc;
-            //var loc = '';
-            // map selection should take priority over dropdown selection
-            /* if (typeof map_loc != 'undefined') {
-                  loc = map_loc;
-              }
-              else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
-              {
-                  loc = drop_loc;
-              } */
           happy = $("input[name=happiness_level]:checked").val();
           var confirmText = "(" + happy + ")\n";
           var confirmed = true;
@@ -67,16 +58,17 @@
             confirmText += "We auto-detected that your location is: " + currentMapLoc;
           }
 
-          /*
+          // Please don't mess with the confirm stuff (unless there's a reason I'm not seeing?). Users ONLY need to confirm their location if it was auto-detected (because GPS is inaccurate) or it's 'off campus' (since for the majority of the time, we assume users aren't INTENTIONALLY clicking a location off campus, but probably meant to click a buliding and missed it). 
+          //Also, the confirm variable is set to 'true' at the beginning, so confirm() doesn't always need to be called. 
           if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
             confirmed = confirm(confirmText);
           }
-          */
-          confirmed = confirm(confirmText);
+          
+          //confirmed = confirm(confirmText);
           if (confirmed == true){
-            //alert("map: " + currentMapLoc + ", happy: " + happy);
             loc = currentMapLoc;
             happy = $("input[name=happiness_level]:checked").val();
+            //alert("map: " + currentMapLoc + ", happy: " + happy);
             if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
               $.ajax({
                 url: '/request/add_vote',
@@ -106,50 +98,6 @@
         <main role="main" class="inner cover text-center" id="home-cover">
             <h1 class="cover-heading">Vote</h1>
         </main>
-
-
-        <!-- Initially hidden elements, unhiden after voting -->
-        <!--
-        <div id="post_after_vote" class="form-group" style="float:left;">
-            <main role="main" class="inner cover text-center" id="home-cover">
-                <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
-                <div style="text-align: center;">
-                    <form style="display:inline;padding-left:0px;width:200px" id="recent" method="post">
-                        <button id="change_vote" type="button" class="btn btn-danger">Change vote</button>
-                    </form>
-                    <form style="display:inline;padding-left:100px;width:1000px" id="recent" method="post">
-                        <button id="view_map" type="button" onClick="location.href='/map'" class="btn btn-danger">View
-                            Map
-                        </button>
-                    </form>
-                    <form style="display:inline;padding-left:100px;width:200px" id="recent" method="post">
-                        <button id="view_board" type="button" onClick="location.href='/board'" class="btn btn-danger">
-                            View Messages
-                        </button>
-                    </form>
-                    <BR>
-                    <BR>
-                    <BR>
-                    <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h3>
-                     welcome text only refreshes on page reload
-                         should refresh after submitting a vote 
-                     <div class="ui" id="welcome" hidden></div> 
-                </div>
-            </main>
-            <div>
-                <form style="display:inline;" id="myform" method="post">
-                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!"
-                           name="message">
-                    <BR>
-                    <button type="submit" style="display:block;" onclick="window.location.reload()"
-                            class="btn btn-primary">Submit
-                    </button>
-                </form>
-            </div>
-        </div>
-        -->
-
-
 <!-- Voting UI begins: -->
         <form id="vote" method="post">
             <div id="vote_ui" class="ui">
@@ -208,34 +156,6 @@
 
     <div>
         <script type="application/javascript">
-        
-        //var hidden = 1;        
-        /*
-        $( "#vote_btn" ).click(function() {
-          if(hidden == 0) {
-            $('#post_after_vote').hide();
-            $('#vote_ui').show();
-            $('#campus-map').show();
-            hidden = 1;
-          } else {
-            $('#post_after_vote').show();
-            $('#vote_ui').hide();
-            $('#campus-map').hide();
-            hidden = 0;
-          }        
-        });
-        */
-        /*
-        $( "#change_vote" ).click(function() {
-          //if(hidden == 0) {
-            $('#post_after_vote').hide();
-            $('#vote_ui').show();
-            $('#campus-map').show();
-            hidden = 1;
-          //} 
-        });
-        $('#post_after_vote').hide();
-        */
         snapToCurrentLoc(navigator, map, marker, geocoder);
         </script>
     </div>

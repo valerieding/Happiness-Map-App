@@ -6,7 +6,8 @@ var recentsFlag = 0;
 var trendingFlag = 0;
 var timeframe = 0;
 var mod = 0;
-var stat = 0;
+var stat_rec = 0;
+var stat_trend = 0;
 
 $(document).ready(function(){
       //When page loads...
@@ -73,7 +74,7 @@ function makeRow(messageArray,mod){
   if (mod) {
     headers += '<th scope=\'col\'>Remove Post</th>';
   }
-  headertext = '<tr>' + headers + '</tr>'
+  headertext = '<thead class=\'thead-dark\'><tr>' + headers + '</tr></thead>'
   $.each(messageArray, function(index, value){
     trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' +
         decodeURIComponent(value['message']) + '</td><td>' +
@@ -96,14 +97,13 @@ function makeRow(messageArray,mod){
 //Will get desired location from a dropdown list of all possibilities
 function getRecents(loc,time){
   console.log("using getR");
-  stat = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
-  if (stat) {
-    var staturl = '/request/get_recent_personal_posts'
+  stat_rec = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
+  if (stat_rec) {
+    var staturl_rec = '/request/get_recent_personal_posts'
   } else {
-    var staturl = '/request/get_recent_posts'
+    var staturl_rec = '/request/get_recent_posts'
   }
-  //var staturl = '/request/get_recent_posts'
-  console.log('stat: '+ staturl)
+  console.log('stat: '+ staturl_rec)
   var currData = {};
   if(loc){
     currData['logical_location'] =loc;
@@ -111,9 +111,8 @@ function getRecents(loc,time){
   if(time){
     currData['start_time'] = time;
   }
-
   $.ajax({
-    url: staturl,
+    url: staturl_rec,
     type: 'post',
     dataType: 'json',
     data: currData,
@@ -122,7 +121,7 @@ function getRecents(loc,time){
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
       $('#tuffy').empty()
-      $('#tuffy').append(headertext + trHTML);
+      $('#tuffy').append('<table class=\'table table-hover\'>'+ headertext + trHTML + '</table>');
     },
     error: function(msg) {
       alert(msg.responseText);
@@ -132,6 +131,13 @@ function getRecents(loc,time){
 }
 function getTrending(loc,time){
   console.log("using new getTrending");
+  stat_trend = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
+  if (stat_trend) {
+    var staturl_trend = '/request/get_trending_personal_posts'
+  } else {
+    var staturl_trend = '/request/get_trending_posts'
+  }
+  // var staturl_trend = '/request/get_trending_posts'
   var currData = {};
   if(loc){
     currData['logical_location'] =loc;
@@ -140,7 +146,7 @@ function getTrending(loc,time){
     currData['start_time'] = timeframe;
   }
   $.ajax({
-    url: '/request/get_trending_posts',
+    url: staturl_trend,
     type: 'post',
     dataType: 'json',
     data: currData,
@@ -149,7 +155,7 @@ function getTrending(loc,time){
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
       $('#tuffy').empty(trHTML);
-      $('#tuffy').append(headertext + trHTML);
+      $('#tuffy').append('<table class=\'table table-hover\'>'+ headertext + trHTML + '</table>');
     },
     error: function(msg) {
       alert(msg.responseText);
