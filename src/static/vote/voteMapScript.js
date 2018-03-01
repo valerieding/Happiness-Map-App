@@ -97,35 +97,6 @@ var marker;
 var gecoder;
 var gNavigator;
 
-/* This function initializes the Map, including defining its starting location 
- * and linking onClick functions to place a new marker and determine the logical
- * location of that click. */
-/*
-function initMap() {
-  var myLatlng = {lat: 41.791422, lng: -87.599729};
-  var map = new google.maps.Map(document.getElementById('campus-map'), {
-    zoom: 16,
-    center: myLatlng
-  });
-  map.setOptions({styles: styles['hide']});
-  var geocoder = new google.maps.Geocoder;
-  var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map,
-    title: 'Click to zoom'
-  });
-
-  map.addListener('click', function(e) {
-    marker.setMap(null);
-    marker = null;
-    marker = placeMarker(e.latLng, map);
-    geocodeLatLng(geocoder, map, marker);
-  });
-
-  marker.addListener('click', function() {});
-}
-*/
-
 function snapToCurrentLoc() {
   if (gNavigator.geolocation || isOnCampus(myLatlng.lat(), myLatlng.lng()) == true) {
     gNavigator.geolocation.getCurrentPosition(function(position) {
@@ -137,6 +108,7 @@ function snapToCurrentLoc() {
       marker = placeMarker(pos, map);
       geocodeLatLng(geocoder, map, marker);
       autoLoc = true;
+      which_loc = 'auto';
 
 
 
@@ -235,6 +207,7 @@ function geocodeLatLng(geocoder, map, marker) {
     currentMapLoc = 'offcampus';
   }
   autoLoc = false;
+  which_loc = 'map';
 }  
 
 /* This function determines if a given click is within the boundaries of
