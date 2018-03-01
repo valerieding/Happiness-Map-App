@@ -4,6 +4,9 @@
 {% block resources %}
 <link href="/static/stats/stats.css" rel="stylesheet">
 <script type="application/javascript" src="/static/stats/stats.js"></script>
+<script type="application/javascript" src="/static/board/board.js"></script>
+<script type="application/javascript" src="/static/logical_locs.js"></script>
+<script src="/static/board/board.js" is_mod="false" id="mod_lock"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 {% endblock %}
 
@@ -59,16 +62,22 @@
                 <div class="card-body">
                     <h5 class="card-title">My Recent Posts</h5>
                     <!-- <p class="card-text" id="recentPosts">Posts go here</p> -->
-                    <table class="table table-dark">
-                        <thead>
+                    <div id="welcome"></div>
+                    <div class="d-flex justify-content-between">
+                      <table id="tuffy" border='2' class="table table-hover table-border">
                         <tr>
-                            <th scope="col">Message</th>
-                            <th scope="col">Location</th>
-                            <th scope="col">Happiness Level</th>
+                          <th scope="col">Happiness Level</th>
+                          <th scope="col">Messages</th>
+                          <th scope="col">Location</th>
+                          <th scope="col">Time Stamp</th>
+                          <th scope="col">Reactions</th>
+                        <!--   {% if is_moderator %}
+                            <th scope="col">Remove Post</th>
+                          {% endif %} -->
                         </tr>
-                        </thead>
-                        <tbody id="recentPosts"/>
-                    </table>
+                      </table>
+
+                    </div>
                 </div>
             </div>
             <div class="card p-3 m-2" style="overflow-y: auto">
