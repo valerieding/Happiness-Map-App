@@ -1,11 +1,11 @@
 //Global string to use get_recent and get_trending posts easier
-var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
-
+var headertext = ""
 //Global flags and stuff
 var searchLoc = "";
 var recentsFlag = 0;
 var trendingFlag = 0;
 var timeframe = 0;
+var mod = 0;
 
 $(document).ready(function(){
       //When page loads...
@@ -61,20 +61,57 @@ function welcomeText(happy_lvl){
 
 //HELPER FUNCTION to ~refactor~, exists to get rid of repetition
 //Makes the table string to use in the "get_trending_posts" and "get_recent_posts"
-function makeRow(messageArray){
+function makeRow(messageArray,mod){
   var trHTML = '';
+  mod = document.getElementById('mod_lock').getAttribute('is_mod').toLowerCase() == 'true';
+  console.log('mod: ' + mod)
+  console.log("mod = " + typeof(mod));
+  if (!mod) {
+    headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
+    console.log("getting it right")
+  } else {
+    headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
+    console.log("getting it wrong")
+  }
   $.each(messageArray, function(index, value){
-  trHTML += '<tr><td>' + 
-    decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
-    decodeURIComponent(log_locs[value['location']['logical_location']]) + '</td><td>' + 
-    timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
-    value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
-    value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
-    value['post_id'] +');\" class=\"btn btn-danger\"><i class="fa fa-frown-o"></i> ' + 
-    value['reactions']['downvote'] + '</button></td></tr>' ;
+
+    if (mod){
+      trHTML += '<tr><td>' + 
+        decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+        decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
+        timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+        value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+        value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+        value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' + 
+        value['reactions']['downvote'] + '</button></td>' + 
+        '<td> <button onclick=\"deletePost('+ value['post_id'] + ');\" class=\"btn btn-primary\">' + 'Remove Post' + '</button> </td>'+
+      '</tr>' ;
+      console.log("admin mod");
+    } else {
+      trHTML += '<tr><td>' + 
+        decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+        decodeURIComponent(log_locs[value['location']['logical_location']]) + '</td><td>' + 
+        timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
+        value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
+        value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' + 
+        value['post_id'] +');\" class=\"btn btn-danger\"><i class="fa fa-frown-o"></i> ' + 
+        value['reactions']['downvote'] + '</button></td></tr>' ;
+        console.log(mod);
+    }
+    
   });
   return trHTML;
 }
+
+// function makeHeader(mod) {
+//   //Global string to use get_recent and get_trending posts easier
+//   mod = document.getElementById('mihai').getAttribute('one');
+//   if (!mod) {
+//     var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
+//   } else {
+//     var headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
+//   }
+// }
 
 //GET RECENT POSTS
 // function getRecents(){

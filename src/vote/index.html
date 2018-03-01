@@ -47,7 +47,7 @@
           $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
         }
 
-        var hidden = 1;
+       // var hidden = 1;
         $("#vote_btn").click(function(){
           var drop_loc = $("#loc_drop option:selected").val();
           if (drop_loc === 'blank')
@@ -95,20 +95,18 @@
             //submitVote(drop_loc, happy);
           }
 
-          if (happy > 1 && happy < 5 && typeof loc != undefined)
-          $.ajax({
-                  url: '/request/add_vote',
-                  type: 'post',
-                  dataType: 'json',
-                  data: {'latitude': 10,
-                         'longitude': 10,
-                         'logical_location': loc,
-                         'happiness_level': happy},
-                success: function() {
-                  alert("Vote submitted");
-                }            
-          });
-
+          if (happy >= 1 && happy <= 5 && typeof loc != undefined)
+          {
+            $.ajax({
+                    url: '/request/add_vote',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {'latitude': 10,
+                           'longitude': 10,
+                           'logical_location': loc,
+                           'happiness_level': happy},    
+            });
+          }
           if(hidden == 0) {
             $('#post_after_vote').hide();
             $('#vote_ui').show();
@@ -154,7 +152,7 @@
             <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h1>
             <!-- welcome text only refreshes on page reload
                  should refresh after submitting a vote -->
-            <div class="ui" id="welcome"></div> 
+            <!--<div class="ui" id="welcome"></div> -->
           </main>
           <form  style="display:inline;"id="myform" method="post">
             <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message">
@@ -217,8 +215,8 @@
     <div>
       <script type="application/javascript">
         
-        var hidden = 1;        
-        
+        //var hidden = 1;        
+        /*
         $( "#vote_btn" ).click(function() {
           if(hidden == 0) {
             $('#post_after_vote').hide();
@@ -230,10 +228,9 @@
             $('#vote_ui').hide();
             $('#campus-map').hide();
             hidden = 0;
-          }
-        
+          }        
         });
-        
+        */
         $( "#change_vote" ).click(function() {
           if(hidden == 0) {
             $('#post_after_vote').hide();

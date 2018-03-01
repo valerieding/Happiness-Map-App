@@ -45,14 +45,14 @@
         <!-- THIS is where 'welcomeText' goes when called on load: -->
         <div id="welcome"></div>
       </main>
-
-      {% if is_moderator %}
-      <h2>This page has MODERATOR turned ON</h2>
-      <script src="/static/board/board.js" one="1" id="mihai"></script>
+      <script src="/static/board/board.js" is_mod={{ is_moderator }} id="mod_lock"></script>
       <script type="application/javascript" src="/static/board/board.js"></script>
+      {% if is_moderator %}
+       <!-- <script src="/static/board/board.js" one="true" id="mihai"></script> -->
       <form id="adminLogoutButton" method="post" >
           <button type="button" class="btn btn-success">Admin Logout</button>
       </form>
+      {% endif %}
       <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
       <div class="form-group" style="float:left;">
         <form  style="display:inline;"id="myform" method="post">
@@ -115,85 +115,15 @@
                   <th scope="col">Location</th>
                   <th scope="col">Time Stamp</th>
                   <th scope="col">Reactions</th>
-                  <th scope="col">Remove Post</th>
+                  {% if is_moderator %}
+                    <th scope="col">Remove Post</th>
+                  {% endif %}
                 </tr>
               </table>
 
             </div>
           </div>
         </div>
-
-      {% else %}
-      <script src="/static/board/board.js" one="0" id="mihai"></script>
-      <script type="application/javascript" src="/static/board/board.js"></script>
-      <div class="form-group" style="float:left;">
-        <form  style="display:inline;"id="myform" method="post">
-          <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!" name="message" autocomplete="off">
-          <BR>
-            <button id="tester" type="submit"  class="btn btn-primary">Submit</button>
-          </form>
-
-
-          <div style="display:inline;float:right;">
-            <form style="display:inline;padding-left:5px;" id="recent" method="post" >
-              <button type="button" class="btn btn-success">Recent</button>
-            </form>
-            <form style="display:inline;" id="trending" method="post">
-              <button type="button" class="btn btn-success">Trending</button>
-            </form>
-          </div>
-        </div>
-        <div>
-        <div>
-          <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
-            <option value="" disabled selected>Filter Results by Location</option>
-          </select>
-        </div>
-         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="float:right">
-          <label class="btn btn-outline-light active">
-            <input type="radio" name="options"
-              id="optAllScatter" autocomplete="off" checked>
-            All
-          </label>
-          <label class="btn btn-outline-light">
-            <input type="radio" name="options"
-              id="optWeekScatter" autocomplete="off">
-            Past Week
-          </label>
-          <label class="btn btn-outline-light">
-            <input type="radio" name="options"
-              id="optDayScatter" autocomplete="off">
-            Past Day
-          </label>
-          <label class="btn btn-outline-light">
-            <input type="radio" name="options"
-              id="optHourScatter" autocomplete="off">
-            Past 2 Hours
-          </label>
-        </div>
-      </div>
-
-        <div class="card w-100 p-3 mt-3" style="overflow-y: scroll">
-          <img class="card-img-top" alt="">
-          <div class="card-body">
-
-
-            <div class="d-flex justify-content-between">
-
-              <table id="tuffy" border='2' class="table table-hover table-border">
-                <tr>
-                  <th scope="col">Messages</th>
-                  <th scope="col">Happiness Level</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Time Stamp</th>
-                  <th scope="col">Reactions</th>
-                </tr>
-              </table>
-
-            </div>
-          </div>
-        </div>
-        {% endif %}
 
       </div>
     </div>
