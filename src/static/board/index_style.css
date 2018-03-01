@@ -23,3 +23,20 @@
 	background-color: #6047eb;
 	color:White;
 }
+
+/*tr.noBorder td {
+  border: 0;
+}
+tr.noVert td {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-right-style: : hidden;
+    border-left-style: hidden;
+}*/
+/*table { border-collapse: collapse; }
+tr { border: none; }
+td {
+  border-top: solid 1px; 
+  border-bottom: solid 1px;
+}
+*/
