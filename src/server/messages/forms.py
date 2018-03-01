@@ -1,6 +1,6 @@
 from wtforms import Form, validators, StringField, IntegerField
 
-from server.util.forms import PostIDForm, ReactionForm, ResultFilterForm
+from server.util.generic_forms import PostIDForm, ReactionForm, ResultFilterForm
 
 
 class GetRecentPostsForm(Form, ResultFilterForm):
@@ -27,4 +27,3 @@ class DownvoteForm(Form, PostIDForm):
 
 class AddReactionForm(Form, PostIDForm, ReactionForm):
     """Validates the downvote request form. """
-

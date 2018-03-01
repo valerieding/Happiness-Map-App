@@ -1,6 +1,7 @@
 from server.messages.forms import *
-from server.util import Reactions, ResultFilter
 from server.util.request_handler import RequestHandler
+from server.util.sqlite_helpers import ResultFilter
+from server.util.wrappers import Reactions
 
 
 class MessageRequests(RequestHandler):
@@ -29,12 +30,6 @@ class MessageRequests(RequestHandler):
     def add_reaction(self, form, user_id):
         return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id(form.reaction.data))
 
-    def upvote(self, form, user_id):
-        return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id('upvote'))
-
-    def downvote(self, form, user_id):
-        return self.messageAPI.add_reaction(user_id, form.post_id.data, Reactions.get_reaction_id('downvote'))
-
     def get_routes(self):
         return [
             (self.get_recent_posts, GetRecentPostsForm),
@@ -43,6 +38,4 @@ class MessageRequests(RequestHandler):
             (self.get_trending_personal_posts, GetTrendingPostsForm),
             (self.add_post, AddPostForm),
             (self.add_reaction, AddReactionForm),
-            (self.upvote, UpvoteForm),
-            (self.downvote, DownvoteForm),
         ]
