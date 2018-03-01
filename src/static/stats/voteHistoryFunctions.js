@@ -130,16 +130,24 @@ function makeHistoryChart() {
 }
 
 function makeWeekChart() {
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  let dayScores = [0, 0, 0, 0, 0, 0, 0];
+  let dayData = getVoteByDayOfWeek();
+  for (let day in days) {
+    if (dayData[days[day]]) {
+      dayScores[day] = dayData[days[day]];
+    }
+  }
   let ctx = document.getElementById('userVotesByDayOfWeek').getContext('2d');
   var weekChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      labels: labels,
       datasets: [{
         label: "Vote",
         borderWidth: 1,
         backgroundColor: '#DD1C77',
-        data: [2.3, 1.8, 2.5, 3.4, 3.3, 4.8, 4.2]
+        data: dayScores
       }]
     },
     options: {
@@ -159,7 +167,16 @@ function makeWeekChart() {
 }
 
 function makeTimeChart() {
+  let timeData = getVoteByTimeOfDay();
   let ctx = document.getElementById('userVotesByTimeOfDay').getContext('2d');
+  let timesScores = [];
+  for (let i = 0; i < 24; i++) {
+    if (timeData[i]) {
+      timesScores.push(timeData[i]);
+    } else {
+      timesScores.push(0);
+    }
+  }
   let timesLabels = ["12 AM"];
   for (let i = 1; i < 12; i++) {
     timesLabels.push(parseInt(i) + " AM");
@@ -176,12 +193,7 @@ function makeTimeChart() {
         label: "Vote",
         borderWidth: 1,
         backgroundColor: '#DD1C77',
-        data: [3.4, 2, 1, 0,
-              0, 0, 0, 0, 2,
-              3.1, 2.1, 2.6, 3.7, 4,
-              4, 3.7, 4.1, 3.2, 2.9,
-              4, 4.8, 4.6, 4.4, 3
-            ]
+        data: timesScores
       }]
     },
     options: {
