@@ -2,7 +2,7 @@ import logging
 import time
 
 from constants import ALLOWED_REACTIONS_TO_POST
-from server.util import Message
+from server.util.wrappers import Message
 
 
 class MessageAPI:
@@ -12,32 +12,28 @@ class MessageAPI:
         'COUNT(CASE WHEN post_votes.reaction = {} THEN 1 END) {}s'.format(value, name) for value, name in
         enumerate(ALLOWED_REACTIONS_TO_POST))
 
-    POST_ID_MAX = 2 ** 32
-
     def __init__(self, database):
         self.database = database
         self.logger = logging.getLogger('MessageAPI')
 
+    def _get_posts(self, filter, ordering):
+        return Message.from_tuple_array(self.database.execute(
+            """
+            SELECT * FROM (
+                (SELECT * FROM posts WHERE {}) post
+                    LEFT OUTER JOIN 
+                (SELECT postID, {} FROM post_votes GROUP BY postID) reaction
+                    ON post.id = reaction.postID
+            ) ORDER BY {}
+            """.format(filter.conditions, MessageAPI.REACTION_COLS, ordering), (*filter.arguments,)))
+
     def get_recent_posts(self, filter):
         """Retrieves the messages posted between `start_time` and `end_time` around `location`. """
-        # a row for each reaction a post has, and whether it's an upvote or downvote
-        return Message.from_tuple_array(self.database.execute(
-            """SELECT * FROM 
-                ((SELECT * FROM posts WHERE {}) t1 LEFT OUTER JOIN 
-                (SELECT postID, {}
-                FROM post_votes
-                GROUP BY postID) t2 ON t1.id = t2.postID) 
-                ORDER BY timestamp DESC""".format(filter.conditions, MessageAPI.REACTION_COLS), (*filter.arguments,)))
+        return self._get_posts(filter, 'timestamp DESC')
 
     def get_trending_posts(self, filter):
         """Retrieves the trending messages posted around `location`. """
-        return Message.from_tuple_array(self.database.execute(
-            """SELECT * FROM 
-                ((SELECT * FROM posts WHERE {}) t1 LEFT OUTER JOIN 
-                (SELECT postID, {}
-                FROM post_votes
-                GROUP BY postID) t2 ON t1.id = t2.postID) 
-                ORDER BY IFNULL(upvotes - downvotes, 0) DESC, timestamp DESC""".format(filter.conditions, MessageAPI.REACTION_COLS), (*filter.arguments,)))
+        return self._get_posts(filter, 'IFNULL(upvotes - downvotes, 0) DESC, timestamp DESC')
 
     def add_post(self, uid, message, reply_to=None):
         """Adds a `message` by `uid` posted at `location`. """
@@ -50,8 +46,7 @@ class MessageAPI:
         vote_id, happiness_level = vote[0][:2]
 
         self.database.execute("""INSERT INTO posts values  (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                              (vote_id, reply_to, uid, message, happiness_level, time.time(),
-                               *vote[0][2:]))
+                              (vote_id, reply_to, uid, message, happiness_level, time.time(), *vote[0][2:]))
         self.database.commit()
         return True
 

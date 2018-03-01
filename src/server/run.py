@@ -11,7 +11,7 @@ from server.moderator.requests import AdminRequests
 from server.pages import PageRequests
 from server.moderator.admin import AdminManager
 from server.util.cookie_manager import SignatureKey
-from server.util.users import UserManager
+from server.util.user_manager import UserManager
 from server.voting.requests import VotingRequests
 
 

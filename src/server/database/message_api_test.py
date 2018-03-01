@@ -5,7 +5,8 @@ from unittest.mock import Mock
 from server.database.database import DatabaseManager
 from server.database.message_api import MessageAPI
 from server.database.voting_api import VotingAPI
-from server.util import Location, Reactions, ResultFilter
+from server.util.sqlite_helpers import ResultFilter
+from server.util.wrappers import Reactions, Location
 
 LOCATIONS = [Location(i * 10, i * 20, "LABEL_{}".format(i)) for i in range(5)]
 UPVOTE = 0

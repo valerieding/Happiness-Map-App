@@ -6,8 +6,6 @@ from http import HTTPStatus
 from unittest import mock, TestCase, main
 
 from server.run import FlaskAppContext
-from server.util import HeatMapPoint
-from server.util.users import UserManager
 
 context = FlaskAppContext(testing=True)
 app = context.get()
@@ -91,38 +89,6 @@ class VotingRequestsTest(TestCase):
         response = self.client.post('/request/get_recent_votes', data={'logical_location': "'"})
         self.assertFalse(mocked.called)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-
-    @mock.patch.object(context.votingAPI, 'get_votes_by', return_value=3.0)
-    def test_get_campus_average_valid(self, mocked):
-        response = self.client.post('/request/get_campus_average', data={'start_time': 0, 'end_time': 100})
-        self.assertTrue(mocked.called)
-        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
-
-    @mock.patch.object(context.votingAPI, 'get_votes_by')
-    def test_get_campus_average_last_minute(self, mocked):
-        self.client.post('/request/get_campus_average', data={'end_time': -60})
-        self.assertTrue(mocked.called)
-        self.assertAlmostEqual(mocked.call_args[0][0].arguments[1], (time.time() - 60), 2)
-
-    @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'ABC': 3.0})
-    def test_get_building_average_valid(self, mocked):
-        response = self.client.post('/request/get_building_average', data={'start_time': 45, 'logical_location': 'ABC'})
-        self.assertEqual(json.loads(response.data.decode('ascii')), 3.0)
-        self.assertTrue(mocked.called)
-
-    @mock.patch.object(context.votingAPI, 'get_votes_by')
-    def test_get_building_average_invalid(self, mocked):
-        response = self.client.post('/request/get_building_average', data={'end_time': '45'})
-        self.assertFalse(mocked.called)
-        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-
-    @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
-    def test_get_heat_map_valid(self, mocked):
-        response = self.client.post('/request/get_heatmap', data={'start_time': 45})
-        self.assertTrue(mocked.called)
-        self.assertCountEqual(json.loads(response.data.decode('ascii')), [
-            HeatMapPoint('A', 2.5).__dict__, HeatMapPoint('B', 3).__dict__
-        ])
 
     @mock.patch.object(context.votingAPI, 'get_votes_by', return_value={'A': 2.5, 'B': 3})
     def test_get_votes_by_location(self, mocked):

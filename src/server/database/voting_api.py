@@ -2,7 +2,7 @@ import logging
 import time
 from sqlite3 import IntegrityError
 
-from server.util import Voting
+from server.util.wrappers import Voting
 
 
 class VotingAPI:

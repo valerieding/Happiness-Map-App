@@ -390,7 +390,7 @@ mid3.data({'info': allPlaces['mid']});
 regions.push(mid3);
 
 
-var rsrGroups = [physics,med,logan,eastBuild,multi,north,northBuild,maxp,lab,midway];
+var rsrGroups = [physics,med,logan,eastBuild,multi,north,northBuild,maxp,lab,mid];
 physics.push(
 	physics5 ,
 	physics4 ,
