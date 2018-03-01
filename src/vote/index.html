@@ -68,6 +68,7 @@
           happy = $("input[name=happiness_level]:checked").val();
           var confirmText = "(" + happy + ")\n";
           var confirmed = true;
+          loc = currentMapLoc;
           if(autoLoc == true) {
              confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
           } else if(autoLoc == false && currentMapLoc == 'offcampus') {
