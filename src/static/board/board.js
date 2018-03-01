@@ -181,18 +181,14 @@ function getCurrentHappiness(){
 $(function() {
   $("#myform").submit(function(e) {
     e.preventDefault();
-    console.log("1")
-    addPost();
-    console.log("2")
+    addPost($("#myform").serialize().slice(8));
     document.getElementById('welcome').innerHTML = "<h4 style=\"color:White; text-align:left;\">Check back in an hour!</h4>";
     document.getElementById('myform').innerHTML = "";
-
   });
 });
 
 //QUERY TO ADD POST
 function addPost(message){
-  console.log("my form input: " + message);
   $.ajax({
     url: '/request/add_post',
     type: 'post',
