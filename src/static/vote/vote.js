@@ -2,43 +2,7 @@ var helloworld = function(){
 	return 'Hello World';
 }
 
-// send happiness vote to database
-function submitVote(loc, happy){
-  alert(loc + " " + happy);
-  if (typeof happy != 'undefined' && typeof loc != 'undefined'){
-        /*$.ajax({
-                url: '/request/add_vote',
-                method: 'post',
-                dataType: 'json',
-                data: {'latitude': 10,
-                       'longitude': 10,
-                       'logical_location': loc,
-                       'happiness_level': happy},
-                       //'logical_location': $('#loc_drop option:selected').val(),
-                       //'happiness_level': $('input[name=happiness_level]:checked').val()},
-                beforeSend: function() {
-                  //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                  //alert("Location: " + $("#loc_drop option:selected").val());
-                  //alert('echo');
-                },
-                success: function() {
-                  //alert('Vote Submitted');
-                },
-                error: function() {
-                  //alert('Failed to submit vote');
-                }              
-            }); 
-          //txt = "You pressed OK!";
-      
-    }*/
-    
-  }
-  else{
-    alert("You have to submit both a happiness value and your location");
-    return false;
-  }
-  return true;
-};
+var hidden = 1;
 
 // same as in src/static/map/mapFunctions.js
 // To Do: move to external static file for reference in both
