@@ -73,7 +73,7 @@ function makeRow(messageArray,mod){
   if (mod) {
     headers += '<th scope=\'col\'>Remove Post</th>';
   }
-  headertext = '<tr>' + headers + '</tr>'
+  headertext = '<thead class=\'thead-dark\'><tr>' + headers + '</tr></thead>'
   $.each(messageArray, function(index, value){
     trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' +
         decodeURIComponent(value['message']) + '</td><td>' +
@@ -122,7 +122,7 @@ function getRecents(loc,time){
       console.log(messageArray);
       var trHTML = makeRow(messageArray);
       $('#tuffy').empty()
-      $('#tuffy').append(headertext + trHTML);
+      $('#tuffy').append('<table class=\'table table-hover\'>'+ headertext + trHTML + '</table>');
     },
     error: function(msg) {
       alert(msg.responseText);
