@@ -67,17 +67,17 @@ function makeRow(messageArray,mod){
   console.log('mod: ' + mod)
   console.log("mod = " + typeof(mod));
   if (!mod) {
-    headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
+    headertext = '<tr><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th></tr>';
     console.log("getting it right")
   } else {
-    headertext = '<tr><th scope=\'col\'>Messages</th><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
+    headertext = '<tr><th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th><th scope=\'col\'>Remove Post</th></tr>';
     console.log("getting it wrong")
   }
   $.each(messageArray, function(index, value){
 
     if (mod){
-      trHTML += '<tr><td>' + 
-        decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+      trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+        decodeURIComponent(value['message']) + '</td><td>' + 
         decodeURIComponent(value['location']['logical_location']) + '</td><td>' + 
         timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
         value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
@@ -88,8 +88,8 @@ function makeRow(messageArray,mod){
       '</tr>' ;
       console.log("admin mod");
     } else {
-      trHTML += '<tr><td>' + 
-        decodeURIComponent(value['message']) + '</td><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+      trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' + 
+        decodeURIComponent(value['message']) + '</td><td>' + 
         decodeURIComponent(log_locs[value['location']['logical_location']]) + '</td><td>' + 
         timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' + 
         value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' + 
