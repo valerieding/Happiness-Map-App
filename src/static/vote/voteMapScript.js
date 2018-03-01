@@ -137,6 +137,7 @@ function snapToCurrentLoc() {
       marker = placeMarker(pos, map);
       geocodeLatLng(geocoder, map, marker);
       autoLoc = true;
+      which_loc = 'auto';
 
 
 
@@ -235,6 +236,7 @@ function geocodeLatLng(geocoder, map, marker) {
     currentMapLoc = 'offcampus';
   }
   autoLoc = false;
+  which_loc = 'map';
 }  
 
 /* This function determines if a given click is within the boundaries of
