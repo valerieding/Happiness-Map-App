@@ -3,7 +3,6 @@
 {% block title %} Stats {% endblock %}
 {% block resources %}
 <link href="/static/stats/stats.css" rel="stylesheet">
-<script type="application/javascript" src="/static/stats/stats.js"></script>
 <script type="application/javascript" src="/static/board/board.js"></script>
 <script type="application/javascript" src="/static/logical_locs.js"></script>
 <script src="/static/board/board.js" is_mod="false" id="mod_lock"></script>
@@ -23,13 +22,7 @@
         </main>
         <div>
             <div class="card-group">
-                <div class="card p-3 m-2">
-                    <!-- <img class="card-img-top" alt="Card image cap"> -->
-                    <div class="card-body">
-                        <h5 class="card-title">My Recent Votes</h5>
-                        <p class="card-text">Votes go here</p>
-                    </div>
-                </div>
+                
                 <div class="card p-3 m-2">
                     <div class="card-body">
                         <h5 class="card-title">My History</h5>
@@ -55,7 +48,7 @@
                                 Past 2 Hours
                             </label>
                         </div>
-                        <canvas id="userVotesOverTime" height="200"></canvas>
+                        <canvas id="userVotesOverTime" height="75"></canvas>
                         <div id="warningNotEnoughInfo"></div>
                     </div>
                     <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
@@ -137,6 +130,5 @@
     <script src="/static/map/mapFunctions.js"></script>
     <script src="/static/map/mapBuildings.js"></script>
     <script src="/static/stats/voteHistoryFunctions.js"></script>
-    <script src="/static/stats/stats.js"></script>
 </div>
 {% endblock %}
