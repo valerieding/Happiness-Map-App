@@ -207,7 +207,6 @@ async function getAllBuildingScoresByUser(start_time) {
 //modifying map html functions
 async function changeTimeFrame(start_time, query_func) {
 	let allScores = await query_func(start_time);
-  console.log(allScores);
 	let allPlaces = allMapObjects(allScores);
 	for (var i = 0; i < regions.length; i++){
     let data = regions[i].data('info');
@@ -223,7 +222,6 @@ async function changeTimeFrame(start_time, query_func) {
 
 async function setMapFeatures(start_time) {
   let campus_avg = await getCampusScore(start_time);
-  console.log(campus_avg);
 	document.getElementById('region-header').innerHTML =
 		'Try hovering over a building!<br><br><br>';
 	document.getElementById('region-text').innerHTML = '';
