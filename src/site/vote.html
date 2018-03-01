@@ -14,7 +14,7 @@
     }
 
 </style>
-<script type="application/javascript" src="/static/board/board.js"></script>
+<script type="application/javascript" src="/static/logical_locs.js"></script>
 
 {% endblock %}
 
@@ -28,10 +28,11 @@
 
         var hidden = 1;
         $("#vote_btn").click(function(){
+          /*
           var drop_loc = $("#loc_drop option:selected").val();
           if (drop_loc === 'blank')
             drop_loc = null;
-
+          */
           var map_loc;
           var happy;
           var loc;
@@ -50,18 +51,27 @@
           loc = currentMapLoc;
           if(autoLoc == true) {
              confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            //confirmed = confirm(confirmText);
+
           } else if(autoLoc == false && currentMapLoc == 'offcampus') {
             confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            //confirmed = confirm(confirmText);
+
           } else if(currentMapLoc == '' || currentMapLoc == ' ' || currentMapLoc == null) {
             confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
+           // confirmed = confirm(confirmText);
+          } else {
+            confirmText += "We auto-detected that your location is: " + currentMapLoc;
           }
+
+          /*
           if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
             confirmed = confirm(confirmText);
           }
-          //confirmed = confirm(confirmText);
-
+          */
+          confirmed = confirm(confirmText);
           if (confirmed == true){
-            alert("map: " + currentMapLoc + ", happy: " + happy);
+            //alert("map: " + currentMapLoc + ", happy: " + happy);
             loc = currentMapLoc;
             happy = $("input[name=happiness_level]:checked").val();
             if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
@@ -74,26 +84,12 @@
                        'logical_location': loc,
                        'happiness_level': happy},
                 });
-              }
-              alert("A");
-            if(hidden == 0) {
-              $('#post_after_vote').hide();
-              $('#vote_ui').show();
-              $('#campus-map').show();
-              hidden = 1;
-            } else {
-              $('#post_after_vote').show();
-              $('#vote_ui').hide();
-              $('#campus-map').hide();
-              hidden = 0;
+              setTimeout(function(){ 
+                location.href = "board";
+              }, 2);
             }
-            //submitVote(currentMaploc, happy);
-          }
-           else if (typeof drop_loc != undefined) {
-            alert("drop: " + drop_loc + ", happy: " + happy);
+            //location.href = "board";
 
-            loc = drop_loc;
-            //submitVote(drop_loc, happy);
           }
         });
       });
@@ -114,6 +110,7 @@
 
 
         <!-- Initially hidden elements, unhiden after voting -->
+        <!--
         <div id="post_after_vote" class="form-group" style="float:left;">
             <main role="main" class="inner cover text-center" id="home-cover">
                 <h4 class="cover-heading" style="color:white;">Your vote has been submitted!</h4>
@@ -135,9 +132,9 @@
                     <BR>
                     <BR>
                     <h3 class="cover-heading" style="color:white;">What's On Your Mind?</h3>
-                    <!-- welcome text only refreshes on page reload
-                         should refresh after submitting a vote -->
-                    <!-- <div class="ui" id="welcome" hidden></div> -->
+                     welcome text only refreshes on page reload
+                         should refresh after submitting a vote 
+                     <div class="ui" id="welcome" hidden></div> 
                 </div>
             </main>
             <div>
@@ -151,6 +148,7 @@
                 </form>
             </div>
         </div>
+        -->
 
 
         <!-- Voting UI begins here: -->
@@ -228,6 +226,7 @@
           }        
         });
         */
+        /*
         $( "#change_vote" ).click(function() {
           //if(hidden == 0) {
             $('#post_after_vote').hide();
@@ -237,6 +236,7 @@
           //} 
         });
         $('#post_after_vote').hide();
+        */
         snapToCurrentLoc(navigator, map, marker, geocoder);
 
 
