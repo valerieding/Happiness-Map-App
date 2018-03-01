@@ -216,6 +216,7 @@ function updateHistoryChart(chart, start_time) {
   ds = getVoteHistory(start_time);
   if (ds.length > 2) {
     document.getElementById("userVotesOverTime").style.display="block";
+    document.getElementById("warningNotEnoughInfo").innerHTML = "";
     chart.data.datasets.forEach((d) => {
           d.data = ds;
       });
