@@ -6,6 +6,7 @@ var recentsFlag = 0;
 var trendingFlag = 0;
 var timeframe = 0;
 var mod = 0;
+var stat = 0;
 
 $(document).ready(function(){
       //When page loads...
@@ -68,7 +69,7 @@ function makeRow(messageArray,mod){
   mod = document.getElementById('mod_lock').getAttribute('is_mod').toLowerCase() == 'true';
   console.log('mod: ' + mod)
   console.log("mod = " + typeof(mod));
-  var headers = '<th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Location</th><th scope=\'col\'>Time Stamp</th><th scope=\'col\'>Reactions</th>'
+  var headers = '<th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Where</th><th scope=\'col\'>When</th><th scope=\'col\'>Reactions</th>'
   if (mod) {
     headers += '<th scope=\'col\'>Remove Post</th>';
   }
@@ -95,6 +96,14 @@ function makeRow(messageArray,mod){
 //Will get desired location from a dropdown list of all possibilities
 function getRecents(loc,time){
   console.log("using getR");
+  stat = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
+  if (stat) {
+    var staturl = '/request/get_recent_personal_posts'
+  } else {
+    var staturl = '/request/get_recent_posts'
+  }
+  //var staturl = '/request/get_recent_posts'
+  console.log('stat: '+ staturl)
   var currData = {};
   if(loc){
     currData['logical_location'] =loc;
@@ -102,8 +111,9 @@ function getRecents(loc,time){
   if(time){
     currData['start_time'] = time;
   }
+
   $.ajax({
-    url: '/request/get_recent_posts',
+    url: staturl,
     type: 'post',
     dataType: 'json',
     data: currData,

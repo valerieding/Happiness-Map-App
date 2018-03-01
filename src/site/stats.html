@@ -7,6 +7,7 @@
 <script type="application/javascript" src="/static/board/board.js"></script>
 <script type="application/javascript" src="/static/logical_locs.js"></script>
 <script src="/static/board/board.js" is_mod="false" id="mod_lock"></script>
+<script src="/static/board/board.js" is_stat="true" id="stat_lock"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
@@ -14,6 +15,7 @@
 {% block body %}
 {{ super() }}
 <div class="homepage">
+    <script src="/static/board/board.js" is_stat="true" id="stat_lock"></script>
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <div id="myNav"></div>
         <main role="main" class="inner cover text-center" id="home-cover">
