@@ -251,11 +251,11 @@ function setUpMapGeneral() {
 
     regions[i].mouseover(function(e){
       var info = this.data('info');
-	  for (var j = 0; j < regions.length; j++){
-		if (regions[j].data('info') == info){
-			regions[j].attr({stroke: "yellow", opacity: "0.7"});
-		}
-	  }
+	    for (var j = 0; j < regions.length; j++){
+		       if (regions[j].data('info') == info){
+			          regions[j].attr({stroke: "yellow", opacity: "0.7"});
+		       }
+	    }
       let label = info.rating + "<br>building happiness: " + info.score;
       document.getElementById('region-header').innerHTML = info.fullname;
       document.getElementById('region-text').innerHTML = label;
@@ -264,12 +264,12 @@ function setUpMapGeneral() {
 
     regions[i].mouseout(function(e){
       var info = this.data('info');
-	  for (var j = 0; j < regions.length; j++){
-		if (regions[j].data('info') == info){
-		  regions[j].attr({stroke: "#333333", opacity: "1"});
-		}
-	  }
-	});
+	    for (var j = 0; j < regions.length; j++){
+		      if (regions[j].data('info') == info){
+		          regions[j].attr({stroke: "#333333", opacity: "1"});
+		      }
+	    }
+	  });
   }
 }
 
@@ -278,13 +278,21 @@ function setUpMapPersonal() {
   for (var i = 0; i < regions.length; i++){
 
     regions[i].mouseover(function(e){
-      this.node.style.opacity = 0.7;
-      this.node.style.stroke = 'yellow';
+      var info = this.data('info');
+	    for (var j = 0; j < regions.length; j++){
+		       if (regions[j].data('info') == info){
+			          regions[j].attr({stroke: "yellow", opacity: "0.7"});
+		       }
+	    }
     });
 
     regions[i].mouseout(function(e){
-      this.node.style.opacity = 1;
-      this.node.style.stroke = '#333333';
-    });
+      var info = this.data('info');
+	    for (var j = 0; j < regions.length; j++){
+		      if (regions[j].data('info') == info){
+		          regions[j].attr({stroke: "#333333", opacity: "1"});
+		      }
+	    }
+	  });
   }
 }
