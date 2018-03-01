@@ -69,7 +69,7 @@ class DatabaseManager:
                     'INSERT INTO {}({}) VALUES({})'.format(table, ','.join(line.keys()),
                                                            ', '.join(['?'] * len(line))),
                     (*line.values(),))
-        self.execute('UPDATE variables SET val = 1000 WHERE key = "userID"')
+        #self.execute('UPDATE variables SET val = 1000 WHERE key = "userID"')
         self.commit()
 
     def __del__(self):
