@@ -5,9 +5,8 @@
 <link rel="stylesheet" href="/static/board/index_style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<script type="application/javascript" src="/static/board/board.js"></script>
 <script type="application/javascript" src="/static/logical_locs.js"></script>
-<script src="/static/board/board.js" is_stat="false" id="stat_lock"></script>
+<script src="/static/board/board.js" is_mod={{ is_moderator }} id="script_loader" is_stat="false"></script>
 {% endblock %}
 
 {% block body %}
@@ -21,10 +20,7 @@
             <!-- THIS is where 'welcomeText' goes when called on load: -->
             <div id="welcome"></div>
         </main>
-        <script src="/static/board/board.js" is_mod={{ is_moderator }} id="mod_lock"></script>
-        <script type="application/javascript" src="/static/board/board.js"></script>
         {% if is_moderator %}
-        <!-- <script src="/static/board/board.js" one="true" id="mihai"></script> -->
         <form id="adminLogoutButton" method="post">
             <button type="button" class="btn btn-success">Admin Logout</button>
         </form>

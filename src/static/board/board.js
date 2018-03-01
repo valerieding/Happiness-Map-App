@@ -10,15 +10,14 @@ var stat_rec = 0;
 var stat_trend = 0;
 
 $(document).ready(function(){
-      //When page loads...
-      getRecents();
-      getCurrentHappiness();
-      //populate dropdown with list at bottom of JS document..
-      for (let key in log_locs) {
+    //When page loads...
+    getRecents();
+    getCurrentHappiness();
+    //populate dropdown with list at bottom of JS document..
+    for (let key in log_locs) {
         $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
         console.log("happening NOW");
-      }  
-
+      }
 });
 
 
@@ -67,7 +66,7 @@ function welcomeText(happy_lvl){
 //Makes the table string to use in the "get_trending_posts" and "get_recent_posts"
 function makeRow(messageArray,mod){
   var trHTML = '';
-  mod = document.getElementById('mod_lock').getAttribute('is_mod').toLowerCase() == 'true';
+  mod = document.getElementById('script_loader').getAttribute('is_mod').toLowerCase() == 'true';
   console.log('mod: ' + mod)
   console.log("mod = " + typeof(mod));
   var headers = '<th scope=\'col\'>Happiness Level</th><th scope=\'col\'>Messages</th><th scope=\'col\'>Where</th><th scope=\'col\'>When</th><th scope=\'col\'>Reactions</th>'
@@ -97,7 +96,7 @@ function makeRow(messageArray,mod){
 //Will get desired location from a dropdown list of all possibilities
 function getRecents(loc,time){
   console.log("using getR");
-  stat_rec = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
+  stat_rec = document.getElementById('script_loader').getAttribute('is_stat').toLowerCase() == 'true';
   if (stat_rec) {
     var staturl_rec = '/request/get_recent_personal_posts'
   } else {
@@ -131,7 +130,7 @@ function getRecents(loc,time){
 }
 function getTrending(loc,time){
   console.log("using new getTrending");
-  stat_trend = document.getElementById('stat_lock').getAttribute('is_stat').toLowerCase() == 'true';
+  stat_trend = document.getElementById('script_loader').getAttribute('is_stat').toLowerCase() == 'true';
   if (stat_trend) {
     var staturl_trend = '/request/get_trending_personal_posts'
   } else {
@@ -192,25 +191,25 @@ $(function() {
 });
 
 //QUERY TO ADD POST
-function addPost(){
+function addPost(message){
+  console.log("my form input: " + message);
   $.ajax({
-    url: 'request/add_post',
+    url: '/request/add_post',
     type: 'post',
     dataType: 'json',
-    data: {'message': $("#myform").serialize().slice(8)},
-    success: (function(data) {
-       console.log("added post successfully");
-       console.log("my form input: "+ $("#myform").serialize().slice(8));
-    })
+    data: {'message': message},
+    success: function(data) {
+        console.log("added post successfully");
+        getRecents(undefined,undefined);
+        document.getElementById("loc_drop").value = "";
+    }
   });
-  getRecents(undefined,undefined);
-  document.getElementById("loc_drop").value = "";
 }
 
 //QUERY TO DELETE POST
 function deletePost(postID){
   $.ajax({
-    url: 'request/remove_post',
+    url: '/request/remove_post',
     type: 'post',
     dataType: 'json',
     data: {'post_id':postID}
