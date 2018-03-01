@@ -53,7 +53,8 @@
           var happy;
           var lock;
           if(currentMapLoc == null) {
-            drop_loc = $("#loc_drop option:selected").val();
+            alert("ERROR: loc==null");
+            /*drop_loc = $("#loc_drop option:selected").val();
             if (drop_loc === 'blank')
               drop_loc = '';
             map_loc = $("map_loc").val();
@@ -62,70 +63,29 @@
             happy = $("input[name=happiness_level]:checked").val();
 
             // for the time being
-            loc = drop_loc;
-
-            //var loc = '';
-            // map selection should take priority over dropdown selection
-            /* if (typeof map_loc != 'undefined') {
-                  loc = map_loc;
-              }
-              else if (typeof map_loc == 'undefined' && typeof drop_loc != 'undefined')
-              {
-                  loc = drop_loc;
-              }
-            */var confirmText = "(" + happy + ")\n";
-              var confirmed = true;
-              if(autoLoc == true) {
-                 confirmText += "We auto-detected your location is: " + loc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-              } 
-              if(loc == 'offcampus') {
-                confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
-              }
-              if(loc == '' || loc == ' ' || loc == null) {
-                confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
-                alert(confirmText);
-              } else {
-                if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
-                  confirmed = confirm(confirmText);
-                }
-              }
-              if (confirmed == true) {
-                submitVote(loc, happy);
-              }
-           // alert(loc + ": " + happy);
-           // alert($("#loc_drop option:selected").val());
-           /*
-           if (typeof happy != 'undefined' && typeof loc != 'undefined'){
-              $.ajax({
-                  url: 'request/add_vote',
-                  method: 'post',
-                  dataType: 'json',
-                  data: {'latitude': 10,
-                         'longitude': 10,
-                         'logical_location': loc,
-                         'happiness_level': happy},
-                         //'logical_location': $('#loc_drop option:selected').val(),
-                         //'happiness_level': $('input[name=happiness_level]:checked').val()},
-                  beforeSend: function() {
-                    //alert("Happiness level = " + $('input[name=happiness_level]:checked').val());
-                    //alert("Location: " + $("#loc_drop option:selected").val());
-                    //alert('echo');
-                  },
-                  success: function() {
-                    //alert('Vote Submitted');
-                  },
-                  error: function() {
-                    //alert('Failed to submit vote');
-                  }
-              });
-            }
-            else{
-              alert("You have to submit both a happiness value and your location");
-            }
-            */
+            loc = drop_loc;*/
           } else {
             happy = $("input[name=happiness_level]:checked").val();
-            submitVote(currentMapLoc, happy);
+            loc = currentMapLoc;
+            var confirmText = "(" + happy + ")\n";
+            var confirmed = true;
+            if(autoLoc == true) {
+               confirmText += "We auto-detected your location is: " + loc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            } 
+            if(loc == 'offcampus') {
+              confirmText += "You input that you are off campus.\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+            }
+            if(loc == '' || loc == ' ' || loc == null) {
+              confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
+              alert(confirmText);
+            } else {
+              if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
+                confirmed = confirm(confirmText);
+              }
+            }
+            if (confirmed == true) {
+              submitVote(loc, happy);
+            }
           }
         });
       });
@@ -195,13 +155,6 @@
           <h5> Where are you?</h5>
           <h5> Select from the map or dropdown below.</h5>
             <select id="loc_drop" form="vote" name="location" onchange="onSelectChange()">
-              <!--
-              <option name="location" value="Location 1">Location 1</option>
-              <option name="location" value="Location 2">Location 2</option>
-              <option name="location" value="Location 3">Location 3</option>
-              <option name="location" value="Location 4">Location 4</option>
-              <option name="location" value="Location 5">Location 5</option>
-            -->
             </select>
         </div>
         <script>
