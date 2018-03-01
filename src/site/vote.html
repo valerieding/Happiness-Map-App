@@ -26,7 +26,7 @@
           $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
         }
 
-       // var hidden = 1;
+        var hidden = 1;
         $("#vote_btn").click(function(){
           var drop_loc = $("#loc_drop option:selected").val();
           if (drop_loc === 'blank')
@@ -75,6 +75,7 @@
                        'happiness_level': happy},
                 });
               }
+              alert("A");
             if(hidden == 0) {
               $('#post_after_vote').hide();
               $('#vote_ui').show();
@@ -228,12 +229,12 @@
         });
         */
         $( "#change_vote" ).click(function() {
-          if(hidden == 0) {
+          //if(hidden == 0) {
             $('#post_after_vote').hide();
             $('#vote_ui').show();
             $('#campus-map').show();
             hidden = 1;
-          } 
+          //} 
         });
         $('#post_after_vote').hide();
         snapToCurrentLoc(navigator, map, marker, geocoder);
