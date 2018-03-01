@@ -44,7 +44,7 @@ async function getVoteHistory(start_time) {
   var voteHistory = await getUsersVotes(start_time);
   var voteHistory2 = [];
 
-  for (var i = 0; i < Math.min(40, voteHistory.length); i++) {
+  for (var i = 0; i < Math.min(60, voteHistory.length); i++) {
     let x = new Date(1000 * voteHistory[i].timestamp).toDateString();
     voteHistory2.push({
       x: voteHistory[i].timestamp,
@@ -241,15 +241,12 @@ function setScatterButtonFunctions() {
     updateHistoryChart(chart, null);
   });
   $('#optWeekScatter').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    updateHistoryChart(chart, now - week);
+    updateHistoryChart(chart, -week);
   });
   $('#optDayScatter').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    updateHistoryChart(chart, now - day);
+    updateHistoryChart(chart, -day);
   });
   $('#optHourScatter').on('change', function () {
-    let now = Math.floor(Date.now() / 1000);
-    updateHistoryChart(chart, now - twoHr);
+    updateHistoryChart(chart, -twoHr);
   });
 }
