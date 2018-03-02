@@ -136,7 +136,6 @@ function getTrending(loc,time){
   } else {
     var staturl_trend = '/request/get_trending_posts'
   }
-  // var staturl_trend = '/request/get_trending_posts'
   var currData = {};
   if(loc){
     currData['logical_location'] =loc;
