@@ -113,7 +113,7 @@ async function makeHistoryChart(ticks, start_time) {
   var voteHistory2 = processHistoryData(voteHistory);
 
   let ctx = document.getElementById('userVotesOverTime').getContext('2d');
-  var timeChart = new Chart(ctx, {
+  let timeChart = new Chart(ctx, {
       type: 'line',
       data: {
         datasets: [{
