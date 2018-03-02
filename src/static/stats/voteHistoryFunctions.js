@@ -177,13 +177,15 @@ async function makeWeekChart() {
       legend: {
           display: false,
       },
-      yAxes: [{
-          ticks: {
-            min: 0,
-            max: 5,
-            stepSize: 1
-          }
-      }]
+      scales: {
+        yAxes: [{
+            ticks: {
+              min: 0,
+              max: 5,
+              stepSize: 1
+            }
+        }]
+      }
     }
   });
   return weekChart;
@@ -208,13 +210,15 @@ async function makeTimeChart() {
       legend: {
           display: false,
       },
-      yAxes: [{
-          ticks: {
-            min: 0,
-            max: 5,
-            stepSize: 1
-          }
-      }]
+      scales: {
+        yAxes: [{
+            ticks: {
+              min: 0,
+              max: 5,
+              stepSize: 1
+            }
+        }]
+      }
     }
   });
   return weekChart;
