@@ -1,0 +1,105 @@
+1.) How to compile:
+See instructions in README, same as previous milestones.
+2.) How to run code:
+TO RUN LOCALLY: same as previous milestones.
+TO RUN ON DNS: http://happymap.ddns.net
+Notes: 
+Running locally in debug mode (“python3 main.py --debug”) will start you off with some basic data (votes, posts, reactions) so you don’t start with an empty database. Some userid’s will be populated with long-term data so you can see time of day and day of week stats over time for some person. Running locally without debug mode will not start you off with any data. The DNS site already has some posts and votes. We recommend doing both: running locally will allow you to see some functionality better, and will be faster.
+When running locally in debug mode, the admin password is “password”, and the username is “admin”. When running locally without debug mode, you will be prompted to set an admin password.
+3.) How to run unit tests:
+See previous milestone’s/README
+3a.) Any changes to unit tests:
+Backend:
+We got rid of the following functions: get_campus_average(), get_building_average(), and get_heat_map(), and replaced them with get_votes_by(), which takes a filter argument, allowing the user to specify {start_time, end_time, logical_location} arguments. So, the functionality of the previous three functions can all be achieved using get_votes_by(). We added new unit tests for get_votes_by() in server/database/voting_api_test.py, and server/voting/requests_test.py. We also added unit tests for admin functionality: remove_post(), admin_login(), and admin_logout() are tested in server/moderator/requests_test.py. 
+ 
+Message Board:
+We added unit functions that show more capability of the search functions. Last time marks were taken off because we did not show how the location could be included. The actual get_recent_posts() was created on the backend so we created a boardFunctions.js file to generate the call that we would make to the back end, proving that in the proper situations, the front end makes the proper call to the backend. We did this for functions getTrending and getRecents. Included in the functions are some flags we use to check if it’s a mod or if it’s on the stat page. If it’s on the stat page then it would call the getTrendingPersonalPosts() or getRecentsPersonalPosts(). These tests prove we call each in the proper time. We also changed our reacts functions a bit so we have  unit test to check them as well. Again, the function is altered as it makes a call, to return a string when the correct branch is hit.
+ 
+User Stats:
+We moved some of the data processing into new functions, so that we could write tests for them. Initially we did not think that these functions would be necessary. For each of the 3 graphs on the user stats page, we make a query to the database, process that data to a plottable format, and render it in a line or bar chart. The new processing functions are called processHistoryData(), processWeekData(), and processTimeData(). The historyData is for a line chart and so this returns an array of {x,y} coordinates. The weekData and TimeData each return an array of labels and an array of values for each of those labels. Week labels are like “Sunday” or “Wednesday” while time labels are like “12 AM” or “3PM.”
+ 
+(4) please suggest some acceptance tests for the TA to try (i.e., what inputs to use, and what outputs are expected)
+ 
+Admin: navigate to /moderator, and log in as an admin. This should redirect you to /board automatically, and you can remove posts. You can log out of the admin account on the board page, and it will revert back to a regular user’s functionality. You can also try logging in with an incorrect username/password combination, and the site will not allow you to perform admin functionality. 
+ 
+Voting:
+All unit tests should be the same from last time. Our changes to the voting page are qualitative so can only really be observed manually.
+To test the changes to the voting page, TAs can try to send happiness votes using either the auto-detect location (which begins automatically when they load the page), by clicking the map, or by using the dropdown to select their location. The precision of Google Maps’ location detection is often poor, but is not a concern of our application. So testing the auto-detect feature should just ensure that if location is selected multiple times or through multiple methods before pressing ‘submit,’ the latest selection is actually what is submitted (this location can be seen in the console log when ‘submit’ is pressed). 
+	Note: Auto-detect will not override the selected location set by previous selections performed by clicking or through the dropdown, whereas clicking or using the dropdown will override the current selected location. Since auto-detect is assumed to occur when the browser first loads, but does take a few seconds to complete, we don’t want to override a user’s dropdown location selection with the auto-detected location if it happens to finish right as a user is pressing submit.  
+ 
+Map:
+We suggest that a TA try clicking the different time filter buttons and noticing how the data displayed on the map changes. We also suggest hovering over the new regions (off campus bubble, midway, quad) and noticing how certain groups of buildings highlight all together (such as max palevsky dorms or the medical campus).
+ 
+Personal Stats:
+This data is currently pre-populated with pseudo-data as the time limit on voting/posting would make it infeasible for a TA to explore the data from a clean slate for testing. We suggest that a TA try hovering over points or bars on the graphs to see that the labels make sense given the axes, and try changing the time frames on My History and My Map to see how the data and axes change. We suggest adding a vote on the Vote page and seeing that it is reflected in each of the graphs on the Personal Stats page.
+ 
+(5) text description of what is implemented. You can refer to the use cases and user stories in your design document.
+ 
+Admin:
+We implemented admin functionality in this iteration. The user can go to /moderator, and will be asked to login. The admin information is: username: admin, password: password when running in debug mode or whatever it is set to in the initial run in release mode (you will be prompted in the command line for a password). Our release version will have happymap2018. The admin can remove inappropriate posts on the message board, only when logged in. The admin can then log out, and view the regular message board.
+ 
+Message Board:
+For the message board, there is a new option to filter posts according to where they were posted. A user can now look for any posts coming from the Reg, for example, and from here they can see trending or recent posts. Additionally, users can filter through different time periods: all posts, last week posts, last day posts, and the last two hour posts. 
+When clicking a time period, you can alter between trending and recents without it changing. Stays that way until changing time period or refresh
+When selecting location, stays on that location so you can toggle all the options until page refresh.
+This allows users the ability to get really specific and to check locations, at certain times, and decide between recents and trending. 
+As soon as a user votes, the box to post again disappears and it displays the message “come back in an hour to vote”. We thought a lot about how to block users for an hour or any amount of time but ultimately realized that it would be very easy for users to get around. Deleting their cookies, or opening incognito windows are two easy ideas. Therefore, we did not spend all of our time ensuring that users could not troll the message board. We place a deterrent which is this removal of the posting box but to get around it all they would have to do is refresh the page. It seemed a lot more meaningful to us to spend our time with functionality for proper users rather than fortify ourselves against all the trolls who want to spam posts.
+To deal with those potentially malicious posts, or spams, we created the admin feature who can delete all the posts they would like very easily and quickly. An aware admin can create a strong deterrent against spammers.
+ 
+Voting:
+The main improvement in the voting page is that a user’s location is now automatically detected using the google maps location services API if a user allows their browser to access their location. Since the precision for auto-detected location is sometimes very poor, we also now display a popup prompting a user to confirm their current location if it was chosen by auto-detection, to ensure the correct location is sent. 
+	A confirmation popup is also displayed if a user’s selected location is ‘offcampus’. Since we assume users will most often vote on campus, ‘offcampus’ votes are most likely due to a user clicking slightly outside the bounds of a building, and should be confirmed before they are sent. 
+	A user is now redirected to the Message Board page after submitting a vote. 
+ 
+Map:
+For the map page, we’ve updated the map visualization to include street names and allow for the visualization of three additional new “building” groups: off-campus, main quad, and the midway plaisance. All map information appears in the top of the page and will still be visible even if the user scrolls through the map. In addition, groups of discrete buildings belonging to the same building group will now highlight and unhighlight together. Finally, we’ve allowed the option of filtering the data used in the map visualized by all time, the last week, the last day, and the last two hours. 
+ 
+Personal Stats:
+We now show users their personal stats on the /stats page! Personal stats include users’ vote history, recent posts, and a map of their recent votes, as well as a breakdown of their voting trends by time of day and day of the week. Currently this data is pre-populated with pseudo-data for demonstration purposes when the server runs in debug mode. For each of the three voting history charts, we first query the database for the user’s data. Then we process this data to populate a line or a bar chart, and then we render the bar chart. There are also options to change the time frame on the line chart. When one of these filters is selected, the program queries, processes, and renders a new chart with the appropriate data, labels, and axes.
+The My Map section reuses much of the functionality from the Campus Map page but uses a different query to get only the current user’s votes. It also allows for filtering by recency.
+ 
+ 
+(6) who did what: who paired with who; which part is implemented by which pair
+ 
+We maintained pairings from the first iteration, so any changes made to a feature were made by the original pairings:
+ 
+Message Board: Annie and Xavier
+Most of our code was written using pair programming, thinking through the problem together, splitting up small parts of the problem to each other, and then integrating them. They worked on all the front design and functionality of the board page while also adding their box to the my stats page showing only the users posts. The big functional changes are being able to sort the posts but trending and recent while maintaining functionality of the recency buttons and reaction buttons. Also we kept it simple while writing so we had tons of code and then we went back and refactored a lot of functions. Another addition was to incorporate the admin and give them a new page that will allow them to remove votes with a button. Flask allows us to check for moderator. Annie worked a lot on the front end design of the message board and Xavi got the posts working on the stats page.
+ 
+Map: Claire and Keely
+Claire: Added filtering by time by including a time parameter in the building average query and adding time filter buttons to the page. These buttons trigger new queries and reload the contents of the map. Also moved the location label and campus average into the bar at the top of the page with the new time filtering buttons.
+Keely: Added street names and three additional new “building” groups: off-campus, main quad, and the midway plaisance. Added groupings for buildings so they all highlight together.
+ 
+Voting: Anthony and Mitch
+Anthony: Added initial location auto-detection using Google Maps API.
+Mitch: Integrated this new auto-detected location into the current Vote page, including cleaning up the methods we use to determine which location (dropdown, map click, or map detect) to use when submitting a vote (by making all three methods override the same variable, except for auto-detect if it has already been set, as described in a section above). 
+	Added confirmation popups if location was auto-detected or selected location is ‘offcampus’. Added “Post” option to appear after a user has voted (then scrapped this as per the note below, and in its place added a redirect after a user has voted to the Message Board page). Alphabetised the dropdown menu for ease of access. On the Personal Stats page, resized and cleaned up some components to make the page look better. 
+ 
+Backend: Mihai and Valerie
+We implemented the admin functionality on the backend, including adding new queries (admin login, logout, and verification). Mihai added some Flask templates to allow the frontend to easily render HTML based on whether or not the admin was logged in, and built the basic queries and functionality for admin. Mihai also incorporated Flask templates throughout the frontend code to avoid unnecessary HTML/JavaScript code duplication. Valerie and Mihai worked together to write unit tests for the admin. We pair-programmed to combine some old queries (get_campus_average(), get_building_average(), get_heatmap()) in order to reduce redundancy, by creating the get_votes_by() query that takes in a filter of arguments instead. We also changed the structure of some database tables, and how we were querying the database, to perform operations faster. 
+ 
+Stats page: 
+Valerie: created basic structure of the HTML page
+Claire: My History, My Map (just using map code with different query), My Votes By Day of Week, My Votes By Time of Day. These involved writing sending new queries to the database, structuring data, and customizing the plots using the Chart.js library.
+Annie and Xavi: Message board
+ 
+Frontend admin: 
+Xavi and Annie modified the message board to allow the admin to remove posts when logged in. Valerie created a simple login page for the admin, which redirects to the message board upon login, as well as the logout functionality.
+ 
+(7) changes: have you made any design changes or unit test changes from earlier milestones?
+ 
+Admin:
+We originally planned to allow admin functionality when running on localhost, and disallow it on the DNS but having two instances run at the same time created concurrency hazards on the shared resources. Instead, we created basic admin accounts. Now, to access admin functionality, you must have the correct admin username and password combination, manually redirect to /moderator, and enter the correct information. This makes accessing admin functionality cleaner, and prevents any errors that could occur from running two instances of the server at once. 
+ 
+Voting
+We had initially planned to replace the clickable map on the Vote page with a (blank so as not to influence users votes before they submit them) copy of the Happiness Map. However, once we discovered how inaccurate the Google maps location auto-detection could be, we realized that we needed a clickable map for users to verify that it was placing them at the correct location, and manually select their location if not. So the Vote page now looks basically the same as it did in the previous iteration. 
+We are now redirecting users to the Message Board page as soon as they vote, which is a change from what we had said we would do in the previous document. We had initially planned to replace the vote page with the Happiness Map page once a user had voted, but then thought that it would be more logical to add the option to post right after voting, since posts are tied to a user’s most recent vote. We then planned to just add the ‘post a message’ text box and Submit button to the Vote screen after a user submitted their vote, along with buttons to go to the Map or Message Board pages, but ultimately decided that redirecting them to the full Message Board page made more sense than just displaying half of it on the Vote page. 
+ 
+Stats
+We had said in the previous document that part of the Stats page would display a user’s average vote and a list of their recent votes. We ended up deciding that displaying these didn’t make a whole lot of sense, since a user’s recent votes are already displayed in the interactive graph we were building, and trends of their happiness over time are more interesting than a global average. 
+ 
+ 
+ 
+(8) others: whatever you want to let the TA know
+ 
+We decided to use cookies to keep track of users. We were already implementing this when it was suggested that we use a log-in page instead. One advantage of our system is that users don't need to log in or remember passwords. Their data will be ready whenever they return to the site. We also don't need to keep track of many accounts and passwords or deal with security for them.

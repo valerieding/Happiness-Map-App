@@ -25,12 +25,14 @@ var log_locs = Object.freeze({
   mansueto : "Mansueto Library",
   maxp : "Max Palevsky Commons",
   med : "Medical Campus",
+  mid : "Midway Plaisance",
   multi : "Office of Multicultural Affairs",
   new_grad : "New Graduate Residence Halls",
   north : "Campus North Residence and Dining",
   northBuild : "North Quad Buildings",
   oriental : "Oriental Institute",
   physics : "Physics Buildings",
+  quad : "Main Quad",
   quadr : "Quadrangle Club",
   ratner : "Ratner Athletics Center",
   regenstein : "Regenstein Library",
@@ -46,4 +48,4 @@ var log_locs = Object.freeze({
   south : "South Campus Residence Hall",
   southeast : "South East Quad Buildings",
   swift : "Swift Hall"
-}); 
+});
