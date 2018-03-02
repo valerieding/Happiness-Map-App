@@ -51,9 +51,15 @@
             </div>
         </div>
         <div>
-            <select class="selectpicker"data-live-search="true" id="loc_drop" multiple title="Filter by Location..." multiple data-max-options="1"><!-- class="selectpicker" multiple title="Filter by Location..." id="selectdown"> -->
-
-</select>
+            
+            <!-- will get this working for final because its prettier: -->
+            <!-- <select class="selectpicker"data-live-search="true" id="loc_drop" multiple title="Filter by Location..." multiple data-max-options="1">
+            </select> -->
+            <div>
+                <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
+                     <option value="" disabled selected>Filter Results by Location</option>
+                 </select>
+            </div>
 
           
             <!-- time buttons -->

@@ -14,19 +14,24 @@ $(document).ready(function(){
     getRecents();
     getCurrentHappiness();
     //populate dropdown with list at bottom of JS document..
-      for (var key in log_locs) {
-        $("#loc_drop").append('<option value=' + key + ' data-tokens='+key+'>' + log_locs[key] + '</option>');
-        console.log("happening NOW");
-      }  
-      $('.selectpicker').selectpicker();
-      $(function() {
-          $('.selectpicker').on('change', function(){
-            var selected = $(this).find("option:selected").val();
-            console.log(selected);
-            getRecents(selected,undefined);
-            searchLoc = location;
-          });
-      });
+    for (var key in log_locs) {
+      $("#loc_drop").append('<option value=' + key + '>' + log_locs[key] + '</option>');
+    }  
+
+      //Get working for final (prettier dropdown):
+      // for (var key in log_locs) {
+      //   $("#loc_drop").append('<option value=' + key + ' data-tokens='+key+'>' + log_locs[key] + '</option>');
+      //   console.log("happening NOW");
+      // }  
+      // $('.selectpicker').selectpicker();
+      // $(function() {
+      //     $('.selectpicker').on('change', function(){
+      //       var selected = $(this).find("option:selected").val();
+      //       console.log(selected);
+      //       getRecents(selected,undefined);
+      //       searchLoc = location;
+      //     });
+      // });
 });
 
 
