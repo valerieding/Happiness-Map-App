@@ -131,6 +131,8 @@ function getHappinessRating(n) {
 };
 
 function formatScore(n) {
+  if (n == "n/a")
+    return n;
   return Math.round(100 * n) / 100;
 }
 
@@ -157,7 +159,7 @@ async function getCampusScore(start_time) {
       }
       return "n/a";
     } catch(error) {
-      console.error(error);
+      e.error(error);
     }
 };
 
