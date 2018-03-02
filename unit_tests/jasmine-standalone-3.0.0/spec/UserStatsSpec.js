@@ -31,7 +31,8 @@ describe("User Stats Tests", function(){
 
     describe("processWeekData()", function(){
       it("should take in a get_personal_votes_by query for day of week and returns" +
-          " a day of week dataset for a bar chart", function(){
+          " a day of week dataset for a bar chart. days are 'Sunday', 'Monday' etc." +
+          " and values are numbers from 0 and 1 to 5 (0 meaning no data)", function(){
             let votes = {Friday: 3.7142857142857144, Monday: 1, Saturday: 4.2, Sunday: 5};
             expect(processWeekData(votes)).toEqual([
               [5, 1, 0, 0, 0, 3.71, 4.2],
@@ -45,8 +46,9 @@ describe("User Stats Tests", function(){
     });
 
     describe("processTimeData()", function(){
-      it("should take in a get_personal_votes_by query for day of week and returns" +
-          " a day of week dataset for a bar chart", function(){
+      it("should take in a get_personal_votes_by query for time of day and returns" +
+          " a time of day dataset for a bar chart. times are '1 AM', '3 PM' etc." +
+          " and values are numbers from 0 and 1 to 5 (0 meaning no data)", function(){
             let votes = {0: 3, 1: 1, 12: 2.5, 16: 3.3333333333333335, 21: 5, 22: 4, 23: 4};
             expect(processTimeData(votes)).toEqual([
               [3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.5, 0, 0, 0, 3.33, 0, 0,

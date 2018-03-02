@@ -84,11 +84,11 @@ describe("Map Tests", function(){
     describe("allMapObjects tests", function(){
       it("should return dictionaries of all map objects. should all " +
         "be the same length with entries for all logical_locations in " +
-        "FullNameKey, regardless of the input size. should contain the " +
+        "log_locs, regardless of the input size. should contain the " +
         "correct scores, colors, full names etc.", function(){
         let ratnerObj = {id: "ratner", score: 2.8, fullname: "Ratner Athletics Center",
           color: "#d7b5d8", rating: "only a little happy"};
-        let lengthOfAllBuildings = Object.keys(FullNameKey).length;
+        let lengthOfAllBuildings = Object.keys(log_locs).length;
 
         let firstRes = allMapObjects(firstCase);
         expect(Object.keys(firstRes).length).toEqual(lengthOfAllBuildings);
@@ -111,7 +111,7 @@ describe("Map Tests", function(){
 
     describe("getName tests", function(){
       it("should return the fullname for any entry from a get_heatmap call " +
-        "with a logical_location in the FullNameKey", function(){
+        "with a logical_location in the log_locs", function(){
         expect(getName(secondCase[0])).toEqual("Ratner Athletics Center");
         expect(getName(thirdCase[0])).toEqual("Alumni House");
         expect(getName(thirdCase[3])).toEqual("Booth School of Business");
