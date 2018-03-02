@@ -97,6 +97,9 @@ var marker;
 var gecoder;
 var gNavigator;
 
+var lat_coord;
+var long_coord;
+
 function snapToCurrentLoc() {
   if (gNavigator.geolocation || isOnCampus(myLatlng.lat(), myLatlng.lng()) == true) {
     gNavigator.geolocation.getCurrentPosition(function(position) {
@@ -104,6 +107,10 @@ function snapToCurrentLoc() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
+
+      lat_coord = pos.lat;
+      long_coord = pos.lng;
+      //alert("SNAP: (lat: " + lat_coord + ", long: " + long_coord + ")");
 
       marker = placeMarker(pos, map);
       if(currentMapLoc == null) {
@@ -120,11 +127,15 @@ function snapToCurrentLoc() {
         //marker = placeMarker(myLatlng, map);
         //geocodeLatLng(geocoder, map, marker);
         free_click = true;
+        //alert("SNAP 2 : (lat: " + lat_coord + ", long: " + long_coord + ")");
+
       });
   } else {
       // Browser doesnt' support Geolocation
       // handleLocationError(false, infoWindow, map.getCenter())
       free_click = true;
+      //alert("SNAP 3 (lat: " + lat_coord + ", long: " + long_coord + ")");
+
       //auto_loc = "<h5> Not currently on campus </h5>";
       //document.getElementById("autofill_loc").innerHTML = "<h5>Not on campus</h5>";
   }
@@ -143,6 +154,11 @@ function initMap() {
     center: myLatlng
   });
 
+  lat_coord = myLatlng.lat;
+  long_coord = myLatlng.lng;
+  //alert("INIT (lat: " + lat_coord + ", long: " + long_coord + ")");
+
+
   var free_click = false;
   map.setOptions({styles: styles['hide']});
 
@@ -156,6 +172,11 @@ function initMap() {
       marker.setMap(null);
       marker = null;
       marker = placeMarker(e.latLng, map);
+
+      lat_coord = myLatlng.lat;
+      long_coord = myLatlng.lng;
+      //alert("CLICK (lat: " + lat_coord + ", long: " + long_coord + ")");
+
       geocodeLatLng(geocoder, map, marker);
 
    // }
@@ -184,6 +205,10 @@ function placeMarker(position, map) {
  */
 function geocodeLatLng(geocoder, map, marker) {
   var latlng = marker.getPosition();
+  lat_coord = latlng.lat();
+  long_coord = latlng.lng();
+  //alert("GEOCODE (lat: " + lat_coord + ", long: " + long_coord + ")");
+
   if(isOnCampus(latlng.lat(), latlng.lng())) {
       geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {

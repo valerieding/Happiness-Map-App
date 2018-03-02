@@ -17,6 +17,7 @@
 </style>
 
 <script type="application/javascript" src="/static/logical_locs.js"></script>
+<script type="text/javascript" src="/static/vote/voteMapScript.js"></script>
 
 
 {% endblock %}
@@ -30,6 +31,7 @@
         }
 
         var hidden = 1;
+
         $("#vote_btn").click(function(){
           /*
           var drop_loc = $("#loc_drop option:selected").val();
@@ -43,6 +45,7 @@
           var confirmText = "(" + happy + ")\n";
           var confirmed = true;
           loc = currentMapLoc;
+
           if(autoLoc == true) {
              confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
             //confirmed = confirm(confirmText);
@@ -58,8 +61,6 @@
             confirmText += "We auto-detected that your location is: " + currentMapLoc;
           }
 
-          // Please don't mess with the confirm stuff (unless there's a reason I'm not seeing?). Users ONLY need to confirm their location if it was auto-detected (because GPS is inaccurate) or it's 'off campus' (since for the majority of the time, we assume users aren't INTENTIONALLY clicking a location off campus, but probably meant to click a buliding and missed it). 
-          //Also, the confirm variable is set to 'true' at the beginning, so confirm() doesn't always need to be called. 
           if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
             confirmed = confirm(confirmText);
           }
@@ -74,17 +75,15 @@
                 url: '/request/add_vote',
                 type: 'post',
                 dataType: 'json',
-                data: {'latitude': 10,
-                       'longitude': 10,
+                data: {'latitude': lat_coord,
+                       'longitude': long_coord,
                        'logical_location': loc,
                        'happiness_level': happy},
-                });
-              setTimeout(function(){ 
-                location.href = "board";
-              }, 2);
+                success: function(){
+                  location.href = "board";
+                }
+              });
             }
-            //location.href = "board";
-
           }
         });
       });
@@ -130,6 +129,7 @@
                      * down. */
                   var currentMapLoc = null;
                   var autoLoc = true;
+
                       // When the dropdown selection is changed
                   function onSelectChange() {
                     var sel = document.getElementById("loc_drop").value;
