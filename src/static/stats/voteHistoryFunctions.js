@@ -1,26 +1,4 @@
-var dateCallback = function(value, index, values) {
-    let temp = new Date(1000 * value).toDateString();
-    return temp;
-}
-var timeCallback = function(value, index, values) {
-    let temp = new Date(1000 * value).toLocaleTimeString();
-    return temp;
-}
-
-
-var chart = makeHistoryChart({
-    stepSize: 60*60*24,
-    callback: dateCallback,
-  }, null);
-var weekChart = makeWeekChart();
-var timeChart = makeTimeChart();
-setScatterButtonFunctions();
-
-
-setUpMapPersonal();
-setButtonFunctions(getAllBuildingScoresByUser);
-
-
+//Async functions for querying the database for vote histories
 async function getVoteHistory(start_time) {
   var myScores;
   if (!start_time) {
@@ -70,6 +48,7 @@ async function getVoteByTimeOfDay() {
       data: {'group_by': 'tod'},
       success: function(data){
         myScores = data;
+        console.log(myScores);
       }
     });
     return myScores;
@@ -78,6 +57,51 @@ async function getVoteByTimeOfDay() {
   }
 }
 
+//Functions for processing the data from queries for the charts
+function processHistoryData(data){
+  var voteHistory2 = [];
+  for (var i = 0; i < Math.min(60, data.length); i++) {
+    let x = new Date(1000 * data[i].timestamp).toDateString();
+    voteHistory2.push({
+      x: data[i].timestamp,
+      y: data[i].happiness_level});
+  }
+  return voteHistory2;
+}
+
+function processWeekData(data){
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  let dayScores = [0, 0, 0, 0, 0, 0, 0];
+  for (let day in days) {
+    if (data[days[day]]) {
+      dayScores[day] = formatScore(data[days[day]]);
+    }
+  }
+  return [dayScores, days];
+}
+
+function processTimeData(data) {
+  let timesScores = [];
+  for (let i = 0; i < 24; i++) {
+    if (data[i]) {
+      timesScores.push(formatScore(data[i]));
+    } else {
+      timesScores.push(0);
+    }
+  }
+  let timesLabels = ["12 AM"];
+  for (let i = 1; i < 12; i++) {
+    timesLabels.push(parseInt(i) + " AM");
+  }
+  timesLabels.push("12 PM");
+  for (let i = 1; i < 12; i++) {
+    timesLabels.push(parseInt(i) + " PM");
+  }
+  return [timesScores, timesLabels];
+}
+
+
+//Functions for drawing the three charts
 async function makeHistoryChart(ticks, start_time) {
   var voteHistory = await getVoteHistory(start_time);
   if (voteHistory.length <= 2) {
@@ -87,13 +111,7 @@ async function makeHistoryChart(ticks, start_time) {
   }
   document.getElementById("userVotesOverTime").style.display="block";
   document.getElementById("warningNotEnoughInfo").innerHTML = "";
-  var voteHistory2 = [];
-  for (var i = 0; i < Math.min(60, voteHistory.length); i++) {
-    let x = new Date(1000 * voteHistory[i].timestamp).toDateString();
-    voteHistory2.push({
-      x: voteHistory[i].timestamp,
-      y: voteHistory[i].happiness_level});
-  }
+  var voteHistory2 = processHistoryData(voteHistory);
 
   let ctx = document.getElementById('userVotesOverTime').getContext('2d');
   var timeChart = new Chart(ctx, {
@@ -142,14 +160,8 @@ async function makeHistoryChart(ticks, start_time) {
 }
 
 async function makeWeekChart() {
-  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  let dayScores = [0, 0, 0, 0, 0, 0, 0];
   let dayData = await getVoteByDayOfWeek();
-  for (let day in days) {
-    if (dayData[days[day]]) {
-      dayScores[day] = formatScore(dayData[days[day]]);
-    }
-  }
+  let [dayScores, days] = processWeekData(dayData);
   let ctx = document.getElementById('userVotesByDayOfWeek').getContext('2d');
   var weekChart = new Chart(ctx, {
     type: 'bar',
@@ -180,23 +192,8 @@ async function makeWeekChart() {
 
 async function makeTimeChart() {
   let timeData = await getVoteByTimeOfDay();
+  let [timesScores, timesLabels] = processTimeData(timeData);
   let ctx = document.getElementById('userVotesByTimeOfDay').getContext('2d');
-  let timesScores = [];
-  for (let i = 0; i < 24; i++) {
-    if (timeData[i]) {
-      timesScores.push(formatScore(timeData[i]));
-    } else {
-      timesScores.push(0);
-    }
-  }
-  let timesLabels = ["12 AM"];
-  for (let i = 1; i < 12; i++) {
-    timesLabels.push(parseInt(i) + " AM");
-  }
-  timesLabels.push("12 PM");
-  for (let i = 1; i < 12; i++) {
-    timesLabels.push(parseInt(i) + " PM");
-  }
   var weekChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -224,6 +221,16 @@ async function makeTimeChart() {
   return weekChart;
 }
 
+//Functions for adjusting the line plot
+
+function dateCallback(value, index, values) {
+    let temp = new Date(1000 * value).toDateString();
+    return temp;
+}
+function timeCallback(value, index, values) {
+    let temp = new Date(1000 * value).toLocaleTimeString();
+    return temp;
+}
 
 function setScatterButtonFunctions() {
   $('#optAllScatter').on('change', function () {
