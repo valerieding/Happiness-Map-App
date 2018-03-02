@@ -1,5 +1,6 @@
 import json
 import sqlite3
+import time
 from datetime import datetime
 from threading import Lock
 
@@ -69,7 +70,11 @@ class DatabaseManager:
                     'INSERT INTO {}({}) VALUES({})'.format(table, ','.join(line.keys()),
                                                            ', '.join(['?'] * len(line))),
                     (*line.values(),))
-        #self.execute('UPDATE variables SET val = 1000 WHERE key = "userID"')
+        # To make the database look more interesting, shift all dates closer
+        most_recent = max([self.execute('SELECT MAX(timestamp) FROM ' + table)[0][0] for table in ['posts', 'votes']])
+        shift = time.time() - most_recent
+        for table in ['posts', 'votes']:
+            self.execute('UPDATE {} SET timestamp = timestamp + ?'.format(table), (shift,))
         self.commit()
 
     def __del__(self):

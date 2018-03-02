@@ -7,6 +7,12 @@
 
 <script type="application/javascript" src="/static/logical_locs.js"></script>
 <script src="/static/board/board.js" is_mod={{ is_moderator }} id="script_loader" is_stat="false"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -34,7 +40,7 @@
                 <button id="tester" type="submit" class="btn btn-primary">Submit</button>
             </form>
 
-
+            <!-- sorting depending on recent or trending buttons -->
             <div style="display:inline;float:right;">
                 <form style="display:inline;padding-left:5px;" id="recent" method="post">
                     <button type="button" class="btn btn-success">Recent <i class="fa fa-caret-square-o-down"></i></button>
@@ -45,24 +51,18 @@
             </div>
         </div>
         <div>
+            
+            <!-- will get this working for final because its prettier: -->
+            <!-- <select class="selectpicker"data-live-search="true" id="loc_drop" multiple title="Filter by Location..." multiple data-max-options="1">
+            </select> -->
             <div>
                 <select id="loc_drop" form="vote" name="location" onchange="getSelectedLoc();">
-                    <option value="" disabled selected>Filter Results by Location</option>
-                </select>
+                     <option value="" disabled selected>Filter Results by Location</option>
+                 </select>
             </div>
 
-            <div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="loc_drop" form="vote"
-                            name="location" onchange="getSelectedLoc();">
-                        Filter Results by Location
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="loc_drop">
-                        <a value="" disabled selected>Filter Results by Location</a>
-                    </div>
-                </div>
-            </div>
-
+          
+            <!-- time buttons -->
             <div class="btn-group btn-group-toggle" data-toggle="buttons" style="float:right">
                 <label class="btn btn-outline-light active">
                     <input type="radio" name="options"
@@ -93,8 +93,7 @@
 
 
                 <div class="d-flex justify-content-between">
-              <!--   <div style="width:100%; text-align:center;">
-                <div style="width: 95%; margin-top:10px;" class="container"> -->
+                    <!-- table of posts -->
                     <table id="tuffy" border="2" class="table table-hover table-border">
                         <!-- <tr>
                             <th scope="col">Happiness Level</th>

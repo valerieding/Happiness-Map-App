@@ -7,7 +7,7 @@
     {"id": 4, "uid": 1, "time": "Feb 22 2018 12:00", "score": 2, "logical_loc": "harper"},
     {"id": 5, "uid": 1, "time": "Feb 22 2018 13:00", "score": 3, "logical_loc": "harper"},
     {"id": 6, "uid": 1, "time": "Feb 22 2018 14:00", "score": 2, "logical_loc": "harper"},
-    {"id": 7, "uid": 1, "time": "Feb 23 2018 17:30", "score": 3, "logical_loc": "offcampus"},
+    {"id": 7, "uid": 1, "time": "Feb 23 2018 17:30", "score": 5, "logical_loc": "offcampus"},
     {"id": 8, "uid": 1, "time": "Feb 23 2018 16:30", "score": 4, "logical_loc": "bartlett"},
     {"id": 9, "uid": 1, "time": "Feb 23 2018 18:00", "score": 5, "logical_loc": "harris"},
     {"id": 10, "uid": 1, "time": "Feb 23 2018 19:20", "score": 5, "logical_loc": "booth"},
@@ -122,8 +122,13 @@
   ],
   "posts": [
     {"id": 0, "voteID": 30, "uid": 1, "message": "Early morning in the reg", "time": "Feb 13 2018 8:30", "score": 1, "logical_loc": "regenstein"},
-    {"id": 1, "voteID": 130, "uid": 5, "message": "Love the Booth atrium!", "time": "Feb 23 2018 19:44", "score": 5, "logical_loc": "booth"}
-
+    {"id": 1, "voteID": 130, "uid": 5, "message": "Love the Booth atrium!", "time": "Feb 23 2018 19:44", "score": 5, "logical_loc": "booth"},
+    {"id": 2, "voteID": 7, "uid": 1, "message": "so excited for senior formal wow", "time": "Feb 23 2018 21:44", "score": 5, "logical_loc": "offcampus"},
+    {"id": 3, "voteID": 34, "uid": 2, "message": "feeling bummed had a hard midterm", "time": "Feb 22 2018 19:44", "score": 2, "logical_loc": "harper"},
+    {"id": 4, "voteID": 112, "uid": 4, "message": "free food on the quad!", "time": "Mar 1 2018 16:44", "score": 4, "logical_loc": "quad"},
+    {"id": 5, "voteID": 109, "uid": 4, "message": "LOVING this weather", "time": "Mar 1 2018 13:05", "score": 4, "logical_loc": "mid"},
+    {"id": 6, "voteID": 133, "uid": 5, "message": "i have so much work this is so sad", "time": "Feb 23 2018 23:44", "score": 2, "logical_loc": "south"},
+    {"id": 7, "voteID": 120, "uid": 5, "message": "hitting the books!!", "time": "Feb 13 2018 8:30", "score": 1, "logical_loc": "regenstein"}
   ],
   "post_votes": [
     {"postID": 0, "uid": 2, "reaction": 0},
@@ -131,6 +136,46 @@
     {"postID": 0, "uid": 4, "reaction": 1},
     {"postID": 0, "uid": 5, "reaction": 1},
     {"postID": 0, "uid": 6, "reaction": 1},
-    {"postID": 0, "uid": 7, "reaction": 1}
+    {"postID": 0, "uid": 7, "reaction": 1},
+
+    {"postID": 1, "uid": 2, "reaction": 0},
+    {"postID": 1, "uid": 3, "reaction": 0},
+    {"postID": 1, "uid": 4, "reaction": 0},
+    {"postID": 1, "uid": 5, "reaction": 1},
+
+    {"postID": 2, "uid": 6, "reaction": 0},
+
+    {"postID": 3, "uid": 7, "reaction": 1},
+    {"postID": 3, "uid": 6, "reaction": 1},
+    {"postID": 3, "uid": 5, "reaction": 1},
+    {"postID": 3, "uid": 4, "reaction": 1},
+    {"postID": 3, "uid": 3, "reaction": 0},
+
+    {"postID": 4, "uid": 2, "reaction": 0},
+    {"postID": 4, "uid": 3, "reaction": 0},
+    {"postID": 4, "uid": 4, "reaction": 0},
+    {"postID": 4, "uid": 5, "reaction": 0},
+    {"postID": 4, "uid": 6, "reaction": 0},
+
+    {"postID": 5, "uid": 5, "reaction": 0},
+    {"postID": 5, "uid": 6, "reaction": 0},
+    {"postID": 5, "uid": 7, "reaction": 0},
+    {"postID": 5, "uid": 2, "reaction": 0},
+    {"postID": 5, "uid": 3, "reaction": 0},
+    {"postID": 5, "uid": 4, "reaction": 0},
+
+    {"postID": 6, "uid": 5, "reaction": 1},
+    {"postID": 6, "uid": 6, "reaction": 1},
+    {"postID": 6, "uid": 7, "reaction": 1},
+    {"postID": 6, "uid": 2, "reaction": 1},
+    {"postID": 6, "uid": 3, "reaction": 0},
+    {"postID": 6, "uid": 4, "reaction": 0},
+
+    {"postID": 7, "uid": 5, "reaction": 1},
+    {"postID": 7, "uid": 6, "reaction": 1},
+    {"postID": 7, "uid": 7, "reaction": 1},
+    {"postID": 7, "uid": 2, "reaction": 1},
+    {"postID": 7, "uid": 3, "reaction": 0},
+    {"postID": 7, "uid": 4, "reaction": 0}
   ]
 }
