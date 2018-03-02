@@ -91,11 +91,11 @@ function makeRow(messageArray,mod){
   $.each(messageArray, function(index, value){
     trHTML += '<tr><td>' + value['happiness_level'] + '/5' + '</td><td>' +
         decodeURIComponent(value['message']) + '</td><td>' +
-        decodeURIComponent(value['location']['logical_location']) + '</td><td>' +
+        decodeURIComponent(log_locs[value['location']['logical_location']]) + '</td><td>' +
         timeSince(value['timestamp']) + '</td><td> <button onclick=\"callReact(\'upvote\',' +
         value['post_id']  + ');\" class=\"btn btn-primary\"><i class="fa fa-smile-o"></i> ' +
         value['reactions']['upvote'] + '</button> <button onclick=\"callReact(\'downvote\',' +
-        value['post_id'] +');\" class=\"btn btn-primary\"><i class="fa fa-frown-o"></i> ' +
+        value['post_id'] +');\" class=\"btn btn-danger\"><i class="fa fa-frown-o"></i> ' +
         value['reactions']['downvote'] + '</button></td>';
     if (mod) {
       trHTML += '<td> <button onclick=\"deletePost('+ value['post_id'] + ');\" class=\"btn btn-primary\">' + 'Remove Post' + '</button> </td>';
