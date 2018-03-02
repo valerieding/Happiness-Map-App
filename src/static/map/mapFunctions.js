@@ -14,58 +14,6 @@ const HappinessTextKey = ["not at all happy", "only a little happy", "somewhat h
 
 var regions = [];
 
-var FullNameKey = Object.freeze({
-  bj : "Burton Judson Courts",
-  cathey : "Cathey Dining Commons",
-  south : "South Campus Residence Hall",
-  law : "Law School",
-  harris : "Harris School",
-  new_grad : "New Graduate Residence Halls",
-  ida : "Ida Noyes",
-  booth : "Booth School of Business",
-  oriental : "Oriental Institute",
-  rock : "Rockefeller Chapel",
-  quadr : "Quadrangle Club",
-  saieh : "Saieh Hall for Economics",
-  henry : "Henry Crown Field House",
-  smart : "Smart Museum",
-  alumni : "Alumni House",
-  snell :  "Snell-Hitchcock",
-  reynolds : "Reynolds Club",
-  physics : "Physics Buildings",
-  med : "Medical Campus",
-  logan : "Logan and Midway Studios",
-  eastBuild : "East Quad Buildings",
-  north : "Campus North Residence and Dining",
-  multi : "Office of Multicultural Affairs",
-  northBuild : "North Quad Buildings",
-  lab : "Lab Buildings",
-  crerar : "Crerar Library",
-  mansueto : "Mansueto Library",
-  regenstein : "Regenstein Library",
-  bartlett : "Bartlett Dining Commons",
-  maxp : "Max Palevsky Commons",
-  hutch : "Hutchinson Commons",
-  swift : "Swift Hall",
-  reynolds : "Reynolds Club",
-  mainNorth : "Main Quad North Buildings",
-  bookstore : "University Bookstore",
-  edward : "Edward H Levi Hall",
-  cobb : "Cobb Hall",
-  swift : "Swift Hall",
-  bond : "Bond Chapel",
-  classicsBuilds : "Classics Quad Buildings",
-  harper : "Harper Memorial Library",
-  ssr : "Social Science Research",
-  stuart : "Stuart Hall",
-  rosenwald : "Rosenwald",
-  ryeck : "Ryerson/Eckhart",
-  ratner : "Ratner Athletics Center",
-  southeast : "South East Quad Buildings",
-  offcampus : "Off Campus Locations",
-  quad : "Main Quad",
-  mid : "Midway Plaisance",
-});
 
 
 //map page functions
@@ -83,7 +31,7 @@ function emptyMapObj(n) {
   return {
     id: n,
     score: "n/a",
-    fullname: FullNameKey[n],
+    fullname: log_locs[n],
     color: nullColor,
     rating: "no data available"
   };
@@ -91,7 +39,7 @@ function emptyMapObj(n) {
 
 function allMapObjects(ns) {
   let allObjs = {};
-  for (var prop in FullNameKey){
+  for (var prop in log_locs){
     allObjs[prop] = emptyMapObj(prop);
   }
   if (!ns) {
@@ -112,7 +60,7 @@ function allMapObjects(ns) {
 
 function getName(n) {
   if (n.logical_location){
-    return FullNameKey[n.logical_location];
+    return log_locs[n.logical_location];
   }
   return "";
 };
