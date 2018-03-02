@@ -1,14 +1,42 @@
 describe("User Stats Tests", function(){
 
 
-  describe("intToDay()", function(){
-    it("should convert from an integer [0:6] to a day of the week string " +
-        " which should be useful for labeling the graph with data from the database", function(){
-      expect(intToDay(0)).toEqual("Saturday");
-      expect(intToDay(1)).toEqual("Monday");
-      expect(intToDay(6)).toEqual("Saturday");
-      expect(intToDay(-1)).toEqual("");
-      expect(intToDay(7)).toEqual("");
+  describe("Vote stats processing functions", function(){
+    describe("processHistoryData()", function(){
+      it("should take in a get_recent_votes query and returns a [x,y]" +
+          " dataset for the line plot", function(){
+            let votes = [
+            {happiness_level: 5,
+             location: {address: null, latitude: null, logical_location: "saieh", longitude: null},
+             timestamp: 1519944800},
+            {happiness_level: 4,
+             location: {address: null, latitude: null, logical_location: "saieh", longitude: null},
+             timestamp: 1519944900},
+            {happiness_level: 3,
+             location: {address: null, latitude: null, logical_location: "saieh", longitude: null},
+             timestamp: 1519944970},
+            {happiness_level: 2,
+             location: {address: null, latitude: null, logical_location: "saieh", longitude: null},
+             timestamp: 1519944980}
+            ]
+            expect(processHistoryData(votes)).toEqual([
+              { x: 1519944800, y: 5 },
+              { x: 1519944900, y: 4 },
+              { x: 1519944970, y: 3 },
+              { x: 1519944980, y: 2 }
+            ]);
+      });
+    });
+
+    describe("processWeekData()", function(){
+      it("should take in a get_personal_votes_by query for day of week and returns" +
+          " a day of week dataset for a bar chart", function(){
+            let votes = {Friday: 3.7142857142857144, Monday: 1, Saturday: 4.2, Sunday: 5};
+            expect(processWeekData(votes)).toEqual([
+              [5, 1, 0, 0, 0, 3.71, 4.2],
+              ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            ]);
+      });
     });
   });
 
