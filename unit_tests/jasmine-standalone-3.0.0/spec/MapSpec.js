@@ -159,10 +159,5 @@ describe("Map Tests", function(){
     });
   });
 
-  describe("Tests for 2nd Iteration", function(){
-    it("any tests would go here", function(){
-        expect(1).toEqual(1);
-    });
-  });
 
 });

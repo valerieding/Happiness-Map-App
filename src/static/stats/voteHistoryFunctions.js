@@ -48,7 +48,6 @@ async function getVoteByTimeOfDay() {
       data: {'group_by': 'tod'},
       success: function(data){
         myScores = data;
-        console.log(myScores);
       }
     });
     return myScores;
