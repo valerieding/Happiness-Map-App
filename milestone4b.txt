@@ -102,4 +102,4 @@ We had said in the previous document that part of the Stats page would display a
  
 (8) others: whatever you want to let the TA know
  
-We decided to use cookies to keep track of users. We were already implementing this when it was suggested that we use a log-in page instead.
+We decided to use cookies to keep track of users. We were already implementing this when it was suggested that we use a log-in page instead. One advantage of our system is that users don't need to log in or remember passwords. Their data will be ready whenever they return to the site. We also don't need to keep track of many accounts and passwords or deal with security for them.
