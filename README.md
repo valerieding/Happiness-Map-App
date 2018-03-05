@@ -42,6 +42,18 @@ Backend:
 - Set up API for front-end to post requests and query the database (all functions outlined in the design doc are implemented, and any changes are noted below in section 7)
 - Maintained and updated database/queries to keep up with front end needs
 
+Stats:
+The stats page is a convenient way for a user to look back on his/her recent votes and posts. It contains several visualizations, including:
+- a trendline of a user's happiness levels over time (based on their votes) 
+- a user's recent posts
+- a user's campus map, which shows a user's personal happiness votes and where they took place
+- a bar graph of a user's votes by day of week, which shows a user's average happiness level for each day
+- a bar graph of a user's votes by time of day, which shows a user's average happiness level for each hour of the past day
+
+Admin:
+We've implemented moderator functionality that can be accessed when running the app on localhost:8000. If you navigate to localhost:8000/moderator, the app will prompt you to log in as an admin. You can login with the credentials: username = admin, password = password. This will redirect you to the message board, with the added ability to remove posts. If you click the log out button on the message board, you will return to the message board as a regular user, without admin abilities. 
+
+
 ## 3) A brief tutorial about how to use your software
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
 
