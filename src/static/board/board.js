@@ -348,12 +348,12 @@ $(function() {
     getRecents(searchLoc, timeframe);
   });
 });
-//TWO HOURS
+//ONE HOUR
 $(function() {
   $('input[type=radio][id="optHourMess"]').change(function(e) {
-    console.log("showing last two hours' posts");
+    console.log("showing last hours' posts");
     e.preventDefault();
-    timeframe = -7200;
+    timeframe = -3600;
     getRecents(searchLoc, timeframe);
   });
 });
@@ -373,30 +373,30 @@ function timeSince(timeStamp) {
     var value, unit, prefix = '';
     if (elapsed < secondsPerMinute) {
         value = Math.round(elapsed);
-        unit = 'second';
+        unit = 's';
     } else if (elapsed < secondsPerHour) {
         value = Math.round(elapsed / secondsPerMinute);
-        unit = 'minute';
+        unit = 'm';
     } else if (elapsed < secondsPerDay) {
         value = Math.round(elapsed / secondsPerHour);
-        unit = 'hour';
+        unit = 'h';
     } else if (elapsed < secondsPerMonth) {
         prefix = '~'
         value = Math.round(elapsed / secondsPerDay);
-        unit = 'day';
+        unit = 'd';
     } else if (elapsed < secondsPerYear) {
         prefix = '~'
         value = Math.round(elapsed / secondsPerMonth);
-        unit = 'month';
+        unit = 'm';
     } else {
         prefix = '~'
         value = Math.round(elapsed / secondsPerYear);
-        unit = 'year';
+        unit = 'y';
     }
-    if (value != 1) {
-        unit += 's'
-    }
-    return prefix + value + ' ' + unit + ' ago';
+    // if (value != 1) {
+    //     unit += 's'
+    // }
+    return prefix + value + unit;
 }
 
 //Found this on stack overflow since no built in function in JS...
