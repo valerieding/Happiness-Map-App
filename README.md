@@ -44,7 +44,7 @@ Backend:
 
 ## 3) A brief tutorial about how to use your software
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
-## Instructions to run:
+
 
 ### 4.) Acceptance tests to try
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
