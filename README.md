@@ -28,12 +28,13 @@ Message Board:
 - Wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
 
 Map:
-- Wrote wrapper functions for database queries: get campus average, get averages of all buildings, get average of specific building. note: average is the average of all votes and not limited by recent votes.
-- Used Raphael to make our own SVG campus map which runs in an iframe on the campus map page
-- Implemented the conversion of query results into color map of campus happiness
-- Included a 'region-card' in the corner of the iframe which shows users information about the selected building and the campus happiness averag
-- Wrote unit tests for all map object creation and manipulation functions
-- We have finished implementing the use case where a user clicks on the Campus Map tab, intending to learn how happy the various campus buildings are and how happy the campus is in general.
+- Used Raphael to make our own SVG campus map with a selection of prominent campus buildings
+- Queries the database for average votes by building and for all votes- can be filtered by times
+- Color codes buildings based on the recorded happiness level with a light pink to dark pink scale
+- Included a label above the map to show the full name and happiness level of the most recently selected building
+- A label for the campus average
+- Buttons to change the time filter on the map
+- Use Case: A user can visit this page and learn about how happy different buildings were for different recent time periods
 
 Backend:
 - Wrote unit tests for database API and requests
@@ -44,9 +45,9 @@ Backend:
 
 Stats:
 The stats page is a convenient way for a user to look back on his/her recent votes and posts. It contains several visualizations, including:
-- a trendline of a user's happiness levels over time (based on their votes) 
+- a trendline of a user's happiness levels over time (based on up to 50 of their most recent votes) which can be filtered by time
 - a user's recent posts
-- a user's campus map, which shows a user's personal happiness votes and where they took place
+- a user's campus map, which shows a user's personal happiness votes and where they took place and which can also be filtered by time
 - a bar graph of a user's votes by day of week, which shows a user's average happiness level for each day
 - a bar graph of a user's votes by time of day, which shows a user's average happiness level for each hour of the past day
 
