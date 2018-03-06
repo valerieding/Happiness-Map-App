@@ -42,12 +42,13 @@
           var happy;
           var loc;
           happy = $("input[name=happiness_level]:checked").val();
-          var confirmText = "(" + happy + ")\n";
+          var confirmText = "Happiness: " + happy + "/5\n";
           var confirmed = true;
           loc = currentMapLoc;
+          var loc_text = log_locs[currentMapLoc];
 
           if(autoLoc == true) {
-             confirmText += "We auto-detected your location is: " + currentMapLoc + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
+             confirmText += "We auto-detected your location is: " + loc_text + ".\nIf this is correct click Okay, otherwise please\nclick Cancel and manually select your\nlocation to submit your vote.";
             //confirmed = confirm(confirmText);
 
           } else if(autoLoc == false && currentMapLoc == 'offcampus') {
@@ -58,7 +59,7 @@
             confirmText += "Oops! We couldn't get your location.\nPlease select your location manually to\nsubmit your vote.";
            // confirmed = confirm(confirmText);
           } else {
-            confirmText += "We auto-detected that your location is: " + currentMapLoc;
+            confirmText += "We auto-detected that your location is: " + loc_text;
           }
 
           if(loc == 'offcampus' || loc == '' || loc == ' '|| autoLoc == true) {
