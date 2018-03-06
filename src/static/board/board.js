@@ -1,3 +1,4 @@
+
 //Global string to use get_recent and get_trending posts easier
 var headertext = ""
 //Global flags and stuff
@@ -220,6 +221,7 @@ function addPost(message){
     });
     toolong = 0;
   } else{
+    swal("Your post is too long!","Chop it down to 256 characters","warning");
     toolong = 1;
   }
 }
