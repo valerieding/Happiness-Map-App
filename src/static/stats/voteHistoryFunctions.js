@@ -104,6 +104,7 @@ function processTimeData(data) {
 async function makeHistoryChart(ticks, start_time) {
   var voteHistory = await getVoteHistory(start_time);
   if (voteHistory.length <= 2) {
+    console.log(voteHistory);
     document.getElementById("userVotesOverTime").style.display="none";
     document.getElementById("warningNotEnoughInfo").innerHTML = "Not Enough Data to Display"
     return;
@@ -136,6 +137,7 @@ async function makeHistoryChart(ticks, start_time) {
               yAxes: [{
                   type: 'linear',
                   ticks: {
+                    max: 5,
                     min: 1,
                     stepSize: 1
                   }
@@ -262,7 +264,7 @@ function setScatterButtonFunctions() {
   $('#optHourScatter').on('change', function () {
     let now = Math.floor(Date.now() / 1000);
     let ticks = {
-        stepSize: 60,
+        stepSize: 60*5,
         callback: timeCallback
     };
     makeHistoryChart(ticks, -twoHr);

@@ -44,6 +44,7 @@ class DatabaseManager:
 
     def acquire_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is acquired."""
+        print("Acquiring {}".format(key))
         if key in self.locks:
             self.locks[key].acquire()
             return
@@ -57,6 +58,7 @@ class DatabaseManager:
     def release_lock(self, key):
         """Manages an array of locks. When this method is called, the lock corresponding to `key` is released."""
         self.locks[key].release()
+        print("Released {}".format(key))
 
     def load_from_json(self, json_file):
         with open(json_file, 'r') as f:
