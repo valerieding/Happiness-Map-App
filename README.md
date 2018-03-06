@@ -72,7 +72,9 @@ Switching your vote subtracts from current vote and adds to new vote so as to no
 Sorting posts by 'trending' or 'recent' should result in either the highest rated or most recently added posts.
 
 Voting:
-	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. Off-campus users cannot post to the Message Board.
+	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. 
+
+	Google Maps geolocation has some accuracy issues, so we allow the user to click directly on the Google Map to choose their location. They can also specify a campus building from the dropdown menu. When a user submits their vote, their last location is submitted, whether it is from geolocation, directly clicking on the map, or selecting from the dropdown menu.
 
 	The following are valid requests:
 	1. Happiness level = 1-5
