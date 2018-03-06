@@ -6,6 +6,7 @@ On Localhost:
 2. Install flask, wtforms, coverage, and ecdsa (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage, pip3 install ecdsa).
 3. Navigate to the src directory, and run: python3 main.py --debug
 4. Open a browser and navigate to "localhost:8000"
+
 NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page, since the one currently being used has a cap of 1000 queries/day. 
 	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
