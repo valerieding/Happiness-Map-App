@@ -70,7 +70,7 @@
             loc = currentMapLoc;
             happy = $("input[name=happiness_level]:checked").val();
             //alert("map: " + currentMapLoc + ", happy: " + happy);
-            if (happy >= 1 && happy <= 5 && typeof loc != undefined) {
+            if (happy >= 1 && happy <= 5 && loc != null) {
               $.ajax({
                 url: '/request/add_vote',
                 type: 'post',
