@@ -13,6 +13,8 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -34,7 +36,7 @@
         <!-- ADD MESSAGE BOARD WITH REMOVE POST FUNCTIONALITY HERE -->
         <div class="form-group" style="float:left;">
             <form style="display:inline;" id="myform" method="post">
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know!"
+                <input type="text" class="form-control" id="exampleInputName2" placeholder="Let the world know! (In under 256 characters...)"
                        name="message" autocomplete="off">
                 <BR>
                 <button id="tester" type="submit" class="btn btn-primary">Submit</button>

@@ -1,14 +1,23 @@
 # Happiness-Map-App
 
-## 1) Installation Guide:
-On Localhost:
-1. Install python3, if you don't already have it installed
-2. Install flask, wtforms, coverage, and ecdsa (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage, pip3 install ecdsa).
-3. Navigate to the src directory, and run: python3 main.py --debug
-4. Open a browser and navigate to "localhost:8000"
+## 1) Installation Guide
+For running the server, Python 3.5 or newer is necessary. Additional python package dependencies are:
+- flask (backbone of the server. Root privileges or a python virtual environment is necessary)
+- wtforms (form validation)
+- ecdsa (cookie signature)
+- coverage (only for running the server tests with --coverage)
 
-On DNS:
-http://happymap.ddns.net
+You can run `pip3 install flask wtforms ecdsa coverage` or `python3 -m pip install  flask wtforms ecdsa coverage` to 
+take care of these dependencies.
+
+Running the server is simply `python3 main.py` with an optional `--debug` flag for activating debug mode.
+
+Opening the website:
+- local instance: http://localhost:8000
+- remote instance: http://happymap.ddns.net (WARNING: this is running on a personal computer so it's not always on).
+
+NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page.
+	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
 ## 2) A brief functionality description
 Voting:
@@ -56,6 +65,8 @@ We've implemented moderator functionality that can be accessed when running the 
 
 
 ## 3) A brief tutorial about how to use your software
+See the Installation Guide for instructions on setting up and running the server on your localhost. When you go to your browser and connect to localhost:8000, you will be taken to the home page, which has the happiness map of campus. You can use the navigation drop down menu to change pages. On the Vote page, you can vote and indicate your location through location services (only on some browsers), through clicking on the map, or through selecting a building/region from the dropdown menu. Not all locations will be available through location services or the map functionality. On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. The Campus Map page takes you back to the home page where you can see the happiness map. The My Stats page can show you some interesting visualizations, but note that My History will only be available when you have logged 3 or more votes, and remember that you can only vote so frequently without overriding your previous vote. 
+
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
 
 

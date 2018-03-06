@@ -1,3 +1,4 @@
+
 //Global string to use get_recent and get_trending posts easier
 var headertext = ""
 //Global flags and stuff
@@ -8,6 +9,7 @@ var timeframe = 0;
 var mod = 0;
 var stat_rec = 0;
 var stat_trend = 0;
+var toolong = 0;
 
 $(document).ready(function(){
     //When page loads...
@@ -196,24 +198,32 @@ $(function() {
   $("#myform").submit(function(e) {
     e.preventDefault();
     addPost($("#myform").serialize().slice(8));
+    if(!toolong){
     document.getElementById('welcome').innerHTML = "<h4 style=\"color:White; text-align:left;\">Check back in an hour!</h4>";
     document.getElementById('myform').innerHTML = "";
+  }
   });
 });
 
 //QUERY TO ADD POST
 function addPost(message){
-  $.ajax({
-    url: '/request/add_post',
-    type: 'post',
-    dataType: 'json',
-    data: {'message': message},
-    success: function(data) {
-        console.log("added post successfully");
-        getRecents(undefined,undefined);
-        document.getElementById("loc_drop").value = "";
-    }
-  });
+  if(message.length <= 256){
+    $.ajax({
+      url: '/request/add_post',
+      type: 'post',
+      dataType: 'json',
+      data: {'message': message},
+      success: function(data) {
+          console.log("added post successfully");
+          getRecents(undefined,undefined);
+          document.getElementById("loc_drop").value = "";
+      }
+    });
+    toolong = 0;
+  } else{
+    swal("Your post is too long!","Chop it down to 256 characters","warning");
+    toolong = 1;
+  }
 }
 
 //QUERY TO DELETE POST

@@ -111,6 +111,8 @@ function snapToCurrentLoc() {
       lat_coord = pos.lat;
       long_coord = pos.lng;
       //alert("SNAP: (lat: " + lat_coord + ", long: " + long_coord + ")");
+      marker.setMap(null);
+      marker = null;
 
       marker = placeMarker(pos, map);
       if(currentMapLoc == null) {
@@ -126,14 +128,14 @@ function snapToCurrentLoc() {
         //handleLocationError(true, infoWindow, map.getCenter());    
         //marker = placeMarker(myLatlng, map);
         //geocodeLatLng(geocoder, map, marker);
-        free_click = true;
+        //free_click = true;
         //alert("SNAP 2 : (lat: " + lat_coord + ", long: " + long_coord + ")");
 
       });
   } else {
       // Browser doesnt' support Geolocation
       // handleLocationError(false, infoWindow, map.getCenter())
-      free_click = true;
+      //free_click = true;
       //alert("SNAP 3 (lat: " + lat_coord + ", long: " + long_coord + ")");
 
       //auto_loc = "<h5> Not currently on campus </h5>";
@@ -154,12 +156,14 @@ function initMap() {
     center: myLatlng
   });
 
+  marker = placeMarker(myLatlng, map);
+
   lat_coord = myLatlng.lat;
   long_coord = myLatlng.lng;
   //alert("INIT (lat: " + lat_coord + ", long: " + long_coord + ")");
 
 
-  var free_click = false;
+  //var free_click = false;
   map.setOptions({styles: styles['hide']});
 
   geocoder = new google.maps.Geocoder;
@@ -182,7 +186,7 @@ function initMap() {
    // }
   });
 
-  if (free_click == true)
+  //if (free_click == true)
     marker.addListener('click', function() {});
 
 }
