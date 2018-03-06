@@ -65,6 +65,8 @@ We've implemented moderator functionality that can be accessed when running the 
 
 
 ## 3) A brief tutorial about how to use your software
+See the Installation Guide for instructions on setting up and running the server on your localhost. When you go to your browser and connect to localhost:8000, you will be taken to the home page, which has the happiness map of campus. You can use the navigation drop down menu to change pages. On the Vote page, you can vote and indicate your location through location services (only on some browsers), through clicking on the map, or through selecting a building/region from the dropdown menu. Not all locations will be available through location services or the map functionality. On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. The Campus Map page takes you back to the home page where you can see the happiness map. The My Stats page can show you some interesting visualizations, but note that My History will only be available when you have logged 3 or more votes, and remember that you can only vote so frequently without overriding your previous vote. 
+
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
 
 
