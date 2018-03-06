@@ -65,8 +65,13 @@ We've implemented moderator functionality that can be accessed when running the 
 
 
 ## 3) A brief tutorial about how to use your software
-See the Installation Guide for instructions on setting up and running the server on your localhost. When you go to your browser and connect to localhost:8000, you will be taken to the home page, which has the happiness map of campus. You can use the navigation drop down menu to change pages. On the Vote page, you can vote and indicate your location through location services (only on some browsers), through clicking on the map, or through selecting a building/region from the dropdown menu. Not all locations will be available through location services or the map functionality. On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. The Campus Map page takes you back to the home page where you can see the happiness map. The My Stats page can show you some interesting visualizations, but note that My History will only be available when you have logged 3 or more votes, and remember that you can only vote so frequently without overriding your previous vote. 
-
+See the Installation Guide for instructions on setting up and running the server on your localhost. When you go to your browser and connect to localhost:8000, you will be taken to the home page, which has the happiness map of campus. You can use the navigation drop down menu to change pages.
+On the Vote page, you can vote and indicate your location through location services (only on some browsers), through clicking on the map, or through selecting a building/region from the dropdown menu. Not all locations will be available through location services or the map functionality.
+On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. 
+The Campus Map page takes you back to the home page where you can see the happiness map.
+The My Stats page can show you some interesting visualizations, but note that My History will only be available when you have logged 3 or more votes, and remember that you can only vote so frequently without overriding your previous vote.
+Note: If you vote twice within 15 minutes, your first vote will be overwritten by your second vote. If you post to the message board in between submitting these votes, that message will stay on the board with the location and happiness level of the first vote. This is the intended behavior to prevent people from flooding the system with votes, while also allowing them to vote/update their votes freely. Message board posts are meant to last and to be tied to the vote that was accurate at the time of posting. If you vote and post in succession, you may see posts on "My Recent Posts" which are not tied to a currently valid vote and are therefore not reflected on the map or in the other charts on "My Stats". That is ok.
+ 
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
 
 
@@ -74,7 +79,10 @@ See the Installation Guide for instructions on setting up and running the server
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
 
 Map:
-After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map.
+After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map. Try filtering by different time frames and noticing how the map changes.
+
+My Stats:
+Try hovering over points or bars on the graphs to see that the labels make sense given the axes, and try changing the time frames on My History and My Map to see how the data and axes change. Add a vote on the Vote page and seeing that it is reflected in each of the graphs on the Personal Stats page.
 
 Message Board:
 You cannot post if you did not already vote.
