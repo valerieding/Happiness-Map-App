@@ -70,6 +70,7 @@ On the Vote page, you can vote and indicate your location through location servi
 On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. 
 The Campus Map page takes you back to the home page where you can see the happiness map.
 The My Stats page can show you some interesting visualizations, but note that My History will only be available when you have logged 3 or more votes, and remember that you can only vote so frequently without overriding your previous vote.
+
 Note: If you vote twice within 15 minutes, your first vote will be overwritten by your second vote. If you post to the message board in between submitting these votes, that message will stay on the board with the location and happiness level of the first vote. This is the intended behavior to prevent people from flooding the system with votes, while also allowing them to vote/update their votes freely. Message board posts are meant to last and to be tied to the vote that was accurate at the time of posting. If you vote and post in succession, you may see posts on "My Recent Posts" which are not tied to a currently valid vote and are therefore not reflected on the map or in the other charts on "My Stats". That is ok.
  
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
