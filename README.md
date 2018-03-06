@@ -16,7 +16,7 @@ Opening the website:
 - local instance: http://localhost:8000
 - remote instance: http://happymap.ddns.net (WARNING: this is running on a personal computer so it's not always on).
 
-NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page, since the one currently being used has a cap of 1000 queries/day. 
+NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page.
 	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
 ## 2) A brief functionality description
