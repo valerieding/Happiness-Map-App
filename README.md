@@ -1,14 +1,23 @@
 # Happiness-Map-App
 
-## 1) Installation Guide:
-On Localhost:
-1. Install python3, if you don't already have it installed
-2. Install flask, wtforms, coverage, and ecdsa (on Mac, this is pip3 install flask, pip3 install wtforms, pip3 install coverage, pip3 install ecdsa).
-3. Navigate to the src directory, and run: python3 main.py --debug
-4. Open a browser and navigate to "localhost:8000"
+## 1) Installation Guide
+For running the server, Python 3.5 or newer is necessary. Additional python package dependencies are:
+- flask (backbone of the server. Root privileges or a python virtual environment is necessary)
+- wtforms (form validation)
+- ecdsa (cookie signature)
+- coverage (only for running the server tests with --coverage)
 
-On DNS:
-http://happymap.ddns.net
+You can run `pip3 install flask wtforms ecdsa coverage` or `python3 -m pip install  flask wtforms ecdsa coverage` to 
+take care of these dependencies.
+
+Running the server is simply `python3 main.py` with an optional `--debug` flag for activating debug mode.
+
+Opening the website:
+- local instance: http://localhost:8000
+- remote instance: http://happymap.ddns.net (WARNING: this is running on a personal computer so it's not always on).
+
+NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page.
+	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
 ## 2) A brief functionality description
 Voting:
