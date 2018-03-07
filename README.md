@@ -20,21 +20,11 @@ NOTE: You may have to change the Google Maps API key being used in order ot use 
 	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
 ## 2) A brief functionality description
-Voting:
-- Implemented interactive map using Google Maps API which runs in an iframe on vote page
-- Implemented form submission for happiness votes to database
-- Made UI for happiness voting page - can use either dropdown or the map to submit votes
-- Wrote unit tests for interactive map functions and acceptance tests for vote submission
+Voting: 
+A user can vote on their happiness and location using the vote page. It uses the Google Maps Geolocation API and can automatically detect the user's location. Because the geolocation might not be accurate at times, users can also select their position on the map, or select their location from the dropdown menu. After selecting their happiness level and location, the user can submit their vote: this remembers the user's most recent vote and location, and adds the vote to the campus map and user's personal stats.
 
 Message Board:
-- Designed the message board page
-- A user can post on the board after they vote 
-- This post can be up and down voted on
-- Populates a table and can be sorted via buttons
-- Users can see all the posts and laugh and cry with their friends
-- Dynamic welcome text depending on the user's last happiness vote
-- Changed the way we display time on the message board (now "1 minute ago") versus how it's stored in the database
-- Wrote the unit tests for all the functions we use in board.js. boardFunctions.js contains all of the same functions just in their own spot.
+After submitting a vote, a user can post to the message board, and their post will be tied to their most recent vote and location. Users can upvote and downvote posts on the message board. The message board can be sorted based on most recent posts and trending posts, and can be filtered based on time frame, and location.
 
 Map:
 - Used Raphael to make our own SVG campus map with a selection of prominent campus buildings
@@ -46,11 +36,7 @@ Map:
 - Use Case: A user can visit this page and learn about how happy different buildings were for different recent time periods
 
 Backend:
-- Wrote unit tests for database API and requests
-- Created database using SQLite
-- Set up server using Flask
-- Set up API for front-end to post requests and query the database (all functions outlined in the design doc are implemented, and any changes are noted below in section 7)
-- Maintained and updated database/queries to keep up with front end needs
+The backend consists of a database built with SQLite, and a server built on Flask and Python. The front-end posts requests to the server, and the back-end responds with a json object. The backend has requests to get votes, posts, and average values over certain timeframes and locations. 
 
 Stats:
 The stats page is a convenient way for a user to look back on his/her recent votes and posts. It contains several visualizations, including:
