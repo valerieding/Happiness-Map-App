@@ -1,5 +1,7 @@
 # Happiness-Map-App
 
+Final Design Doc, Milestone 5: https://docs.google.com/document/d/1W9jWYvoIqoefEFMQ-H4cF2AHn6ucSgCqZAGCOrMJfJQ/edit
+
 ## 1) Installation Guide
 For running the server, Python 3.5 or newer is necessary. Additional python package dependencies are:
 - flask (backbone of the server. Root privileges or a python virtual environment is necessary)
