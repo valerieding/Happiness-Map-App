@@ -16,9 +16,6 @@ Opening the website:
 - local instance: http://localhost:8000
 - remote instance: http://happymap.ddns.net (WARNING: this is running on a personal computer so it's not always on).
 
-NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page.
-	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
-
 ## 2) Functionality:
 Voting: 
 A user can vote on their happiness and location using the vote page. It uses the Google Maps Geolocation API and can automatically detect the user's location. Because the geolocation might not be accurate at times, users can also select their position on the map, or select their location from the dropdown menu. After selecting their happiness level and location, the user can submit their vote: this remembers the user's most recent vote and location, and adds the vote to the campus map and user's personal stats. Note: if the auto-location is not detecting your location, make sure your browser is configured to share your location. You may have to allow that before the voting page works.
