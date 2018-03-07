@@ -21,7 +21,7 @@ NOTE: You may have to change the Google Maps API key being used in order ot use 
 
 ## 2) Functionality:
 Voting: 
-A user can vote on their happiness and location using the vote page. It uses the Google Maps Geolocation API and can automatically detect the user's location. Because the geolocation might not be accurate at times, users can also select their position on the map, or select their location from the dropdown menu. After selecting their happiness level and location, the user can submit their vote: this remembers the user's most recent vote and location, and adds the vote to the campus map and user's personal stats.
+A user can vote on their happiness and location using the vote page. It uses the Google Maps Geolocation API and can automatically detect the user's location. Because the geolocation might not be accurate at times, users can also select their position on the map, or select their location from the dropdown menu. After selecting their happiness level and location, the user can submit their vote: this remembers the user's most recent vote and location, and adds the vote to the campus map and user's personal stats. Note: if the auto-location is not detecting your location, make sure your browser is configured to share your location. You may have to allow that before the voting page works.
 
 Message Board:
 After submitting a vote, a user can post to the message board, and their post will be tied to their most recent vote and location. Users can upvote and downvote posts on the message board. The message board can be sorted based on most recent posts and trending posts, and can be filtered based on time frame, and location.
