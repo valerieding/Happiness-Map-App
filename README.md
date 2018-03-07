@@ -47,7 +47,7 @@ The stats page is a convenient way for a user to look back on his/her recent vot
 - a bar graph of a user's votes by time of day, which shows a user's average happiness level for each hour of the past day
 
 Admin:
-We've implemented moderator functionality that can be accessed when running the app on localhost:8000. If you navigate to localhost:8000/moderator, the app will prompt you to log in as an admin. You can login with the credentials: username = admin, password = password. This will redirect you to the message board, with the added ability to remove posts. If you click the log out button on the message board, you will return to the message board as a regular user, without admin abilities. 
+We've implemented moderator functionality that can be accessed when running the app on localhost:8000. If you navigate to localhost:8000/moderator, the app will prompt you to log in as an admin. (Note: we decided not to have the moderator page be in the navigation bar, or put a button that would lead to it, because we wanted to hide its functionality as much as possible from normal users. We wanted it to be only for people who explicitly knew how to use it). You can login with the credentials: username = admin, password = password. This will redirect you to the message board, with the added ability to remove posts. If you click the log out button on the message board, you will return to the message board as a regular user, without admin abilities. 
 
 
 ## 3) A brief tutorial about how to use your software
@@ -60,7 +60,8 @@ The My Stats page can show you some interesting visualizations, but note that My
 Note: If you vote twice within 15 minutes, your first vote will be overwritten by your second vote. If you post to the message board in between submitting these votes, that message will stay on the board with the location and happiness level of the first vote. This is the intended behavior to prevent people from flooding the system with votes, while also allowing them to vote/update their votes freely. Message board posts are meant to last and to be tied to the vote that was accurate at the time of posting. If you vote and post in succession, you may see posts on "My Recent Posts" which are not tied to a currently valid vote and are therefore not reflected on the map or in the other charts on "My Stats". That is ok.
  
 ## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
-
+- In order to view all pages as they are intended, you must be using the latest version of your browser and OS. Otherwise, some pages may not render as expected.
+- If you visit the DNS site, because it's served over http and not https, some browsers automatically block geolocation sensing. So, on the vote page, you may need to select your location from the dropdown.
 
 ### 4.) Acceptance tests to try
 Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
