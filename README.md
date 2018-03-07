@@ -19,7 +19,7 @@ Opening the website:
 NOTE: You may have to change the Google Maps API key being used in order ot use the Google Map on the Vote page.
 	The location of the API key is in src/site/vote.html, line: 145. Replace the text between "key=" and "=initMap" in line 145 with your API key (which you can sign up for at https://developers.google.com/maps/documentation/javascript/get-api-key) before running any of the above steps.
 
-## 2) A brief functionality description
+## 2) Functionality:
 Voting: 
 A user can vote on their happiness and location using the vote page. It uses the Google Maps Geolocation API and can automatically detect the user's location. Because the geolocation might not be accurate at times, users can also select their position on the map, or select their location from the dropdown menu. After selecting their happiness level and location, the user can submit their vote: this remembers the user's most recent vote and location, and adds the vote to the campus map and user's personal stats.
 
@@ -50,7 +50,7 @@ Admin:
 We've implemented moderator functionality that can be accessed when running the app on localhost:8000. If you navigate to localhost:8000/moderator, the app will prompt you to log in as an admin. (Note: we decided not to have the moderator page be in the navigation bar, or put a button that would lead to it, because we wanted to hide its functionality as much as possible from normal users. We wanted it to be only for people who explicitly knew how to use it). You can login with the credentials: username = admin, password = password. This will redirect you to the message board, with the added ability to remove posts. If you click the log out button on the message board, you will return to the message board as a regular user, without admin abilities. 
 
 
-## 3) A brief tutorial about how to use your software
+## 3) How to Use:
 See the Installation Guide for instructions on setting up and running the server on your localhost. When you go to your browser and connect to localhost:8000, you will be taken to the home page, which has the happiness map of campus. You can use the navigation drop down menu to change pages.
 On the Vote page, you can vote and indicate your location through location services (only on some browsers), through clicking on the map, or through selecting a building/region from the dropdown menu. Not all locations will be available through location services or the map functionality.
 On the Message Board page, you can post messages, sort the message display, filter messages by location, and react to messages. 
@@ -59,60 +59,6 @@ The My Stats page can show you some interesting visualizations, but note that My
 
 Note: If you vote twice within 15 minutes, your first vote will be overwritten by your second vote. If you post to the message board in between submitting these votes, that message will stay on the board with the location and happiness level of the first vote. This is the intended behavior to prevent people from flooding the system with votes, while also allowing them to vote/update their votes freely. Message board posts are meant to last and to be tied to the vote that was accurate at the time of posting. If you vote and post in succession, you may see posts on "My Recent Posts" which are not tied to a currently valid vote and are therefore not reflected on the map or in the other charts on "My Stats". That is ok.
  
-## 4) If you know certain inputs are not well handled by the software and should not be tried by users, list these inputs.
+## 4) Potentially poorly handled inputs:
 - In order to view all pages as they are intended, you must be using the latest version of your browser and OS. Otherwise, some pages may not render as expected.
 - If you visit the DNS site, because it's served over http and not https, some browsers automatically block geolocation sensing. So, on the vote page, you may need to select your location from the dropdown.
-
-### 4.) Acceptance tests to try
-Note: A user MUST add a vote before posting a message. If you don't add a vote, you can't post.
-
-Map:
-After adding a vote, check the campus map to make sure the campus-wide average was updated to include your vote value, and that the building's average was updated to include your vote value. Also, the color of the location you voted at should be updated on the campus map. Try filtering by different time frames and noticing how the map changes.
-
-My Stats:
-Try hovering over points or bars on the graphs to see that the labels make sense given the axes, and try changing the time frames on My History and My Map to see how the data and axes change. Add a vote on the Vote page and seeing that it is reflected in each of the graphs on the Personal Stats page.
-
-Message Board:
-You cannot post if you did not already vote.
-Message board does not accept empty messages.
-You cannot double upvote/downvote, but you may switch between upvote and downvote on a post. 
-Switching your vote subtracts from current vote and adds to new vote so as to not double count it.
-Sorting posts by 'trending' or 'recent' should result in either the highest rated or most recently added posts.
-
-Voting:
-	Valid requests - should see updates to campus happiness average and the selected building happiness average, viewable from Campus Map. Should also see latest happiness level and selected building when posting to Message Board. Off-campus votes affect campus average, but do not have a building associated with them. 
-
-	Google Maps geolocation has some accuracy issues, so we allow the user to click directly on the Google Map to choose their location. They can also specify a campus building from the dropdown menu. When a user submits their vote, their last location is submitted, whether it is from geolocation, directly clicking on the map, or selecting from the dropdown menu.
-
-	The following are valid requests:
-	1. Happiness level = 1-5
-	   Location = "Regenstein Library" (dropdown only)
-	2. Happiness level = 1-5 
-	   Location = "Regenstein Library" (map screen only)
-	3. Happiness level = 1-5
-	   Location = "South Campus Dining Commons" (dropdown)
-	   Location = "Regenstein Library" (map screen)
-	   		logged location should be "Regenstein Library"
-	4. Happiness level = 1-5
-	   Location = "Not on campus" (map screen only)
-	   		- off campus, will not be able to post messages
-	5. Happiness level = 1-5
-	   Location = "Off Campus" (dropdown only)
-	   		- off campus, will not be able to post messages
-	6. Happiness level = 1-5
-	   Location = "Not on campus" (map screen)
-	   Location = "Saieh Hall" (dropdown only)
-	   		- off campus, will not be able to post messages
-
-	Invalid requests are simply discarded.
-	The following are invalid requests:
-	1. Do not select a happiness level
-	   Location = "Regenstein Library" (dropdown only)
-	   		- invalid, must have a specified happiness level
-	2. Do not select a happiness level
-	   Location = "Regenstein Library" (mapscreen only)
-	   		- invalid, must have a specified happiness level
-	3. Select a happiness level 1-5
-	   Do not select a location on either the dropdown or the mapscreen.
-	   Leave the dropdown on "".
-	   		- invalid, must have a specified location
