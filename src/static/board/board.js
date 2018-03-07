@@ -199,7 +199,7 @@ $(function() {
     e.preventDefault();
     addPost($("#myform").serialize().slice(8));
     if(!toolong){
-    document.getElementById('welcome').innerHTML = "<h4 style=\"color:White; text-align:left;\">Check back in an hour!</h4>";
+    document.getElementById('welcome').innerHTML = "<h4 style=\"color:White; text-align:left;\">Your message has been posted!</h4>";
     document.getElementById('myform').innerHTML = "";
   }
   });
